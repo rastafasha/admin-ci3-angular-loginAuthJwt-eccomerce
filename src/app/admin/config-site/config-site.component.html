@@ -1,0 +1,180 @@
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Editar conf</h4>
+                <h6 class="card-subtitle">Ajustes</h6>
+                <button class="btn btn-outline-danger" href="javascript:void(0)" (click)="goBack()">Volver</button>
+                <form class="form p-t-20" [formGroup]="confGeneralForm" (submit)="updateConfiguracion()">
+                    <div class="form-group">
+                        <label for="select-input">Language</label>
+                        <select class="form-control custom-select" formControlName="language" required>
+                            <option  value="">Seleccione</option>
+                            <option  value="en">English</option>
+                            <option  value="es">Español</option>
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputuname">Razón social</label>
+                        <div class="input-group">
+
+                            <input type="text" formControlName="titulo" class="form-control" id="exampleInputuname" placeholder="Razón social">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputsubcategorias">Copy Right</label>
+                        <div class="input-group">
+
+                            <input type="text" formControlName="cr" class="form-control" id="exampleInputsubcategorias" placeholder="Copy Right">
+                        </div>
+                    </div>
+
+                    <div class="form-group row align-items-center">
+                        <label class="col-form-label font-weight-medium" for="text-input">Telefonos</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col">
+                                    <input class="form-control" type="number" placeholder="Telefono 1" formControlName="telefono_uno">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" type="number" placeholder="Telefono 2" formControlName="telefono_dos">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label class="col-form-label font-weight-medium" for="text-input">Correos</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col">
+                                    <input class="form-control" type="email" placeholder="Email 1" formControlName="email_uno">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" type="email" placeholder="Email 2" formControlName="email_dos">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-form-label font-weight-medium" for="textarea-input">Dirección</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" id="textarea-input" rows="3" placeholder="Dirección de la tienda." formControlName="direccion"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-form-label font-weight-medium" for="textarea-input">Horarios</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" id="textarea-input" rows="2" placeholder="Horarios de atención." formControlName="horarios"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-form-label font-weight-medium" for="textarea-input">Mapa (iframe)</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <textarea class="form-control" id="textarea-input" rows="6" placeholder="Código de google maps." formControlName="iframe_mapa"></textarea>
+                                </div>
+                                <div class="col-md-12" id="content-mapa">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row align-items-center">
+                        <label class="col-form-label font-weight-medium" for="text-input">Facebook</label>
+                        <div class="input-group col-md-10 input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                            <i class="czi-facebook"></i>
+                          </span>
+                            </div>
+                            <input class="form-control" type="text" placeholder="Enlace de pagina en facebook" formControlName="facebook">
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label class="col-form-label font-weight-medium" for="text-input">Instagram</label>
+                        <div class="col-md-10 input-group ">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                            <i class="czi-instagram"></i>
+                          </span>
+                            </div>
+                            <input class="form-control" type="text" placeholder="Enlace de pagina en instagram" formControlName="instagram">
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label class="col-form-label font-weight-medium" for="text-input">Youtube</label>
+                        <div class="col-md-10 input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                            <i class="czi-youtube"></i>
+                          </span>
+                            </div>
+                            <input class="form-control" type="text" placeholder="Enlace de pagina en instagram" formControlName="youtube">
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label class="col-form-label font-weight-medium" for="text-input">Twitter</label>
+                        <div class="col-md-10 input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                            <i class="czi-twitter"></i>
+                          </span>
+                            </div>
+                            <input class="form-control" type="text" placeholder="Enlace de pagina en instagram" formControlName="twitter">
+                        </div>
+                    </div>
+
+
+                    <button type="submit" [disabled]="confGeneralForm.invalid" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+           <i class="fa fa-save"></i> Guardar cambios
+          </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" *ngIf="congeneralSeleccionado.logo">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">imagen</h4>
+                <h6 class="card-subtitle">Logo</h6>
+                <div class="text-center">
+                    <img *ngIf="!imgTemp" [src]="configuracion.logo | imagenPipe: 'configuracions'  " class="img-responsive img-thumbnail" alt="">
+                    <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+                </div>
+                <input type="file" (change)="cambiarImagen($event.target.files[0])">
+                <br>
+                <br>
+                <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+        <i class="fa fa-save"></i> Cambiar imagen
+       </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" *ngIf="congeneralSeleccionado.favicon">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Favicon</h4>
+                <h6 class="card-subtitle">Logo de navegador</h6>
+                <div class="text-center">
+                    <img *ngIf="!imgTemp1" [src]="configuracion.favicon | imagenPipe: 'configuracions'  " class="img-responsive img-thumbnail" alt="">
+                    <img *ngIf="imgTemp1" [src]="imgTemp1" class="img-avatar">
+                </div>
+                <input type="file" (change)="cambiarImagen1($event.target.files[0])">
+                <br>
+                <br>
+                <button type="button" [disabled]="!imagenSubir1" (click)="subirImagen1()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+      <i class="fa fa-save"></i> Cambiar imagen
+     </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h4>Seleccione el tema</h4>
+                <div class="r-panel-body">
+                    <ul id="themecolors" class="m-t-20">
+                        <li><b>Con el sidebar claro</b></li>
+                        <li><a (click)="changeTheme('default')" class="selector default-theme working">1</a></li>
+                        <li><a (click)="changeTheme('green')" class="selector green-theme">2</a></li>
+                        <li><a (click)="changeTheme('red')" class="selector red-theme">3</a></li>
+                        <li><a (click)="changeTheme('blue')" class="selector blue-theme">4</a></li>
+                        <li><a (click)="changeTheme('purple')" class="selector purple-theme">5</a></li>
+                        <li><a (click)="changeTheme('megna')" class="selector megna-theme">6</a></li>
+
+                        <li class="d-block m-t-30"><b>Con el sidebar oscuro</b></li>
+                        <li><a (click)="changeTheme('default-dark')" class="selector default-dark-theme">7</a></li>
+                        <li><a (click)="changeTheme('green-dark')" class="selector green-dark-theme">8</a></li>
+                        <li><a (click)="changeTheme('red-dark')" class="selector red-dark-theme">9</a></li>
+                        <li><a (click)="changeTheme('blue-dark')" class="selector blue-dark-theme ">10</a></li>
+                        <li><a (click)="changeTheme('purple-dark')" class="selector purple-dark-theme">11</a></li>
+                        <li><a (click)="changeTheme('megna-dark')" class="selector megna-dark-theme">12</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 card" *ngFor="let conf of congenerals">
+
+        <a [routerLink]="['/dashboard/configuracion/edit', conf._id]" class="cursor" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> Edit</a>
+        <p>titulo: {{conf.titulo}},<br> cr: {{conf.cr}},<br> telefono_uno: {{conf.telefono_uno}},<br> telefono_dos: {{conf.telefono_dos}},<br> email_uno: {{conf.email_uno}},<br> email_dos: {{conf.email_dos}},<br> direccion: {{conf.direccion}},<br> horarios:
+            {{conf.horarios}},
+            <br> iframe_mapa: {{conf.iframe_mapa}},<br> facebook: {{conf.facebook}},<br> instagram: {{conf.instagram}},<br> youtube: {{conf.youtube}},<br> twitter: {{conf.twitter}}
+
+            <br> logo: {{conf.logo}}<br> favicon: {{conf.favicon}}</p>
+    </div>
+
+
+
+</div>

@@ -1,0 +1,103 @@
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{pageTitle}}</h4>
+                <h6 class="card-subtitle">Ajustes</h6>
+                <button class="btn btn-outline-danger" href="javascript:void(0)" (click)="goBack()">Volver</button>
+                <form [formGroup]="sliderForm" (ngSubmit)="onSubmit(sliderForm)">
+                    <div class="card border-0 box-shadow">
+
+                        <div class="card-body">
+                            <div class="tab-content" style="margin-top: 20px;">
+                                <div class="tab-pane fade active show">
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Titulo</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" type="text" placeholder="Nombre del producto" formControlName="title">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Sub titulo</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" type="text" placeholder="Titulo superior" formControlName="subtitulo">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class=" col-form-label font-weight-medium" for="text-input">Texto</label>
+                                        <div class="col-md-10">
+                                            <textarea class="form-control" id="textarea-input" rows="5" placeholder="Descripcion producto." formControlName="text"></textarea>
+
+                                            <!-- <tinymce  required formControlName="detalle" [config]="config"></tinymce> -->
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Enlace</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" type="text" placeholder="enlace" formControlName="enlace">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Estado</label>
+                                        <div class="col-md-9">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" formControlName="estado" type="checkbox" id="ex-check-1">
+                                                <label class="custom-control-label" *ngIf="slider.estado" for="ex-check-1">Activo</label>
+                                                <label class="custom-control-label" *ngIf="!slider.estado" for="ex-check-1">Desactivado</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Mostrar Info</label>
+                                        <div class="col-md-9">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" formControlName="mostrarInfo" type="checkbox" id="ex-check-2">
+                                                <label class="custom-control-label" *ngIf="slider.mostrarInfo" for="ex-check-2">Activo</label>
+                                                <label class="custom-control-label" *ngIf="!slider.mostrarInfo" for="ex-check-2">Desactivado</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Mostrar boton</label>
+                                        <div class="col-md-9">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" formControlName="mostrarboton" type="checkbox" id="ex-check-3">
+                                                <label class="custom-control-label" *ngIf="slider.mostrarboton" for="ex-check-3">Activo</label>
+                                                <label class="custom-control-label" *ngIf="!slider.mostrarboton" for="ex-check-3">Desactivado</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary mb-2 mr-1" type="submit">Actualizar campos</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 animated fadeIn fast" *ngIf="sliderSeleccionado">
+        <div class="card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Image</h4>
+                    <h6 class="card-subtitle">Logo de marca</h6>
+                    <div class="text-center">
+                        <img *ngIf="!imgTemp" [src]="sliderSeleccionado.img | imagenPipe: 'sliders'  " class="img-responsive img-thumbnail" alt="">
+                        <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+                    </div>
+                    <input type="file" (change)="cambiarImagen($event.target.files[0])">
+                    <br>
+                    <br>
+                    <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+          <i class="fa fa-save"></i> Cambiar imagen
+         </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,139 @@
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{pageTitle}}</h4>
+                <h6 class="card-subtitle">Ajustes</h6>
+                <button class="btn btn-outline-danger" href="javascript:void(0)" (click)="goBack()">Volver</button>
+                <form class="form p-t-20" [formGroup]="productoForm" (submit)="updateProducto()">
+                    <div class="form-group">
+                        <label for="exampleInputuname">Titulo</label>
+                        <div class="input-group">
+
+                            <input type="text" formControlName="name" class="form-control" id="exampleInputuname" placeholder="titulo">
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label class=" col-form-label font-weight-medium" for="text-input">Video de youtube</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" type="text" placeholder="Codigo de insercion de vídeo." formControlName="video_review" required></textarea>
+
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label class=" col-form-label font-weight-medium" for="text-input">Descripción</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" id="textarea-input" rows="5" placeholder="Descripcion producto." formControlName="description" required></textarea>
+
+                            <!-- <tinymce  required formControlName="detalle" [config]="config"></tinymce> -->
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class=" col-form-label font-weight-medium" for="textarea-input">Descripción corta</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" id="textarea-input" rows="5" placeholder="Detalle corto del producto." formControlName="info_short" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label class=" col-form-label font-weight-medium" for="text-input">Detalles</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <input class="form-control" type="number" placeholder="Precio actual" formControlName="price" min="0">
+                                </div>
+                                <!-- <div class="col-lg-4">
+                                    <input class="form-control" type="number" placeholder="Precio antes" formControlName="precio_antes" min="0" >
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row align-items-center">
+                        <label class=" col-form-label font-weight-medium" for="text-input">Categorías</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="select-input">Categoría</label>
+                                        <select class="form-control custom-select" formControlName="category" required>
+                                            <option selected  value="">SELECCIONAR</option>
+                                            <option *ngFor="let item of listCategorias" [value]="item._id">{{item.nombre}}</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="select-input">Subcategoría</label>
+                                        <select class="form-control custom-select" formControlName="subcategoria">
+                                                  <option selected disabled value="">SELECCIONAR</option>
+                                                  <option *ngFor="let item of listCategorias" [value]="item.subcategorias">{{item.subcategorias}}</option>
+
+                                              </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row align-items-center">
+                        <label class=" col-form-label font-weight-medium" for="text-input">Marca</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <select class="form-control custom-select" id="select-input" formControlName="marca">
+                                        <option selected disabled value="">SELECCIONAR</option>
+                                        <option *ngFor="let item of listMarcas" [value]="item._id">{{item.nombre}}</option>
+
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <span class="text-muted">Selecciona la <b>MARCA</b></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="form-group row align-items-center">
+                        <label class="col-md-2 col-form-label font-weight-medium" for="text-input">Tipo</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <input class="form-control" type="text" placeholder="Nombre del selector" formControlName="nombre_selector" min="0" required>
+                                </div>
+                                <div class="col-lg-6">
+                                    <span class="text-muted">Por ejemplo: Para calzados el selector es <b>TALLAS</b></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <button type="submit" [disabled]="productoForm.invalid" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                 <i class="fa fa-save"></i> Guardar cambios
+                </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 animated fadeIn fast" *ngIf="productoSeleccionado">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Image</h4>
+                <div class="text-center">
+                    <img *ngIf="!imgTemp" [src]="productoSeleccionado.img | imagenPipe: 'productos'  " class="img-responsive img-thumbnail" alt="">
+                    <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+                </div>
+                <input type="file" (change)="cambiarImagen($event.target.files[0])">
+                <br>
+                <br>
+                <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+              <i class="fa fa-save"></i> Cambiar imagen
+             </button>
+            </div>
+        </div>
+    </div>
+</div>

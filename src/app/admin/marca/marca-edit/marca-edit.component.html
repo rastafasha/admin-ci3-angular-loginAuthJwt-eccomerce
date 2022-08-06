@@ -1,0 +1,49 @@
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{pageTitle}}</h4>
+                <h6 class="card-subtitle">Ajustes</h6>
+                <button class="btn btn-outline-danger" href="javascript:void(0)" (click)="goBack()">Volver</button>
+                <form class="form p-t-20" [formGroup]="marcaForm" (submit)="updateMarca()">
+                    <div class="form-group">
+                        <label for="exampleInputuname">Nombre</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-user"></i></div>
+                            <input type="text" formControlName="nombre" class="form-control" id="exampleInputuname" placeholder="nombre">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputApellido">Descripcion</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-user"></i></div>
+                            <input type="text" formControlName="descripcion" class="form-control" id="exampleInputApellido" placeholder="apellido">
+                        </div>
+                    </div>
+                    <button type="submit" [disabled]="marcaForm.invalid" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                   <i class="fa fa-save"></i> Guardar cambios
+                  </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" *ngIf="marcaSeleccionado">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Image</h4>
+                <h6 class="card-subtitle">Logo de marca</h6>
+                <div class="text-center">
+                    <img *ngIf="!imgTemp" [src]="marcaSeleccionado.img | imagenPipe: 'marcas'  " class="img-responsive img-thumbnail" alt="">
+                    <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+                </div>
+                <input type="file" (change)="cambiarImagen($event.target.files[0])">
+                <br>
+                <br>
+                <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                <i class="fa fa-save"></i> Cambiar imagen
+               </button>
+            </div>
+        </div>
+    </div>
+</div>

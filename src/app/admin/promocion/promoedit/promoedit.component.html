@@ -1,0 +1,91 @@
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{pageTitle}}</h4>
+                <h6 class="card-subtitle">Ajustes</h6>
+                <button class="btn btn-outline-danger" href="javascript:void(0)" (click)="goBack()">Volver</button>
+                <form [formGroup]="promocionForm" (ngSubmit)="onSubmit(promocionForm)">
+                    <div class="card border-0 box-shadow">
+
+                        <div class="card-body">
+                            <div class="tab-content" style="margin-top: 20px;">
+                                <div class="tab-pane fade active show">
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Titulo</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" required type="text" placeholder="Nombre del producto" formControlName="producto_title">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Pre titulo</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" required type="text" placeholder="Titulo superior" formControlName="first_title">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Etiqueta</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" required type="text" placeholder="Etiqueta del banner" formControlName="etiqueta">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Subtitulo</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" required type="text" placeholder="Subtitulo del banner" formControlName="subtitulo">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Fecha de termino</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" required type="date" placeholder="2020/12/25" formControlName="end">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Slug del producto</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" required type="text" placeholder="Slug del producto promocional" formControlName="enlace">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Estado</label>
+                                        <div class="col-md-9">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" formControlName="estado" type="checkbox" id="ex-check-1">
+                                                <label class="custom-control-label" *ngIf="promocion.estado" for="ex-check-1">Activo</label>
+                                                <label class="custom-control-label" *ngIf="!promocion.estado" for="ex-check-1">Desactivado</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary mb-2 mr-1" type="submit">Actualizar campos</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" *ngIf="promoSeleccionado">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Image</h4>
+                <h6 class="card-subtitle">Logo de marca</h6>
+                <div class="text-center">
+                    <img *ngIf="!imgTemp" [src]="promoSeleccionado.img | imagenPipe: 'promocions'  " class="img-responsive img-thumbnail" alt="">
+                    <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+                </div>
+                <input type="file" (change)="cambiarImagen($event.target.files[0])">
+                <br>
+                <br>
+                <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+      <i class="fa fa-save"></i> Cambiar imagen
+     </button>
+            </div>
+        </div>
+    </div>
+</div>
