@@ -58,12 +58,12 @@ export class CursoEditComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private location: Location
   ) {
-    this.usuario = usuarioService.usuario;
+    this.usuario = usuarioService.user;
     const base_url = environment.baseUrl;
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe( ({id}) => this.cargarCurso(id));
+    this.activatedRoute.params.subscribe( ({id}) => this.iniciarFormulario(id));
 
     window.scrollTo(0,0);
     this.getCategorias();
@@ -74,18 +74,20 @@ export class CursoEditComponent implements OnInit {
       price: ['',Validators.required],
       info_short: ['',Validators.required],
       description: ['',Validators.required],
-      category: ['',Validators.required],
-      subcategoria: ['',Validators.required],
+      category_id: ['',Validators.required],
       video_review: [''],
+      is_featured: [''],
+      is_active: [''],
+      user_id: [this.usuario.id, Validators.required],
     })
 
     if(this.cursoSeleccionado){
       //actualizar
-      this.pageTitle = 'Create Curso';
+      this.pageTitle = 'Edit Curso';
 
     }else{
       //crear
-      this.pageTitle = 'Edit Curso';
+      this.pageTitle = 'Create Curso';
     }
 
 
@@ -103,32 +105,31 @@ export class CursoEditComponent implements OnInit {
     )
   }
 
-  cargarCurso(_id: string){
 
-    if(_id === 'nuevo'){
-      return;
+  iniciarFormulario(id:number){
+
+
+    if (id !== null && id !== undefined) {
+      this.pageTitle = 'Editar Curso';
+      this.cursoService.getCursoById(id).subscribe(
+        res => {
+          this.cursoForm.patchValue({
+            id: res.id,
+            user_id: this.usuario.id,
+            name: res.name,
+            price: res.price,
+            info_short: res.info_short,
+            video_review: res.video_review,
+            description: res.description,
+            category_id: res.category_id,
+            is_active: res.is_active,
+            is_featured: res.is_featured,
+          });
+        }
+      );
+    } else {
+      this.pageTitle = 'Crear Curso';
     }
-
-    this.cursoService.getCursoById(_id)
-    .pipe(
-      // delay(100)
-      )
-      .subscribe( curso =>{
-
-
-      if(!curso){
-        return this.router.navigateByUrl(`/dasboard/curso`);
-      }
-
-        const { name, price,info_short,description, category_id, subcategory,
-          video_review, } = curso;
-        this.cursoSeleccionado = curso;
-        this.cursoForm.setValue({
-          name, price,info_short,description, category_id, subcategory,
-      video_review,
-        });
-
-      });
 
   }
 
@@ -138,16 +139,26 @@ export class CursoEditComponent implements OnInit {
 
   updateCurso(){debugger
 
-    const {name, price,info_short,description, category_id, subcategory,
-      video_review, } = this.cursoForm.value;
+    const {
+      name,
+          price,
+          user_id,
+          video_review,
+          info_short,
+          description,
+          category_id,
+          is_featured,
+          is_active,
+     } = this.cursoForm.value;
 
     if(this.cursoSeleccionado){
       //actualizar
       const data = {
         ...this.cursoForm.value,
-        _id: this.cursoSeleccionado.id
+        user_id: this.usuario.id,
+        id: this.cursoSeleccionado.id
       }
-      this.cursoService.actualizarCurso(this.curso.id, this.curso).subscribe(
+      this.cursoService.actualizarCurso(this.curso.id).subscribe(
         resp =>{
           Swal.fire('Actualizado', `${name}  actualizado correctamente`, 'success');
         });
@@ -157,7 +168,7 @@ export class CursoEditComponent implements OnInit {
       this.cursoService.crearCurso(this.cursoForm.value)
       .subscribe( (resp: any) =>{
         Swal.fire('Creado', `${name} creado correctamente`, 'success');
-        // this.router.navigateByUrl(`/dashboard/marca/${resp.marca._id}`)
+        // this.router.navigateByUrl(`/dashboard/marca/${resp.marca.id}`)
       })
     }
 

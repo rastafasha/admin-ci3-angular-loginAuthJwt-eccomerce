@@ -19,15 +19,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group row align-items-center">
-                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Sub titulo</label>
-                                        <div class="col-md-9">
-                                            <input class="form-control" type="text" placeholder="Titulo superior" formControlName="subtitulo">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row align-items-center">
                                         <label class=" col-form-label font-weight-medium" for="text-input">Texto</label>
                                         <div class="col-md-10">
-                                            <textarea class="form-control" id="textarea-input" rows="5" placeholder="Descripcion producto." formControlName="text"></textarea>
+                                            <textarea class="form-control" id="textarea-input" rows="5" placeholder="Descripcion" formControlName="description"></textarea>
 
                                             <!-- <tinymce  required formControlName="detalle" [config]="config"></tinymce> -->
                                         </div>
@@ -39,32 +33,54 @@
                                         </div>
                                     </div>
                                     <div class="form-group row align-items-center">
-                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Estado</label>
-                                        <div class="col-md-9">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" formControlName="estado" type="checkbox" id="ex-check-1">
-                                                <label class="custom-control-label" *ngIf="slider.estado" for="ex-check-1">Activo</label>
-                                                <label class="custom-control-label" *ngIf="!slider.estado" for="ex-check-1">Desactivado</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row align-items-center">
-                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Mostrar Info</label>
-                                        <div class="col-md-9">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" formControlName="mostrarInfo" type="checkbox" id="ex-check-2">
-                                                <label class="custom-control-label" *ngIf="slider.mostrarInfo" for="ex-check-2">Activo</label>
-                                                <label class="custom-control-label" *ngIf="!slider.mostrarInfo" for="ex-check-2">Desactivado</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row align-items-center">
-                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Mostrar boton</label>
-                                        <div class="col-md-9">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" formControlName="mostrarboton" type="checkbox" id="ex-check-3">
-                                                <label class="custom-control-label" *ngIf="slider.mostrarboton" for="ex-check-3">Activo</label>
-                                                <label class="custom-control-label" *ngIf="!slider.mostrarboton" for="ex-check-3">Desactivado</label>
+                                        <label class=" col-form-label font-weight-medium" for="text-input">status</label>
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="select-input">Visible</label>
+                                                        <select class="form-control custom-select" formControlName="is_active" required>
+                                                  <option selected  value="">SELECCIONAR</option>
+                                                  <option  [value]="0">Inactivo</option>
+                                                  <option  [value]="1">Activo</option>
+
+                                              </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="select-input">Mostrar Texto</label>
+                                                        <select class="form-control custom-select" formControlName="is_activeText">
+                                                        <option selected disabled value="">SELECCIONAR</option>
+                                                        <option  value="visible">visible</option>
+                                                        <option  value="novisible">novisible</option>
+
+                                                    </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="select-input">Mostrar Boton</label>
+                                                        <select class="form-control custom-select" formControlName="is_activeBot">
+                                                        <option selected disabled value="">SELECCIONAR</option>
+                                                        <option  value="visible">visible</option>
+                                                        <option  value="novisible">novisible</option>
+
+                                                    </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="select-input">target</label>
+                                                        <select class="form-control custom-select" formControlName="target">
+                                                        <option selected disabled value="">SELECCIONAR</option>
+                                                        <option  value="_self">Self</option>
+                                                        <option  value="_blank">Blank</option>
+
+                                                    </select>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -80,14 +96,14 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 animated fadeIn fast" *ngIf="sliderSeleccionado">
+    <div class="col-md-6 animated fadeIn fast" *ngIf="slider">
         <div class="card">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Image</h4>
                     <h6 class="card-subtitle">Logo de marca</h6>
                     <div class="text-center">
-                        <img *ngIf="!imgTemp" [src]="sliderSeleccionado.img | imagenPipe: 'sliders'  " class="img-responsive img-thumbnail" alt="">
+                        <img *ngIf="!imgTemp" [src]="slider.img | imagenPipe: 'sliders'  " class="img-responsive img-thumbnail" alt="">
                         <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
                     </div>
                     <input type="file" (change)="cambiarImagen($event.target.files[0])">

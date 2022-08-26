@@ -19,15 +19,21 @@
                                         </div>
                                     </div>
                                     <div class="form-group row align-items-center">
-                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Pre titulo</label>
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">description</label>
                                         <div class="col-md-9">
-                                            <input class="form-control" required type="text" placeholder="Titulo superior" formControlName="first_title">
+                                            <input class="form-control" required type="text" placeholder="description" formControlName="description">
                                         </div>
                                     </div>
                                     <div class="form-group row align-items-center">
-                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Etiqueta</label>
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">enlace</label>
                                         <div class="col-md-9">
-                                            <input class="form-control" required type="text" placeholder="Etiqueta del banner" formControlName="etiqueta">
+                                            <input class="form-control" required type="text" placeholder="enlace del banner" formControlName="enlace">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">first_title</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" required type="text" placeholder="titulo del banner" formControlName="first_title">
                                         </div>
                                     </div>
                                     <div class="form-group row align-items-center">
@@ -37,24 +43,61 @@
                                         </div>
                                     </div>
                                     <div class="form-group row align-items-center">
-                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Fecha de termino</label>
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">texto boton</label>
                                         <div class="col-md-9">
-                                            <input class="form-control" required type="date" placeholder="2020/12/25" formControlName="end">
+                                            <input class="form-control" required type="text" placeholder="texto boton" formControlName="boton">
                                         </div>
                                     </div>
+
                                     <div class="form-group row align-items-center">
-                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Slug del producto</label>
-                                        <div class="col-md-9">
-                                            <input class="form-control" required type="text" placeholder="Slug del producto promocional" formControlName="enlace">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row align-items-center">
-                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Estado</label>
-                                        <div class="col-md-9">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" formControlName="estado" type="checkbox" id="ex-check-1">
-                                                <label class="custom-control-label" *ngIf="promocion.estado" for="ex-check-1">Activo</label>
-                                                <label class="custom-control-label" *ngIf="!promocion.estado" for="ex-check-1">Desactivado</label>
+                                        <label class=" col-form-label font-weight-medium" for="text-input">status</label>
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="select-input">Visible</label>
+                                                        <select class="form-control custom-select" formControlName="is_active" required>
+                                                    <option selected  value="">SELECCIONAR</option>
+                                                    <option  [value]="0">Inactivo</option>
+                                                    <option  [value]="1">Activo</option>
+
+                                                </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="select-input">Mostrar Texto</label>
+                                                        <select class="form-control custom-select" formControlName="is_activeText">
+                                                          <option selected disabled value="">SELECCIONAR</option>
+                                                          <option  value="visible">visible</option>
+                                                          <option  value="novisible">novisible</option>
+
+                                                      </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="select-input">Mostrar Boton</label>
+                                                        <select class="form-control custom-select" formControlName="is_activeBot">
+                                                          <option selected disabled value="">SELECCIONAR</option>
+                                                          <option  value="visible">visible</option>
+                                                          <option  value="novisible">novisible</option>
+
+                                                      </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="select-input">target</label>
+                                                        <select class="form-control custom-select" formControlName="target">
+                                                          <option selected disabled value="">SELECCIONAR</option>
+                                                          <option  value="_self">Self</option>
+                                                          <option  value="_blank">Blank</option>
+
+                                                      </select>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>

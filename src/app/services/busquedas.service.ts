@@ -36,7 +36,7 @@ export class BusquedasService {
 
   private trasnformarUsuarios(resultados: any[]): Usuario[]{
     return resultados.map(
-      user => new Usuario( user.first_name, user.last_name, user.username, user.email, user.img, user.google, user.role_id, user.uid)
+      user => new Usuario( user.first_name, user.last_name, user.username, user.email, user.img, user.google, user.roleid, user.uid)
     )
   }
 

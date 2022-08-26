@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { Slider } from '../models/slider.model';
+import { Observable } from 'rxjs/internal/Observable';
 
 const base_url = environment.baseUrl;
 
@@ -32,21 +33,21 @@ export class SliderService {
 
   cargarSliders(){
 
-    const url = `${base_url}api_slider/adminSliders`;
+    const url = `${base_url}api_slider/sliders`;
     return this.http.get(url, this.headers)
-      .pipe(
-        map((resp:{ok: boolean, sliders: Slider[]}) => resp.sliders)
-      )
+      // .pipe(
+      //   map((resp:{ok: boolean, sliders: Slider[]}) => resp.sliders)
+      // )
 
   }
 
 
-  getSliderById(_id: number){
-    const url = `${base_url}api_slider/adminSlider/${_id}`;
-    return this.http.get(url, this.headers)
-      .pipe(
-        map((resp:{ok: boolean, slider: Slider}) => resp.slider)
-        );
+  getSliderById(id: number): Observable<Slider>{
+      const url = `${base_url}api_slider/Slider/${id}`;
+      return this.http.get<Slider>(url, this.headers)
+      // .pipe(
+      //   map((resp:{ok: boolean, slider: Slider}) => resp.slider)
+      //   );
 
   }
 
@@ -56,13 +57,13 @@ export class SliderService {
     return this.http.post(url, slider, this.headers);
   }
 
-  actualizarSlider(slider: Slider){
-    const url = `${base_url}api_slider/updateSlider/${slider.id}`;
+  actualizarSlider(id:number, slider: Slider){
+    const url = `${base_url}api_slider/updateSlider/${id}`;
     return this.http.put(url, slider, this.headers);
   }
 
-  borrarSlider(_id:number){
-    const url = `${base_url}api_slider/deleteSlider/${_id}`;
+  borrarSlider(id:number){
+    const url = `${base_url}api_slider/deleteSlider/${id}`;
     return this.http.delete(url, this.headers);
   }
 

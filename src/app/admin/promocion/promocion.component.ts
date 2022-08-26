@@ -7,7 +7,7 @@ import { BusquedasService } from '../../services/busquedas.service';
 import { Promocion } from '../../models/promocion.model';
 import { PromocionService } from '../../services/promocion.service';
 import { ModalImagenService } from '../../services/modal-imagen.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-promocion',
   templateUrl: './promocion.component.html',
@@ -15,7 +15,8 @@ import { ModalImagenService } from '../../services/modal-imagen.service';
 })
 export class PromocionComponent implements OnInit {
 
-  public promocions: Promocion[] =[];
+  public promocion: Promocion;
+  public promocions: Promocion;
   public cargando: boolean = true;
 
   public desde: number = 0;
@@ -29,6 +30,7 @@ export class PromocionComponent implements OnInit {
     private promocionService: PromocionService,
     private modalImagenService: ModalImagenService,
     private busquedaService: BusquedasService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -48,20 +50,23 @@ export class PromocionComponent implements OnInit {
   loadPromocions(){
     this.cargando = true;
     this.promocionService.cargarPromocions().subscribe(
-      promocions => {
-        this.cargando = false;
-        this.promocions = promocions;
-        console.log(this.promocions);
-      }
-    )
+      (data: Promocion) => this.promocions = data,
+      );
+          console.log(this.promocions);
+
+      this.cargando = false;
 
   }
 
-  guardarCambios(promocion: Promocion){
-    this.promocionService.actualizarPromocion(promocion)
-    .subscribe( resp => {
-      Swal.fire('Actualizado', promocion.producto_title,  'success')
-    })
+  guardarCambios(id: number){
+    id = this.promocion.id;
+    if(id){
+      this.promocionService.actualizarPromocion(this.promocion.id, this.promocion)
+      .subscribe( resp => {
+        Swal.fire('Actualizado', this.promocion.producto_title,  'success')
+      })
+
+    }
 
   }
 
@@ -83,10 +88,19 @@ export class PromocionComponent implements OnInit {
       return this.loadPromocions();
     }
 
-    this.busquedaService.buscar('marcas', termino)
+    this.busquedaService.buscar('promocions', termino)
     .subscribe( resultados => {
       resultados;
     })
+  }
+
+  editarId(id:number ) {
+    this.promocionService.getPromocionById(id).subscribe(
+      res =>{
+        this.router.navigateByUrl('/dashboard/promocion/edit/'+id);
+
+      }
+    );
   }
 
 }

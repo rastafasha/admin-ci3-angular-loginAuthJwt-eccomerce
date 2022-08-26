@@ -36,15 +36,47 @@
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label class=" col-form-label font-weight-medium" for="text-input">Detalles</label>
+                        <label class=" col-form-label font-weight-medium" for="text-input">precio</label>
                         <div class="col-md-10">
                             <div class="row">
                                 <div class="col-lg-4">
-                                    <input class="form-control" type="number" placeholder="Precio actual" formControlName="price" min="0">
+                                    <input class="form-control" type="text" placeholder="Precio actual" formControlName="price">
                                 </div>
                                 <!-- <div class="col-lg-4">
                                     <input class="form-control" type="number" placeholder="Precio antes" formControlName="precio_antes" min="0" >
                                 </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row align-items-center">
+                        <label class=" col-form-label font-weight-medium" for="text-input">status</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="select-input">Visible</label>
+                                        <select class="form-control custom-select" formControlName="is_active" required>
+                                        <option selected  value="">SELECCIONAR</option>
+                                        <option  [value]="0">Inactivo</option>
+                                        <option  [value]="1">Activo</option>
+
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="select-input">Destacado</label>
+                                        <select class="form-control custom-select" formControlName="is_featured">
+                                              <option selected disabled value="">SELECCIONAR</option>
+                                              <option  [value]="0">Inactivo</option>
+                                        <option  [value]="1">Activo</option>
+
+                                          </select>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -56,21 +88,11 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="select-input">Categoría</label>
-                                        <select class="form-control custom-select" formControlName="category" required>
+                                        <select class="form-control custom-select" formControlName="category_id" required>
                                             <option selected  value="">SELECCIONAR</option>
-                                            <option *ngFor="let item of listCategorias" [value]="item._id">{{item.nombre}}</option>
+                                            <option *ngFor="let item of listCategorias" [value]="item.category_id">{{item.category_name}}</option>
 
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="select-input">Subcategoría</label>
-                                        <select class="form-control custom-select" formControlName="subcategoria">
-                                                  <option selected disabled value="">SELECCIONAR</option>
-                                                  <option *ngFor="let item of listCategorias" [value]="item.subcategorias">{{item.subcategorias}}</option>
-
-                                              </select>
                                     </div>
                                 </div>
 
@@ -100,12 +122,12 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 animated fadeIn fast" *ngIf="cursoSeleccionado">
+    <div class="col-md-6 animated fadeIn fast" *ngIf="curso">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Image</h4>
                 <div class="text-center">
-                    <img *ngIf="!imgTemp" [src]="cursoSeleccionado.img | imagenPipe: 'cursos'  " class="img-responsive img-thumbnail" alt="">
+                    <img *ngIf="!imgTemp" [src]="curso.img | imagenPipe: 'cursos'  " class="img-responsive img-thumbnail" alt="">
                     <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
                 </div>
                 <input type="file" (change)="cambiarImagen($event.target.files[0])">

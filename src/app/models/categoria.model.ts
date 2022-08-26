@@ -5,26 +5,11 @@ const base_url = environment.baseUrl;
 export class Categoria{
   constructor(
     public id: number,
-    public icono : string,
     public category_name: string,
-    public state_banner : boolean,
-    public subcategorias?: string,
-    public img?: string,
+    public updated_at: Date,
+    public created_at: Date,
 
   ){
   }
 
-  get imagenUrl(){
-
-    if(!this.img){
-      return `${base_url}/uploads/categorias/no-image.jpg`;
-    } else if(this.img.includes('https')){
-      return this.img;
-    } else if(this.img){
-      return `${base_url}/uploads/categorias/${this.img}`;
-    }else {
-      return `${base_url}/uploads/categorias/no-image.jpg`;
-    }
-
-  }
 }

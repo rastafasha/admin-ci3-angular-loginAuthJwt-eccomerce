@@ -61,7 +61,7 @@ export class AdminChatComponent implements OnInit {
               this.usuario = response.user;
               this.poster_admin = response.user.perfil;
 
-              this.listar(this.usuario._id);
+              this.listar(this.usuario.id);
             },
             error=>{
               console.log(error);
@@ -84,7 +84,7 @@ export class AdminChatComponent implements OnInit {
             this.usuario = response.user;
             this.poster_admin = response.user.perfil;
 
-            this.listar(this.usuario._id);
+            this.listar(this.usuario.id);
           },
           error=>{
             console.log(error);
@@ -128,7 +128,7 @@ export class AdminChatComponent implements OnInit {
         //  enviar y cerrar ticket
         let data={
           de:'5ef640b75ee066601c6ed1c0',
-          para:this.usuario._id,
+          para:this.usuario.id,
           msm:msmForm.value.msm,
           ticket:this.id,
           status: 1,
@@ -151,7 +151,7 @@ export class AdminChatComponent implements OnInit {
       else{
         let data={
           de:'5ef640b75ee066601c6ed1c0',
-          para:this.usuario._id,
+          para:this.usuario.id,
           msm:msmForm.value.msm,
           ticket:this.id,
           status: 1,

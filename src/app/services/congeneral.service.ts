@@ -34,7 +34,7 @@ export class CongeneralService {
 
   cargarCongenerals(){
 
-    const url = `${base_url}api_configuracion/adminConfiguracions/`;
+    const url = `${base_url}api_configuracion/adminConfiguracions`;
     return this.http.get(url)
       .pipe(
         map((resp:{ok: boolean, configuracions: Configuracion[]}) => resp.configuracions)
@@ -44,12 +44,9 @@ export class CongeneralService {
   }
 
 
-  getCongeneralById(_id: number){
-    const url = `${base_url}api_configuracion/adminConfiguracion/${_id}`;
-    return this.http.get(url)
-      .pipe(
-        map((resp:{ok: boolean, configuracion: Configuracion}) => resp.configuracion)
-        );
+  getCongeneralById(id: number): Observable<Configuracion>{
+    const url = `${base_url}api_configuracion/Configuracion/${id}`;
+    return this.http.get<Configuracion>(url, this.headers)
 
 
   }

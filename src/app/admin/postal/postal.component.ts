@@ -16,7 +16,7 @@ declare var $:any;
 })
 export class PostalComponent implements OnInit {
 
-  public postal = new Postal('','','','',null);
+  public postal = new Postal(0,'','','',null);
   public msm_error = '';
   public postales;
   public identity;
@@ -27,7 +27,7 @@ export class PostalComponent implements OnInit {
     private router : Router,
     private route :ActivatedRoute,
   ) {
-    this.identity = this.usuarioService.usuario;
+    this.identity = this.usuarioService.user;
   }
 
   ngOnInit(): void {
@@ -48,7 +48,7 @@ export class PostalComponent implements OnInit {
       this.postalService.registro(data).subscribe(
         response =>{
           console.log(response);
-          this.postal = new Postal('','','','',null);
+          this.postal = new Postal(0,'','','',null);
           this.listar();
         },
         error=>{

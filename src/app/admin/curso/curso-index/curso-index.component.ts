@@ -19,8 +19,8 @@ declare var $:any;
 })
 export class CursoIndexComponent implements OnInit {
 
-  public cursos: Curso[] =[];
-  public categorias: Categoria[] =[];
+  public cursos: Curso;
+  public categorias: Categoria;
   public cargando: boolean = true;
 
   public totalCursos: number = 0;
@@ -43,7 +43,6 @@ export class CursoIndexComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.loadCategorias();
     this.loadCursos();
     this.imgSubs = this.modalImagenService.nuevaImagen
     .pipe(
@@ -58,22 +57,20 @@ export class CursoIndexComponent implements OnInit {
 
   loadCursos(){
     this.cargando = true;
-    this.cursoService.cargarCursos().subscribe(
-      cursos => {
-        this.cargando = false;
-        this.cursos = cursos;
-        console.log(this.cursos);
-      }
-    )
 
-  }
-  loadCategorias(){
-    this.cargando = true;
-    this.categoriaService.cargarCategorias().subscribe(
-      categorias => {
-        this.categorias = categorias;
-      }
-    )
+    this.cursoService.cargarCursos().subscribe(
+      (res: Curso) => this.cursos = res,
+      );
+      console.log(this.cursos);
+      this.cargando = false;
+
+    // this.cursoService.cargarCursos().subscribe(
+    //   cursos => {
+    //     this.cargando = false;
+    //     this.cursos = cursos;
+    //     console.log(this.cursos);
+    //   }
+    // )
 
   }
 
@@ -86,7 +83,7 @@ export class CursoIndexComponent implements OnInit {
       this.desde -= valor;
     }
 
-    this.loadCategorias();
+    this.loadCursos();
 
 
   }
@@ -97,7 +94,7 @@ export class CursoIndexComponent implements OnInit {
   eliminarCurso(curso: Curso){
     this.cursoService.borrarCurso(curso.id)
     .subscribe( resp => {
-      this.loadCategorias();
+      this.loadCursos();
       Swal.fire('Borrado', curso.name, 'success')
     })
 
@@ -106,7 +103,7 @@ export class CursoIndexComponent implements OnInit {
   buscar(termino: string){
 
     if(termino.length === 0){
-      return this.loadCategorias();
+      return this.loadCursos();
     }
 
     this.busquedaService.buscar('cursos', termino)

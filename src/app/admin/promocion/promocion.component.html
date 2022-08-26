@@ -45,20 +45,30 @@
                             <tr>
                                 <th>Foto</th>
                                 <th>Nombre</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Updated</th>
                                 <th class="text-nowrap">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let promocion of promocions | keys | paginate: { itemsPerPage: count, currentPage: p }">
                                 <td class="text-center">
-                                    <img [src]="promocion.img | imagenPipe: 'promocions'" class="img-responsive avatar" alt="{{promocion.producto_title}}">
+                                    <img [routerLink]="['/dashboard/promocion/edit',promocion.id]" [src]="promocion.img " class="img-responsive avatar cursor" alt="{{promocion.producto_title}}">
                                     <!-- <img (click)="abrirModal(marca)" [src]="marca.imagenUrl | imagenPipe: 'marcas'" class="avatar cursor" alt="{{marca.nombre}}"> -->
                                 </td>
                                 <td>
                                     {{promocion.producto_title}}
                                 </td>
+                                <td>
+                                    <span class="badge badge-success badge-shadow" *ngIf="promocion.is_active == '1'">Activo</span>
+                                    <span class="badge badge-danger badge-shadow" *ngIf="promocion.is_active == '0'">Inactivo</span>
+                                </td>
+                                <td>{{ promocion.created_at | date:'MMM d, y, h:mm:ss a' }}</td>
+                                <td>{{ promocion.updated_at | date:'MMM d, y, h:mm:ss a' }}</td>
                                 <td class="text-nowrap text-center">
-                                    <a [routerLink]="['/dashboard/promocion/edit', promocion._id]" class="cursor" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                    <!-- <a [routerLink]="['/dashboard/promocion/edit', promocion.id]" class="cursor" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a> -->
+                                    <a (click)="editarId(promocion.id)" class="cursor" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
                                     <a (click)="eliminarPromocion(promocion)" class="cursor" data-toggle="tooltip" data-original-title="Borrar"> <i class="fa fa-close text-danger"></i> </a>
                                 </td>
                             </tr>

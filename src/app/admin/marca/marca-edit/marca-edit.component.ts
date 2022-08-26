@@ -30,6 +30,7 @@ export class MarcaEditComponent implements OnInit {
   pageTitle: string;
 
   public marcaSeleccionado: Marca;
+  id:number;
 
   constructor(
     private fb: FormBuilder,
@@ -40,7 +41,7 @@ export class MarcaEditComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private location: Location
   ) {
-    this.usuario = usuarioService.usuario;
+    this.usuario = usuarioService.user;
     const base_url = environment.baseUrl;
   }
 
@@ -48,63 +49,83 @@ export class MarcaEditComponent implements OnInit {
 
     window.scrollTo(0,0);
 
-    this.activatedRoute.params.subscribe( ({id}) => this.cargarMarca(id));
-
-    this.marcaForm = this.fb.group({
-      nombre: ['', Validators.required],
-      descripcion: ['', Validators.required]
-    })
-
-    if(this.marcaSeleccionado){
-      //actualizar
-      this.pageTitle = 'Create Marca';
-
-    }else{
-      //crear
-      this.pageTitle = 'Edit Marca';
-    }
+    this.activatedRoute.params.subscribe( ({id}) => this.iniciarFormulario(id));
+    this.validacionesFormulario();
 
 
   }
 
-  cargarMarca(_id: string){
+   /**
+   * @method: Permite obtener los datos del form y sus validaciones
+   * @author: malcolm
+   * @since: 24/07/2022
+   */
 
-    if(_id === 'nuevo'){
-      return;
+    validacionesFormulario(){
+      this.marcaForm = this.fb.group({
+        marca_name: [''],
+        img: ['']
+      })
     }
 
-    this.marcaService.getMarcaById(this.marca.id)
-    .pipe(
-      // delay(100)
-      )
-      .subscribe( marca =>{
+  // cargarMarca(id: number){
 
-      if(!marca){
-        return this.router.navigateByUrl(`/dasboard/marca`);
-      }
+  //   if(!id){
+  //     return;
+  //   }
 
-        const { marca_name } = marca;
-        this.marcaSeleccionado = marca;
-        this.marcaForm.setValue({marca_name});
+  //   this.marcaService.getMarcaById(this.marca.id)
+  //   .pipe(
+  //     // delay(100)
+  //     )
+  //     .subscribe( marca =>{
 
-      });
+  //     if(!marca){
+  //       return this.router.navigateByUrl(`/dasboard/marca`);
+  //     }
+
+  //       const { marca_name } = marca;
+  //       this.marcaSeleccionado = marca;
+  //       this.marcaForm.setValue({marca_name});
+
+  //     });
+
+  // }
+
+  iniciarFormulario(id:number){debugger
+    // const id = this.route.snapshot.paramMap.get('id');
+
+
+    if (id !== null && id !== undefined) {
+      this.pageTitle = 'Editar Marca';
+      this.marcaService.getMarcaById(id).subscribe(
+        res => {
+          this.marcaForm.patchValue({
+            id: res.id,
+            marca_name: res.marca_name
+          });
+        }
+      );
+    } else {
+      this.pageTitle = 'Crear Marca';
+    }
 
   }
 
 
 
 
-  updateMarca(){
+  updateMarca(){debugger
 
     const {marca_name } = this.marcaForm.value;
 
-    if(this.marcaSeleccionado){
+    if(this.marcaForm.value){
       //actualizar
       const data = {
         ...this.marcaForm.value,
-        _id: this.marcaSeleccionado.id
+        id: this.marcaSeleccionado.id
       }
-      this.marcaService.actualizarMarca(data).subscribe(
+      this.marcaService.actualizarMarca(this.marcaSeleccionado.id).subscribe(
         resp =>{
           Swal.fire('Actualizado', `${marca_name}  actualizado correctamente`, 'success');
         });
@@ -114,7 +135,7 @@ export class MarcaEditComponent implements OnInit {
       this.marcaService.crearMarca(this.marcaForm.value)
       .subscribe( (resp: any) =>{
         Swal.fire('Creado', `${marca_name} creado correctamente`, 'success');
-        // this.router.navigateByUrl(`/dashboard/marca/${resp.marca._id}`)
+        this.router.navigateByUrl(`/dashboard/marca`)
       })
     }
 

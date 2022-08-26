@@ -13,6 +13,9 @@ const base_url = environment.baseUrl;
 export class CategoriaService {
 
 
+  serverUrl = environment.baseUrl;
+  public category: Categoria;
+
   constructor(
     private http: HttpClient
   ) { }
@@ -35,21 +38,30 @@ export class CategoriaService {
 
     const url = `${base_url}api_category/adminCategorys`;
     return this.http.get(url, this.headers)
-      .pipe(
-        map((resp:{ok: boolean, categorias: Categoria[]}) => resp.categorias)
-      )
+      // .pipe(
+      //   map((resp:{ok: boolean, categorias: Categoria[]}) => resp.categorias)
+      // )
 
   }
 
 
-  getCategoriaById(_id: number){
-    const url = `${base_url}api_category/adminCategory/${_id}`;
-    return this.http.get(url, this.headers)
-      .pipe(
-        map((resp:{ok: boolean, categoria: Categoria}) => resp.categoria)
-        );
+
+  getCategoriaById(id: number): Observable<Categoria>{
+    const url = `${base_url}api_category/Category/${id}`;
+    return this.http.get<Categoria>(url, this.headers)
+      // .pipe(
+      //   map((resp:{ok: boolean, categoria: Categoria}) => resp.categoria)
+      //   );
 
   }
+
+  // cargarCategorias() {
+  //   return this.http.get<Categoria>(this.serverUrl + 'api_category/adminCategorys/')
+  // }
+
+  // getCategoriaById(id: number) {
+  //   return this.http.get<Categoria>(this.serverUrl + 'api_category/adminCategory/' + id)
+  // }
 
 
   crearCategoria(categoria: Categoria){
@@ -57,13 +69,14 @@ export class CategoriaService {
     return this.http.post(url, categoria, this.headers);
   }
 
-  actualizarCategoria(categoria: Categoria){
-    const url = `${base_url}api_category/updateCategory/${categoria.id}`;
+
+  actualizarCategoria(id:number, categoria: Categoria){
+    const url = `${base_url}api_category/updateCategory/${id}`;
     return this.http.put(url, categoria, this.headers);
   }
 
-  borrarCategoria(_id:number){
-    const url = `${base_url}api_category/deleteCategory/${_id}`;
+  borrarCategoria(id:number){
+    const url = `${base_url}api_category/deleteCategory/${id}`;
     return this.http.delete(url, this.headers);
   }
 

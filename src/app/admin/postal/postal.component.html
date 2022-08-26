@@ -65,10 +65,10 @@
                                         <td style="font-size: 13px;">{{item.tiempo}}</td>
                                         <td style="font-size: 13px;">{{item.precio}}</td>
                                         <td class="text-center">
-                                            <a class="nav-link-style text-danger" data-toggle="modal" [attr.data-target]="'#delete-'+item._id" style="cursor:pointer">
+                                            <a class="nav-link-style text-danger" data-toggle="modal" [attr.data-target]="'#delete-'+item.id" style="cursor:pointer">
                                                 <div class="czi-trash"></div>
                                             </a>
-                                            <div class="modal fade" [attr.id]="'delete-'+item._id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                            <div class="modal fade" [attr.id]="'delete-'+item.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -80,7 +80,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
-                                                            <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="eliminar(item._id)">Suprimir</button>
+                                                            <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="eliminar(item.id)">Suprimir</button>
                                                         </div>
                                                     </div>
                                                 </div>

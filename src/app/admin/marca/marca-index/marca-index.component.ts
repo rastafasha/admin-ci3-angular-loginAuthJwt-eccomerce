@@ -14,7 +14,7 @@ import { ModalImagenService } from '../../../services/modal-imagen.service';
   styleUrls: ['./marca-index.component.css']
 })
 export class MarcaIndexComponent implements OnInit {
-  public marcas: Marca[] =[];
+  public marcas: Marca;
   public cargando: boolean = true;
 
   public totalMarcas: number = 0;
@@ -48,14 +48,21 @@ export class MarcaIndexComponent implements OnInit {
   loadMarcas(){
     this.cargando = true;
     this.marcaService.cargarMarcas().subscribe(
-      marcas => {
-        this.cargando = false;
-        this.marcas = marcas;
-        console.log(this.marcas);
-      }
-    )
+      (data: Marca) => this.marcas = data,
+      );
+          console.log(this.marcas);
+
+      this.cargando = false;
+    // this.marcaService.cargarMarcas().subscribe(
+    //   marcas => {
+    //     this.cargando = false;
+    //     this.marcas = marcas;
+    //   }
+    // )
 
   }
+
+
   cambiarPagina(valor: number){
     this.desde += valor;
 

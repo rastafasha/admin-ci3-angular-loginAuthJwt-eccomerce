@@ -24,10 +24,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
-                        <h4 class="card-title">Cursos: ({{ cursos.length}})</h4>
+                        <!-- <h4 class="card-title">Cursos: ({{ cursos.length}})</h4> -->
                         <h6 class="card-subtitle">Cursos registrados en la app</h6>
                     </div>
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="text-right">
                             <button class="btn btn-primary" [routerLink]="['/dashboard/curso/create/']">
                           <i class="fa fa-user-o"></i>
@@ -35,14 +35,14 @@
                         </button>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <!-- <div class="col-3">
                         <div class="text-right">
                             <button class="btn btn-primary" [routerLink]="['/dashboard/curso/papelera/']">
                         <i class="fa fa-trash"></i>
                         Papelera
                       </button>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <br>
                 <hr>
@@ -66,24 +66,23 @@
                             <tr *ngFor="let curso of cursos">
                                 <td class="text-center">
                                     <!-- <img [src]="producto.img | imagenPipe: 'productos'" class="img-responsive avatar" alt="{{producto.titulo}}"> -->
-                                    <img [routerLink]="['/dashboard/curso/edit',curso._id]" [src]="curso.img | imagenPipe: 'cursos'" class="avatar cursor" alt="{{curso.name}}">
+                                    <img [routerLink]="['/dashboard/curso/edit',curso.id]" [src]="curso.img" class="avatar cursor" alt="{{curso.name}}">
                                 </td>
                                 <td>{{curso.name}}</td>
-                                <td>{{curso.category.nombre}}</td>
-                                <td>{{curso.subcategoria}}</td>
+                                <td>{{curso.categoryid}}</td>
+                                <td>{{curso.subcategory}}</td>
                                 <td>
                                     <div class="font-size-sm mb-4">
                                         <span class="text-heading font-weight-medium mr-1">Estado:</span>
-                                        <span class="badge badge-accent badge-shadow" *ngIf="curso.status == 'Edición'">{{curso.status}}</span>
-                                        <span class="badge badge-success badge-shadow" *ngIf="curso.status == 'Activo'">{{curso.status}}</span>
-                                        <span class="badge badge-primary badge-shadow" *ngIf="curso.status == 'Desactivado'">{{curso.status}}</span>
+                                        <span class="badge badge-success badge-shadow" *ngIf="curso.is_active == '1'">Activo</span>
+                                        <span class="badge badge-primary badge-shadow" *ngIf="curso.is_active == '0'">Inactivo</span>
                                     </div>
                                 </td>
                                 <td>{{curso.price}}...</td>
                                 <td>
-                                    <button type="button" class="btn btn-accent" *ngIf="curso.status == 'Edición' || curso.status == 'Desactivado'" data-toggle="modal" [attr.data-target]="'#activar-'+curso._id"><span class="czi-check"></span> Activar</button>
+                                    <button type="button" class="btn btn-accent" *ngIf="curso.is_active == '0' || curso.is_active == 'Inactivo'" data-toggle="modal" [attr.data-target]="'#activar-'+curso.id"><span class="czi-check"></span> Activar</button>
 
-                                    <div class="modal fade" [attr.id]="'activar-'+curso._id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                    <div class="modal fade" [attr.id]="'activar-'+curso.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -95,14 +94,14 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-                                                    <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="activar(curso._id)">Aceptar</button>
+                                                    <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="activar(curso.id)">Aceptar</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <button type="button" class="btn btn-primary" *ngIf="curso.status == 'Activo'" data-toggle="modal" [attr.data-target]="'#desactivar-'+curso._id"><span class="czi-close"></span> Desactivar</button>
-                                    <div class="modal fade" [attr.id]="'desactivar-'+curso._id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                    <button type="button" class="btn btn-primary" *ngIf="curso.is_active == '1'" data-toggle="modal" [attr.data-target]="'#desactivar-'+curso.id"><span class="czi-close"></span> Desactivar</button>
+                                    <div class="modal fade" [attr.id]="'desactivar-'+curso.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -114,38 +113,18 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-                                                    <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="desactivar(curso._id)">Aceptar</button>
+                                                    <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="desactivar(curso.id)">Aceptar</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- <button type="button" class="btn btn-secondary" data-toggle="modal" [attr.data-target]="'#papelera-'+curso._id"><span class="czi-remove-folder
-                                    "></span> Papelera</button>
 
-                                    <div class="modal fade" [attr.id]="'papelera-'+curso._id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Confirmación</h4>
-                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p class="font-size-sm">El curso se moverá a la papelera de reciclaje.</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-                                                    <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="papelera(curso._id)">Aceptar</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-
-                                    <span class="text-muted" *ngIf="curso.status == 'Edición'" style="font-size: 13px;">Este curso aún se encuentra en edición.</span>
-                                    <span class="text-muted" *ngIf="curso.status == 'Desactivado'" style="font-size: 13px;">Este curso aún no está disponible en la tienda.</span>
+                                    <span class="text-muted" *ngIf="curso.is_active == '0'" style="font-size: 13px;">Este curso aún se encuentra en edición.</span>
+                                    <span class="text-muted" *ngIf="curso.is_active == '1'" style="font-size: 13px;">Este curso está disponible en la tienda.</span>
 
                                 </td>
-                                <td>{{ curso.createdAt | date:'MMM d, y, h:mm:ss a' }}</td>
+                                <td>{{ curso.created_at | date:'MMM d, y, h:mm:ss a' }}</td>
                                 <td class="text-nowrap text-center">
 
                                     <div class="btn-group" role="group">
@@ -153,7 +132,7 @@
                                       <span class="czi-settings"></span> Opciones
                                     </button>
                                         <div class="dropdown-menu">
-                                            <a [routerLink]="['/dashboard/curso/edit',curso._id]" class="dropdown-item"><span class="czi-edit-alt"></span> &nbsp;Editar</a>
+                                            <a [routerLink]="['/dashboard/curso/edit',curso.id]" class="dropdown-item"><span class="czi-edit-alt"></span> &nbsp;Editar</a>
                                             <a (click)="eliminarCurso(curso)" class="dropdown-item"><span class="czi-delete-document"></span> &nbsp;Eliminar</a>
                                         </div>
                                     </div>

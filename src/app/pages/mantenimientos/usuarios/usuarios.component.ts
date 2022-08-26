@@ -17,7 +17,7 @@ import { UsuarioService } from '../../../services/usuario.service';
 export class UsuariosComponent implements OnInit, OnDestroy {
 
   public totalUsuarios: number = 0;
-  public usuarios: Usuario[] = [];
+  public usuarios: Usuario;
   public usuariosTemp: Usuario[] = [];
 
   public desde: number = 0;
@@ -49,15 +49,19 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   loadUsuarios(){
     this.cargando = true;
-    this.usuarioService.get_users()
-    .subscribe(
-      ({total, usuarios})=>{
-        this.totalUsuarios = total;
-        this.usuarios = usuarios;
-        this.usuariosTemp = usuarios;
-        this.cargando = false;
-      }
-    )
+    // this.usuarioService.get_users().subscribe(
+    //   (resp:any)=>{
+    //     this.usuarios = resp;
+    //     console.log(this.usuarios);
+    //   }
+    // )
+
+    this.usuarioService.get_users().subscribe(
+      (data: Usuario) => this.usuarios = data,
+      );
+          console.log(this.usuarios);
+
+      this.cargando = false;
   }
 
   cambiarPagina(valor: number){
@@ -76,19 +80,19 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   buscar(termino: string){
 
-    if(termino.length === 0){
-      return this.usuarios = this.usuariosTemp;
-    }
+    // if(termino.length === 0){
+    //   return this.usuarios = this.usuariosTemp;
+    // }
 
-    this.busquedaService.buscar('users', termino)
-    .subscribe( (resultados: Usuario[]) => {
-      this.usuarios = resultados;
-    })
+    // this.busquedaService.buscar('users', termino)
+    // .subscribe( (resultados: Usuario[]) => {
+    //   this.usuarios = resultados;
+    // })
   }
 
   eliminarUsuario(usuario: Usuario){
 
-    if(this.usuario.user_id === this.usuarioService.usuario.user_id){
+    if(this.usuario.id === this.usuarioService.user.id){
       return Swal.fire('Error', 'No se puede borrarse a si mismo', 'error');
 
     }

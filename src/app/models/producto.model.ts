@@ -2,6 +2,8 @@ import { environment } from "src/environments/environment";
 
 const base_url = environment.baseUrl;
 
+const mediaUrl = environment.mediaUrl;
+
 export class Producto{
   constructor(
 
@@ -11,8 +13,6 @@ export class Producto{
         public info_short: string,
         public description: string,
         public category_id: number,
-        public subcategory: string,
-        public marca_id: number,
         public is_featured: boolean,
         public img?: string,
         public id?: number
@@ -22,13 +22,13 @@ export class Producto{
   get imagenUrl(){
 
     if(!this.img){
-      return `${base_url}/uploads/no-image.jpg`;
+      return `${mediaUrl}uploads/productos/no-image.jpg`;
     } else if(this.img.includes('https')){
       return this.img;
     } else if(this.img){
-      return `${base_url}/uploads/productos/${this.img}`;
+      return `${mediaUrl}uploads/productos/${this.img}`;
     }else {
-      return `${base_url}/uploads/productos/no-image.jpg`;
+      return `${mediaUrl}uploads/productos/no-image.jpg`;
     }
 
   }

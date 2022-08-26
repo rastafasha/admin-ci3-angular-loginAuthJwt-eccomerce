@@ -10,7 +10,7 @@ export class Ingreso {
     public nota: string,
     public detalles: string,
     public img?: string,
-    public _id?: string
+    public id?: string
   ){}
 
   get imagenUrl(){

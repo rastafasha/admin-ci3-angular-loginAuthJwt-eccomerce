@@ -19,7 +19,7 @@ export class SidebarComponent implements OnInit {
     private usuarioService: UsuarioService
   ) {
 
-    this.usuario = usuarioService.usuario;
+    this.usuario = usuarioService.user;
 
   }
 

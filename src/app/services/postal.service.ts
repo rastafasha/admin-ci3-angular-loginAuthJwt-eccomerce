@@ -52,8 +52,8 @@ export class PostalService {
       );
   }
 
-  eliminar(_id):Observable<any>{
-    const url = `${base_url}/postals/${_id}`;
+  eliminar(id):Observable<any>{
+    const url = `${base_url}/postals/${id}`;
     return this.http.delete(url, this.headers);
   }
 }

@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MarcaIndexComponent } from './marca/marca-index/marca-index.component';
-import { MarcaEditComponent } from './marca/marca-edit/marca-edit.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -11,7 +9,6 @@ import { IconosService } from '../services/iconos.service';
 import { ProdIndexComponent } from './proucto/prod-index/prod-index.component';
 import { ProdEditComponent } from './proucto/prod-edit/prod-edit.component';
 import { CategoriaService } from '../services/categoria.service';
-import { MarcaService } from '../services/marca.service';
 import { ConfigSiteComponent } from './config-site/config-site.component';
 import { PromocionComponent } from './promocion/promocion.component';
 import { PostalComponent } from './postal/postal.component';
@@ -44,12 +41,14 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SliderComponent } from './slider/slider.component';
 import { SlidereditComponent } from './slider/slideredit/slideredit.component';
+import { ViewComponent } from './config-site/view/view.component';
+import { CursoService } from '../services/curso.service';
+import { ProductoService } from '../services/producto.service';
+import { UsuarioService } from '../services/usuario.service';
 
 
 @NgModule({
   declarations: [
-    MarcaIndexComponent,
-    MarcaEditComponent,
     CatIndexComponent,
     CatEditComponent,
     ProdIndexComponent,
@@ -63,6 +62,7 @@ import { SlidereditComponent } from './slider/slideredit/slideredit.component';
     CursoIndexComponent,
     SlidereditComponent,
     SliderComponent,
+    ViewComponent,
     // CuponComponent,
     // ColorComponent,
     // SelectorComponent,
@@ -80,8 +80,6 @@ import { SlidereditComponent } from './slider/slideredit/slideredit.component';
     // DetalleCancelacionComponent
   ],
   exports: [
-    MarcaIndexComponent,
-    MarcaEditComponent,
     CatIndexComponent,
     CatEditComponent,
     ProdIndexComponent,
@@ -95,6 +93,7 @@ import { SlidereditComponent } from './slider/slideredit/slideredit.component';
     CursoIndexComponent,
     SlidereditComponent,
     SliderComponent,
+    ViewComponent,
     // ColorComponent,
     // SelectorComponent,
     // PapeleraComponent,
@@ -127,8 +126,10 @@ import { SlidereditComponent } from './slider/slideredit/slideredit.component';
   ],
   providers:[
     IconosService,
-    MarcaService,
-    CategoriaService
+    UsuarioService,
+    CategoriaService,
+    ProductoService,
+    CursoService
   ]
 })
 export class AdminModule { }

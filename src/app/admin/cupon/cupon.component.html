@@ -36,7 +36,7 @@
                                     <label for="normal-input">Categoria</label>
                                     <select class="form-control custom-select" [(ngModel)]="cupon.categoria" id="in_cat" name="categoria">
                                   <option selected disabled value="">SELECCIONAR</option>
-                                  <option *ngFor="let item of listCategorias" [value]="item._id">{{item.nombre}}</option>
+                                  <option *ngFor="let item of listCategorias" [value]="item.id">{{item.nombre}}</option>
 
                               </select>
                                 </div>
@@ -96,9 +96,9 @@
                                             {{item.subcategoria}}
                                         </td>
                                         <td>
-                                            <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal" [attr.data-target]="'#modal-'+item._id"><span class="czi-trash"></span></button>
+                                            <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal" [attr.data-target]="'#modal-'+item.id"><span class="czi-trash"></span></button>
 
-                                            <div class="modal fade" [attr.id]="'modal-'+item._id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                            <div class="modal fade" [attr.id]="'modal-'+item.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -110,7 +110,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-                                                            <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="eliminar(item._id)">Eliminar</button>
+                                                            <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="eliminar(item.id)">Eliminar</button>
                                                         </div>
                                                     </div>
                                                 </div>

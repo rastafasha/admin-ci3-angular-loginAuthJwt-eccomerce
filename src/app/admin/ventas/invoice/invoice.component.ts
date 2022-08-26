@@ -6,7 +6,7 @@ import {environment} from 'src/environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { VentaService } from "src/app/services/venta.service";
-import { ComentarioService } from "src/app/services/comentario.service";
+// import { ComentarioService } from "src/app/services/comentario.service";
 import { ProductoService } from 'src/app/services/producto.service';
 
 @Component({
@@ -27,10 +27,10 @@ export class InvoiceComponent implements OnInit {
     private _route :ActivatedRoute,
     private http: HttpClient,
     private _ventaService: VentaService,
-    private _comentarioService : ComentarioService,
+    // private _comentarioService : ComentarioService,
     private _productoService : ProductoService,
   ) {
-    this.identity = this._userService.usuario;
+    this.identity = this._userService.user;
     this.url = environment.baseUrl;
    }
 
@@ -66,7 +66,7 @@ export class InvoiceComponent implements OnInit {
 
       var position = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-      pdf.save(this.venta._id+'.pdf');
+      pdf.save(this.venta.id+'.pdf');
     });
   }
 }

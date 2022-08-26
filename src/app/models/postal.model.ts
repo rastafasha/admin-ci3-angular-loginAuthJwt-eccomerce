@@ -1,6 +1,6 @@
 export class Postal{
     constructor(
-        public _id: string,
+        public id: number,
         public titulo: string,
         public precio: string,
         public tiempo: string,

@@ -34,32 +34,15 @@ export class HeaderComponent implements OnInit {
     private _contactoService :ContactoService,
     private translate: TranslateService
   ) {
-    this.usuario = usuarioService.usuario;
+    this.usuario = usuarioService.user;
     this.translate.setDefaultLang(this.activeLang);
   }
 
   ngOnInit(): void {
     this.flag = true;
-    this._contactoService.listar().subscribe(
-      response=>{
-        this.mensajes = response.data;
-        this.count_cat = this.mensajes.length;
-        this.page = 1;
-      },
-      error=>{
 
-      }
-    );
+    this.cargarConfiguraciones();
 
-    this.congeralService.cargarCongenerals().subscribe(
-      response=>{
-        this.congenerals = response;
-        // console.log('header', this.congenerals);
-      },
-      error=>{
-
-      }
-    );
   }
 
   public cambiarLenguaje(lang) {
@@ -82,6 +65,31 @@ export class HeaderComponent implements OnInit {
 
     this.router.navigateByUrl(`/dashboard/buscar/${termino}`);
 
+  }
+
+  cargarMensajes(){
+    this._contactoService.listar().subscribe(
+      response=>{
+        this.mensajes = response.data;
+        this.count_cat = this.mensajes.length;
+        this.page = 1;
+      },
+      error=>{
+
+      }
+    );
+  }
+
+  cargarConfiguraciones(){
+    this.congeralService.cargarCongenerals().subscribe(
+      response=>{
+        this.congenerals = response;
+        // console.log('header', this.congenerals);
+      },
+      error=>{
+
+      }
+    );
   }
 
 }

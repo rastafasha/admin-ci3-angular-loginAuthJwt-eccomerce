@@ -25,6 +25,8 @@ declare var $:any;
 export class PromoeditComponent implements OnInit {
 
 
+  public promocionForm: FormGroup;
+  public promoSeleccionado: Promocion;
   public file :File;
   public imgSelect : String | ArrayBuffer;
   public url;
@@ -33,14 +35,12 @@ export class PromoeditComponent implements OnInit {
   public msm_success = false;
   public promocion : any = {};
 
-  public promocionForm: FormGroup;
-  public promoSeleccionado: Promocion;
-
   public promocions: Promocion[] =[];
 
   public imagenSubir: File;
   public imgTemp: any = null;
   pageTitle: string;
+  id:number;
 
   banner;
 
@@ -54,55 +54,67 @@ export class PromoeditComponent implements OnInit {
     private location: Location
   ) {
     this.url = environment.baseUrl;
-    this.identity = this.userService.usuario;
+    this.identity = this.userService.user;
   }
 
   ngOnInit(): void {
     window.scrollTo(0,0);
-    this.activatedRoute.params.subscribe( ({id}) => this.loadPromocion(id));
+    this.activatedRoute.params.subscribe( ({id}) => this.iniciarFormulario(id));
+    this.validacionesFormulario();
 
-    this.promocionForm = this.fb.group({
-      producto_title: ['', Validators.required],
-      first_title: ['', Validators.required],
-      etiqueta: ['', Validators.required],
-      subtitulo: ['', Validators.required],
-      end: ['', Validators.required],
-      enlace: ['', Validators.required],
-      estado: ['', Validators.required]
-    });
-
-    if(this.promoSeleccionado.id){
-      //actualizar
-      this.pageTitle = 'Edit Promocion';
-
-    }else{
-      //crear
-      this.pageTitle = 'Create Promocion';
-    }
   }
 
-  loadPromocion(_id: number){
 
-    if(this.promocion.id === 'nuevo'){
-      return;
+
+   /**
+   * @method: Permite obtener los datos del form y sus validaciones
+   * @author: malcolm
+   * @since: 22/08/2022
+   */
+
+  validacionesFormulario(){
+    this.promocionForm = this.fb.group({
+      producto_title: ['', Validators.required],
+      description: ['', Validators.required],
+      enlace: ['', Validators.required],
+      subtitulo: ['', Validators.required],
+      first_title: ['', Validators.required],
+      target: [''],
+      boton: ['', Validators.required],
+      is_active: ['', Validators.required],
+      is_activeText: ['', Validators.required],
+      is_activeBot: ['', Validators.required],
+      user_id: [this.identity.id, Validators.required],
+    });
+  }
+
+
+  iniciarFormulario(id:number){debugger
+
+
+    if (id !== null && id !== undefined) {
+      this.pageTitle = 'Editar Promo';
+      this.promocionService.getPromocionById(id).subscribe(
+        res => {
+          this.promocionForm.patchValue({
+            id: res.id,
+            user_id: this.identity.id,
+            producto_title: res.producto_title,
+            first_title: res.first_title,
+            subtitulo: res.subtitulo,
+            description: res.description,
+            enlace: res.enlace,
+            target: res.target,
+            boton: res.boton,
+            is_active: res.is_active,
+            is_activeText: res.is_activeText,
+            is_activeBot: res.is_activeBot,
+          });
+        }
+      );
+    } else {
+      this.pageTitle = 'Crear Promo';
     }
-
-    this.promocionService.getPromocionById(this.promocion.id)
-    .pipe(
-      // delay(100)
-      )
-      .subscribe( promocion =>{
-
-
-      if(!promocion){
-        return this.router.navigateByUrl(`/dasboard/promocion`);
-      }
-
-        const { producto_title, first_title, subtitulo, enlace,  } = promocion;
-        this.promoSeleccionado = promocion;
-        this.promocionForm.setValue({producto_title, first_title, subtitulo, enlace, });
-
-      });
 
   }
 
@@ -118,24 +130,30 @@ export class PromoeditComponent implements OnInit {
 
   }
 
-  onSubmit(promocionForm){
+  onSubmit(promocionForm){debugger
     const {
       producto_title,
-      first_title,
-      etiqueta,
-      subtitulo,
-      end,
+      user_id,
+      description,
       enlace,
-      estado
+      subtitulo,
+      first_title,
+      target,
+      boton,
+      is_active,
+      is_activeText,
+      is_activeBot,
      } = this.promocionForm.value;
 
     if(this.promoSeleccionado){
       //actualizar
       const data = {
         ...this.promocionForm.value,
-        _id: this.promoSeleccionado.id
+        user_id: this.identity.id,
+        id: this.promoSeleccionado.id
       }
-      this.promocionService.actualizarPromocion(data).subscribe(
+
+      this.promocionService.actualizarPromocion(data, this.promocion.id).subscribe(
         resp =>{
           Swal.fire('Actualizado', `${producto_title} actualizado correctamente`, 'success');
         });
@@ -145,7 +163,8 @@ export class PromoeditComponent implements OnInit {
       this.promocionService.crearPromocion(this.promocionForm.value)
       .subscribe( (resp: any) =>{
         Swal.fire('Creado', `${producto_title} creado correctamente`, 'success');
-        // this.router.navigateByUrl(`/dashboard/marca/${resp.marca._id}`)
+        this.router.navigateByUrl(`/dashboard/marca/`)
+        // this.router.navigateByUrl(`/dashboard/marca/${resp.marca.id}`)
       })
     }
   }

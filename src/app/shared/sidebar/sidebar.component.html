@@ -12,7 +12,7 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><a routerLink="./perfil" routerLinkActive="active">My Profile </a></li>
                         <li><a routerLink="account-settings">Account Setting</a></li>
-                        <li><a routerLink="configuracion">Configuracion</a></li>
+                        <li><a routerLink="configuracion/edit/1">Configuracion</a></li>
                         <li><a (click)="logout()" class="cursor">Logout</a></li>
                     </ul>
                 </li>
@@ -33,6 +33,7 @@
                         <li><a routerLink="slider" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Slider Home </a></li>
                         <li><a routerLink="promocion" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Promoción </a></li>
                         <li><a routerLink="contacto" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Contacto </a></li>
+                        <li><a routerLink="usuarios" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Usuarios </a></li>
                         <!-- <li><a routerLink="ventas/modulo" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Ventas </a></li>
                         <li><a routerLink="ingresos" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">ingresos </a></li>
                         <li><a routerLink="cancelacion/modulo" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Cancelación </a></li>
@@ -42,6 +43,7 @@
                     </ul>
                 </li>
                 <li class="nav-small-cap">Menu Dinámico</li>
+
 
                 <li *ngFor="let item of sidebarService.menu">
                     <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false">

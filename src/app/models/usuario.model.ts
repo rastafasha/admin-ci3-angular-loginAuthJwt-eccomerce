@@ -8,7 +8,7 @@ export class Usuario {
     public username: string,
     public email: string,
     public role_id: number,
-    public user_id: number,
+    public id: number,
     // public uid?: string,
     public password?: string,
     public img?: string,
@@ -18,16 +18,29 @@ export class Usuario {
   get imagenUrl(){
 
     if(!this.img){
-      return `${mediaUrl}/uploads/usuarios/no-image.jpg`;
+      return `${mediaUrl}uploads/users/no-image.jpg`;
     } else if(this.img.includes('https')){
       return this.img;
     } else if(this.img){
-      return `${mediaUrl}/uploads/usuarios/${this.img}`;
+      return `${mediaUrl}uploads/users/${this.img}`;
     }else {
-      return `${mediaUrl}/uploads/usuarios/no-image.jpg`;
+      return `${mediaUrl}uploads/users/no-image.jpg`;
     }
 
   }
+
+
+
+
+}
+
+
+export class Role {
+  constructor(
+    public role_name: string,
+    public status: boolean,
+    public id: number,
+  ){}
 
 
 

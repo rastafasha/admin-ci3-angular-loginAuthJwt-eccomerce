@@ -54,55 +54,73 @@ export class SlidereditComponent implements OnInit {
     private location: Location
   ) {
     this.url = environment.baseUrl;
-    this.identity = this.userService.usuario;
+    this.identity = this.userService.user;
   }
 
   ngOnInit(): void {
     window.scrollTo(0,0);
-    this.activatedRoute.params.subscribe( ({id}) => this.loadSlider(id));
+    this.activatedRoute.params.subscribe( ({id}) => this.iniciarFormulario(id));
+    this.validacionesFormulario();
 
-    this.sliderForm = this.fb.group({
-      title: ['', Validators.required],
-      subtitulo: ['', Validators.required],
-      text: ['', Validators.required],
-      enlace: ['', Validators.required],
-      estado: [''],
-      mostrarInfo: [''],
-      mostrarboton: [''],
-    });
 
     if(this.sliderSeleccionado){
       //actualizar
-      this.pageTitle = 'Create Slider';
+      this.pageTitle = 'Edit Slider';
 
     }else{
       //crear
-      this.pageTitle = 'Edit Slider';
+      this.pageTitle = 'Crear Slider';
     }
   }
 
-  loadSlider(_id: number){
+   /**
+   * @method: Permite obtener los datos del form y sus validaciones
+   * @author: malcolm
+   * @since: 22/08/2022
+   */
 
-    if(this.slider.id === 'nuevo'){
-      return;
+    validacionesFormulario(){
+      this.sliderForm = this.fb.group({
+        title: ['', Validators.required],
+        subtitulo: [''],
+        enlace: [''],
+        description: [''],
+        target: [''],
+        boton: [''],
+        is_activeText: [''],
+        is_activeBot: [''],
+        is_active: [''],
+        user_id: [this.identity.id, Validators.required]
+      });
     }
 
-    this.sliderService.getSliderById(this.slider.id)
-    .pipe(
-      // delay(100)
-      )
-      .subscribe( slider =>{
 
 
-      if(!slider){
-        return this.router.navigateByUrl(`/dasboard/slider`);
-      }
+  iniciarFormulario(id:number){debugger
 
-        const { title, subtitulo,  enlace, target, is_activeText, is_activeBot, is_active } = slider;
-        this.sliderSeleccionado = slider;
-        this.sliderForm.setValue({title, subtitulo, enlace, target, is_activeText, is_activeBot, is_active });
 
-      });
+    if (id !== null && id !== undefined) {
+      this.pageTitle = 'Editar Slider!';
+      this.sliderService.getSliderById(id).subscribe(
+        res => {
+          this.sliderForm.patchValue({
+            id: res.id,
+            user_id: this.identity.id,
+            title: res.title,
+            subtitulo: res.subtitulo,
+            description: res.description,
+            enlace: res.enlace,
+            target: res.target,
+            boton: res.boton,
+            is_active: res.is_active,
+            is_activeText: res.is_activeText,
+            is_activeBot: res.is_activeBot,
+          });
+        }
+      );
+    } else {
+      this.pageTitle = 'Crear Slider!';
+    }
 
   }
 
@@ -120,7 +138,17 @@ export class SlidereditComponent implements OnInit {
 
   onSubmit(promocionForm){
     const {
-      title, subtitulo,  enlace, target, is_activeText, is_activeBot, is_active
+      title,
+      user_id,
+      description,
+      enlace,
+      subtitulo,
+      first_title,
+      target,
+      boton,
+      is_active,
+      is_activeText,
+      is_activeBot,
      } = this.sliderForm.value;
 
     if(this.sliderSeleccionado){
@@ -128,9 +156,10 @@ export class SlidereditComponent implements OnInit {
 
       const data = {
         ...this.sliderForm.value,
-        _id: this.sliderSeleccionado.id
+        user_id: this.identity.id,
+        id: this.sliderSeleccionado.id
       }
-      this.sliderService.actualizarSlider(data).subscribe(
+      this.sliderService.actualizarSlider(data, this.slider.id).subscribe(
         resp =>{
           Swal.fire('Actualizado', `${title} actualizado correctamente`, 'success');
         });
@@ -140,7 +169,7 @@ export class SlidereditComponent implements OnInit {
       this.sliderService.crearSlider(this.sliderForm.value)
       .subscribe( (resp: any) =>{
         Swal.fire('Creado', `${title} creado correctamente`, 'success');
-        // this.router.navigateByUrl(`/dashboard/marca/${resp.marca._id}`)
+        // this.router.navigateByUrl(`/dashboard/marca/${resp.marca.id}`)
       })
     }
   }

@@ -62,52 +62,42 @@ export class ProdEditComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private location: Location
   ) {
-    this.usuario = usuarioService.usuario;
+    this.usuario = usuarioService.user;
     const base_url = environment.baseUrl;
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe( ({id}) => this.cargarProducto(id));
-
+    this.activatedRoute.params.subscribe( ({id}) => this.iniciarFormulario(id));
+    this.validacionesFormulario();
     window.scrollTo(0,0);
-    this.getMarca();
     this.getCategorias();
 
 
-    this.productoForm = this.fb.group({
-      name: ['',Validators.required],
-      price: ['',Validators.required],
-      info_short: ['',Validators.required],
-      description: ['',Validators.required],
-      category: ['',Validators.required],
-      subcategoria: ['',Validators.required],
-      marca: [''],
-      video_review: [''],
-    })
 
-    if(this.productoSeleccionado){
-      //actualizar
-      this.pageTitle = 'Create Producto';
 
-    }else{
-      //crear
-      this.pageTitle = 'Edit Producto';
+  }
+
+   /**
+   * @method: Permite obtener los datos del form y sus validaciones
+   * @author: malcolm
+   * @since: 22/08/2022
+   */
+
+    validacionesFormulario(){
+      this.productoForm = this.fb.group({
+        name: ['',Validators.required],
+        price: ['',Validators.required],
+        info_short: ['',Validators.required],
+        description: ['',Validators.required],
+        category_id: ['',Validators.required],
+        subcategoria: ['',Validators.required],
+        video_review: [''],
+        is_featured: [''],
+        is_active: [''],
+        user_id: [this.usuario.id, Validators.required],
+      })
     }
 
-
-
-  }
-
-
-  getMarca(){
-    this.marcaService.cargarMarcas().subscribe(
-      resp =>{
-        this.listMarcas = resp;
-        console.log(this.listMarcas)
-
-      }
-    )
-  }
   getCategorias(){
     this.categoriaService.cargarCategorias().subscribe(
       resp =>{
@@ -118,32 +108,30 @@ export class ProdEditComponent implements OnInit {
     )
   }
 
-  cargarProducto(_id: string){
 
-    if(_id === 'nuevo'){
-      return;
+
+  iniciarFormulario(id:number){debugger
+
+
+    if (id !== null && id !== undefined) {
+      this.pageTitle = 'Editar Promo';
+      this.productoService.getProductoById(id).subscribe(
+        res => {
+          this.productoForm.patchValue({
+            id: res.id,
+            user_id: this.usuario.id,
+            name: res.name,
+            category_id: res.category_id,
+            description: res.description,
+            video_review: res.video_review,
+            info_short: res.info_short,
+            price: res.price,
+          });
+        }
+      );
+    } else {
+      this.pageTitle = 'Crear Promo';
     }
-
-    this.productoService.getProductoById(_id)
-    .pipe(
-      // delay(100)
-      )
-      .subscribe( producto =>{
-
-
-      if(!producto){
-        return this.router.navigateByUrl(`/dasboard/producto`);
-      }
-
-        const { name, price,info_short,description, category_id, subcategory,
-          marca_id,video_review, } = producto;
-        this.productoSeleccionado = producto;
-        this.productoForm.setValue({
-          name, price,info_short,description, category_id, subcategory,
-          marca_id,video_review,
-        });
-
-      });
 
   }
 
@@ -153,14 +141,20 @@ export class ProdEditComponent implements OnInit {
 
   updateProducto(){debugger
 
-    const {name, price,info_short,description, category_id, subcategory,
-      marca_id,video_review, } = this.productoForm.value;
+    const {
+      name,
+      price,
+      user_id,
+      info_short,
+      description,
+      video_review
+     } = this.productoForm.value;
 
     if(this.productoSeleccionado){
       //actualizar
       const data = {
         ...this.productoForm.value,
-        _id: this.productoSeleccionado.id
+        id: this.productoSeleccionado.id
       }
       this.productoService.actualizarProducto(this.producto.id, this.producto).subscribe(
         resp =>{

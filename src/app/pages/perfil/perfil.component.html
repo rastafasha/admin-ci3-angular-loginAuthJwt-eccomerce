@@ -21,26 +21,33 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputTelefono">Telefono</label>
+                        <label for="exampleInputUsername">Username</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-user"></i></div>
-                            <input type="text" formControlName="telefono" class="form-control" id="exampleInputTelefono" placeholder="telefono">
+                            <input type="text" formControlName="username" class="form-control" id="exampleInputUsername" placeholder="username">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleInputPais">Pais</label>
+                    <!-- <div class="form-group">
+                        <label for="exampleInputPais">Role</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-user"></i></div>
-                            <input type="text" formControlName="pais" class="form-control" id="exampleInputPais" placeholder="Pais">
+                            <input type="text" formControlName="role_id" class="form-control" id="exampleInputPais" placeholder="Role">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputID">ID</label>
-                        <div class="input-group">
-                            <div class="input-group-addon"><i class="ti-user"></i></div>
-                            <input type="text" formControlName="numdoc" class="form-control" id="exampleInputID" placeholder="Id">
-                        </div>
-                    </div>
+                    </div> -->
+
+                    <!-- <div class="form-group">
+                      <label for="icono">Role</label>
+                      <div class="input-group">
+
+                          <select formControlName="icono" class="form-control">
+                          <option *ngFor="let ic of listIcons.iconos" value="{{ic.icono}}">
+                            {{ic.name}} <i class="{{ic.icono}}"></i>
+                          </option>
+                        </select>
+
+                      </div>
+                  </div> -->
+
                     <div class="form-group">
                         <label for="exampleInputEmail">Email address</label>
                         <div class="input-group">

@@ -47,7 +47,7 @@ export class ConfigSiteComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private location: Location,
   ) {
-    this.usuario = usuarioService.usuario;
+    this.usuario = usuarioService.user;
     this.configuracion = congeneralService.configuracion;
     const base_url = environment.baseUrl;
   }
@@ -56,23 +56,14 @@ export class ConfigSiteComponent implements OnInit {
 
     window.scrollTo(0,0);
     this.activatedRoute.params.subscribe( ({id}) => this.obtenerIdCongeneral(id));
+    this.validacionesFormulario();
 
-
-
-    if(this.congeneralSeleccionado){
-      //actualizar
-      this.pageTitle = 'Edit Configuracion';
-
-    }else{
-      //crear
-      this.pageTitle = 'Create Configuracion';
-    }
 
   }
 
   obtenerIdCongeneral(id:number){
     // const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    if (id !== null && id !== undefined) {
       this.pageTitle = 'Editar Configuracion';
       this.congeneralService.getCongeneralById(id).subscribe(
         res => {
@@ -99,7 +90,7 @@ export class ConfigSiteComponent implements OnInit {
       this.pageTitle = 'Crear Configuracion';
     }
 
-    this.validacionesFormulario();
+
 
 
   }
@@ -112,7 +103,7 @@ export class ConfigSiteComponent implements OnInit {
       telefono_dos: [''],
       email_uno: ['', Validators.required],
       email_dos: [''],
-      direccion: ['', Validators.required],
+      direccion: [''],
       horarios: [''],
       iframe_mapa: [''],
       facebook: [''],
@@ -121,6 +112,7 @@ export class ConfigSiteComponent implements OnInit {
       twitter: [''],
       id: [''],
       language: ['', Validators.required],
+      user_id: [this.usuario.id, Validators.required],
     });
   }
 
@@ -131,6 +123,7 @@ export class ConfigSiteComponent implements OnInit {
   updateConfiguracion(){
 
     const {
+      user_id,
       titulo, cr, telefono_uno,telefono_dos, email_uno,
       email_dos, direccion, horarios, iframe_mapa, facebook,
       instagram, youtube, twitter, language
@@ -139,7 +132,8 @@ export class ConfigSiteComponent implements OnInit {
       this.congeneralService.actualizarCongeneral(this.confGeneralForm.value)
             .subscribe(resp => {
 
-              this.configuracion.id = this.congeneralSeleccionado.id;
+              this.configuracion.id = this.configuracion.id;
+              this.configuracion.user_id = this.usuario.id;
               this.configuracion.titulo = titulo;
               this.configuracion.cr = cr;
               this.configuracion.telefono_uno = telefono_uno;
@@ -176,10 +170,10 @@ export class ConfigSiteComponent implements OnInit {
 
   //     const data = {
   //       ...this.confGeneralForm.value,
-  //       _id: this.congeneralSeleccionado._id
+  //       id: this.congeneralSeleccionado.id
   //     }
 
-  //     this.congeneralService.actualizarCongeneral(this.congeneralSeleccionado._id).subscribe(
+  //     this.congeneralService.actualizarCongeneral(this.congeneralSeleccionado.id).subscribe(
   //       (res:any) => {
   //         if (Errerror) {
   //           // this.uploadError = res.message;

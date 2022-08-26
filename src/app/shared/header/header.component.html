@@ -111,14 +111,17 @@
                     </a>
                     <div class="dropdown-menu mailbox dropdown-menu-right animated fadeIn fast" aria-labelledby="2">
                         <ul>
-                            <li>
+                            <!-- <li>
                                 <div class="drop-title">You have {{mensajes.length}} new messages</div>
-                            </li>
+                            </li> -->
                             <li>
                                 <div class="message-center" *ngFor="let item of mensajes| slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
                                     <!-- Message -->
                                     <a routerLink="contacto">
-                                        <div class="user-img"> <img src="./assets/images/user.png" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
+                                        <div class="user-img">
+                                            <img src="{{usuario.imagenUrl}}" alt="user" class="img-circle">
+                                            <span class="profile-status online pull-right"></span>
+                                        </div>
                                         <div class="mail-contnet">
                                             <h5>{{item.nombres}}</h5> <span class="mail-desc">{{item.tema}}</span> <span class="time">{{item.createdAt|date :'MMM d, y, h:mm:ss a'}}</span> </div>
                                     </a>
@@ -161,7 +164,7 @@
                         <ul class="dropdown-user">
                             <li>
                                 <div class="dw-user-box">
-                                    <div class="u-img"><img src="{{usuario.img}}" alt="user"></div>
+                                    <div class="u-img"><img src="{{usuario.imagenUrl}}" alt="user" class="img-circle"></div>
                                     <div class="u-text">
                                         <h4>{{usuario.first_name}} {{usuario.last_name}}</h4>
                                         <p class="text-muted">

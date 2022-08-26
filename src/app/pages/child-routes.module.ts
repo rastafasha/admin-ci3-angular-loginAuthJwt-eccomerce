@@ -13,8 +13,6 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
 import { AdminGuard } from '../guards/admin.guard';
-import { MarcaEditComponent } from '../admin/marca/marca-edit/marca-edit.component';
-import { MarcaIndexComponent } from '../admin/marca/marca-index/marca-index.component';
 import { CatIndexComponent } from '../admin/categoria/cat-index/cat-index.component';
 import { CatEditComponent } from '../admin/categoria/cat-edit/cat-edit.component';
 import { ProdIndexComponent } from '../admin/proucto/prod-index/prod-index.component';
@@ -28,6 +26,7 @@ import { CursoEditComponent } from '../admin/curso/curso-edit/curso-edit.compone
 import { CursoIndexComponent } from '../admin/curso/curso-index/curso-index.component';
 import { SliderComponent } from '../admin/slider/slider.component';
 import { SlidereditComponent } from '../admin/slider/slideredit/slideredit.component';
+import { ViewComponent } from '../admin/config-site/view/view.component';
 // import { ColorComponent } from '../admin/proucto/color/color.component';
 // import { SelectorComponent } from '../admin/proucto/selector/selector.component';
 // import { CuponComponent } from '../admin/cupon/cupon.component';
@@ -53,14 +52,12 @@ const childRoutes: Routes = [
             // { path: 'rxjs', component: RxjsComponent, data:{tituloPage:'Rxjs'} },
 
             //tienda
-            { path: 'marca', component: MarcaIndexComponent, data:{tituloPage:'Marcas '} },
-            { path: 'marca/edit/:id', component: MarcaEditComponent, data:{tituloPage:'Marca Edit '} },
-            { path: 'marca/create', component: MarcaEditComponent, data:{tituloPage:'Marca Create '} },
 
             { path: 'categoria', component: CatIndexComponent, data:{tituloPage:'Categorias '} },
             { path: 'categoria/edit/:id', component: CatEditComponent, data:{tituloPage:'Categoría Edit '} },
             { path: 'categoria/create', component: CatEditComponent, data:{tituloPage:'Categoría Create '} },
 
+            { path: 'configuracion', component: ViewComponent, data:{tituloPage:'Configuracion '} },
             { path: 'configuracion/edit/:id', component: ConfigSiteComponent, data:{tituloPage:'Configuracion '} },
 
             { path: 'producto', component: ProdIndexComponent, data:{tituloPage:'Producto '} },
@@ -68,8 +65,8 @@ const childRoutes: Routes = [
             { path: 'producto/create', component: ProdEditComponent, data:{tituloPage:'Producto Create'} },
 
             { path: 'curso', component: CursoIndexComponent, data:{tituloPage:'Curso '} },
-            { path: 'curso/edit/:id', component: CursoEditComponent, data:{tituloPage:'Curso Edit'} },
-            { path: 'curso/create', component: CursoEditComponent, data:{tituloPage:'Curso Create'} },
+            { path: 'curso/edit/:id',  component: CursoEditComponent, data:{tituloPage:'Curso Edit'} },
+            { path: 'curso/create',  component: CursoEditComponent, data:{tituloPage:'Curso Create'} },
 
             // { path: 'producto/color/:id', component: ColorComponent, data:{tituloPage:'Color '} },
             // { path: 'producto/selector/:id', component: SelectorComponent, data:{tituloPage:'Selector '} },
@@ -80,12 +77,12 @@ const childRoutes: Routes = [
             // { path: 'cupon', component: CuponComponent, data:{tituloPage:'Cupon'} },
 
             { path: 'promocion', component: PromocionComponent, data:{tituloPage:'Promocion '} },
-            { path: 'promocion/create', component: PromoeditComponent, data:{tituloPage:'Promocion '} },
-            { path: 'promocion/edit/:id', component: PromoeditComponent, data:{tituloPage:'Promocion '} },
+            { path: 'promocion/create',  component: PromoeditComponent, data:{tituloPage:'Promocion '} },
+            { path: 'promocion/edit/:id',  component: PromoeditComponent, data:{tituloPage:'Promocion '} },
 
             { path: 'slider', component: SliderComponent, data:{tituloPage:'Slider Home '} },
-            { path: 'slider/create', component: SlidereditComponent, data:{tituloPage:'Slider Home '} },
-            { path: 'slider/edit/:id', component: SlidereditComponent, data:{tituloPage:'Slider Home '} },
+            { path: 'slider/create',   component: SlidereditComponent, data:{tituloPage:'Slider Home '} },
+            { path: 'slider/edit/:id',   component: SlidereditComponent, data:{tituloPage:'Slider Home '} },
 
             { path: 'postal', component: PostalComponent, data:{tituloPage:'Postal'} },
 
@@ -111,7 +108,8 @@ const childRoutes: Routes = [
             // { path: 'medico/:id', component: MedicoComponent, data:{tituloPage:'Mantenimiento de Medico '} },
 
             //rutas de admin
-            { path: 'usuarios', canActivate: [ AdminGuard ], component: UsuariosComponent, data:{tituloPage:'Mantenimiento de Usuarios '} },
+            { path: 'usuarios', component: UsuariosComponent, data:{tituloPage:'Mantenimiento de Usuarios '} },
+            // { path: 'usuarios', canActivate: [ AdminGuard ], component: UsuariosComponent, data:{tituloPage:'Mantenimiento de Usuarios '} },
 ]
 
 @NgModule({

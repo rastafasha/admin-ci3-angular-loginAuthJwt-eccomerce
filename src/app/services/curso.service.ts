@@ -33,37 +33,37 @@ export class CursoService {
 
   cargarCursos(){
 
-    const url = `${base_url}api_curso/adminCursos/`;
+    const url = `${base_url}api_curso/adminCursos`;
     return this.http.get(url, this.headers)
-      .pipe(
-        map((resp:{ok: boolean, cursos: Curso[]}) => resp.cursos)
-      )
+      // .pipe(
+      //   map((resp:{ok: boolean, cursos: Curso[]}) => resp.cursos)
+      // )
 
   }
 
 
-  getCursoById(_id: string){
-    const url = `${base_url}api_curso/adminCurso/${_id}`;
-    return this.http.get(url, this.headers)
-      .pipe(
-        map((resp:{ok: boolean, curso: Curso}) => resp.curso)
-        );
+  getCursoById(id: number): Observable<Curso>{
+    const url = `${base_url}api_curso/adminCurso/${id}`;
+    return this.http.get<Curso>(url, this.headers)
+      // .pipe(
+      //   map((resp:{ok: boolean, curso: Curso}) => resp.curso)
+      //   );
 
   }
 
 
   crearCurso(curso: Curso){
-    const url = `${base_url}api_curso/createCursos`;
+    const url = `${base_url}api_curso/createCurso`;
     return this.http.post(url, curso, this.headers);
   }
 
-  actualizarCurso(_id:number, curso: Curso){
-    const url = `${base_url}api_curso/updateCurso/${curso.id}`;
-    return this.http.put(url, curso, this.headers);
+  actualizarCurso(id:number){
+    const url = `${base_url}api_curso/updateCurso/${id}`;
+    return this.http.put(url, id, this.headers);
   }
 
-  borrarCurso(_id:number){
-    const url = `${base_url}api_curso/deleteCurso/${_id}`;
+  borrarCurso(id:number){
+    const url = `${base_url}api_curso/deleteCurso/${id}`;
     return this.http.delete(url, this.headers);
   }
 

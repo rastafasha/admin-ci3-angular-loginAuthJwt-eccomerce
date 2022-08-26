@@ -28,7 +28,7 @@
     </div>
     <div class="col-6 card" *ngFor="let conf of congenerals">
 
-        <a [routerLink]="['/dashboard/configuracion/edit', conf._id]" class="cursor" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> Edit</a>
+        <a [routerLink]="['/dashboard/configuracion/edit', conf.id]" class="cursor" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> Edit</a>
         <p>titulo: {{conf.titulo}},<br> cr: {{conf.cr}},<br> telefono_uno: {{conf.telefono_uno}},<br> telefono_dos: {{conf.telefono_dos}},<br> email_uno: {{conf.email_uno}},<br> email_dos: {{conf.email_dos}},<br> direccion: {{conf.direccion}},<br> horarios:
             {{conf.horarios}},
             <br> iframe_mapa: {{conf.iframe_mapa}},<br> facebook: {{conf.facebook}},<br> instagram: {{conf.instagram}},<br> youtube: {{conf.youtube}},<br> twitter: {{conf.twitter}}

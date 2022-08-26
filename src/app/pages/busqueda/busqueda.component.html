@@ -18,7 +18,7 @@
                         <tbody>
                             <tr *ngFor="let usuario of usuarios" class="animated fadeIn fast">
                                 <td>
-                                    <img [src]="usuario.img | imagenPipe: 'usuarios' " class="avatar ">
+                                    <img [src]="usuario.img | imagenPipe: 'users' " class="avatar ">
                                 </td>
                                 <td>{{usuario.nombre}}</td>
                             </tr>
@@ -47,12 +47,12 @@
                         <tbody>
                             <tr *ngFor="let medico of medicos" class="animated fadeIn fast cursor">
                                 <td>
-                                    <a [routerLink]="['/dashboard/medico', medico._id]">
+                                    <a [routerLink]="['/dashboard/medico', medico.id]">
                                         <img [src]="medico.img | imagenPipe: 'medicos'" class="avatar">
                                     </a>
                                 </td>
                                 <td>
-                                    <a [routerLink]="['/dashboard/medico', medico._id]">
+                                    <a [routerLink]="['/dashboard/medico', medico.id]">
                                       {{medico.nombre}}
                                     </a>
                                 </td>

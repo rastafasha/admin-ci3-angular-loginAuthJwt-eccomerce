@@ -24,6 +24,10 @@ import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component'
 // import { MedicoComponent } from './mantenimientos/medicos/medico.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
 import { IconosService } from '../services/iconos.service';
+import { UsuarioService } from '../services/usuario.service';
+import { CategoriaService } from '../services/categoria.service';
+import { ProductoService } from '../services/producto.service';
+import { CursoService } from '../services/curso.service';
 
 
 
@@ -63,6 +67,12 @@ import { IconosService } from '../services/iconos.service';
 
 
   ],
-  providers:[IconosService]
+  providers:[
+    IconosService,
+    UsuarioService,
+    CategoriaService,
+    ProductoService,
+    CursoService
+  ]
 })
 export class PagesModule { }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { delay } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { Categoria } from '../../../models/categoria.model';
 import { CategoriaService } from '../../../services/categoria.service';
 import { ModalImagenService } from '../../../services/modal-imagen.service';
 import { IconosService } from 'src/app/services/iconos.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cat-index',
@@ -16,14 +17,19 @@ import { IconosService } from 'src/app/services/iconos.service';
 })
 export class CatIndexComponent implements OnInit {
 
-  public categorias: Categoria[] =[];
+  @Output() categoria: Categoria;
   public cargando: boolean = true;
+
+  categoryList: Categoria[] = []; //output
 
   public totalCategorias: number = 0;
   public desde: number = 0;
 
   p: number = 1;
   count: number = 8;
+
+  categorias: Categoria;
+  category: Categoria;
 
   public imgSubs: Subscription;
   listIcons;
@@ -33,6 +39,7 @@ export class CatIndexComponent implements OnInit {
     private modalImagenService: ModalImagenService,
     private busquedaService: BusquedasService,
     private _iconoService: IconosService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -52,14 +59,12 @@ export class CatIndexComponent implements OnInit {
 
   loadCategorias(){
     this.cargando = true;
-    this.categoriaService.cargarCategorias().subscribe(
-      categorias => {
-        this.cargando = false;
-        this.categorias = categorias;
-        console.log(this.categorias);
-      }
-    )
 
+    this.categoriaService.cargarCategorias().subscribe(
+      (data: Categoria) => this.categorias = data,
+      );
+      console.log(this.categorias);
+      this.cargando = false;
   }
 
   cargar_iconos(){
@@ -85,21 +90,29 @@ export class CatIndexComponent implements OnInit {
 
   }
 
-  guardarCambios(categoria: Categoria){
-    this.categoriaService.actualizarCategoria(categoria)
-    .subscribe( resp => {
-      Swal.fire('Actualizado', categoria.category_name,  'success')
-    })
+  guardarCambios(id: number){
+    id = this.categoria.id;
+    if(id){
+      this.categoriaService.actualizarCategoria(this.categoria.id, this.categoria)
+      .subscribe( resp => {
+        Swal.fire('Actualizado', this.categoria.category_name,  'success')
+      })
+
+    }
 
   }
 
 
-  eliminarCategoria(categoria: Categoria){
-    this.categoriaService.borrarCategoria(categoria.id)
-    .subscribe( resp => {
-      this.loadCategorias();
-      Swal.fire('Borrado', categoria.category_name, 'success')
-    })
+  eliminarCategoria(id: number){debugger
+    id = this.categoria.id;
+    if(id){
+      this.categoriaService.borrarCategoria(id)
+      .subscribe( resp => {
+        this.loadCategorias();
+        Swal.fire('Borrado', this.categoria.category_name, 'success')
+      })
+
+    }
 
   }
 
@@ -115,6 +128,19 @@ export class CatIndexComponent implements OnInit {
     .subscribe( resultados => {
       resultados;
     })
+  }
+
+  goToCreate(){
+    this.router.navigateByUrl('/dashboard/categoria/create')
+  }
+
+  editarId(id:number ) {
+    this.categoriaService.getCategoriaById(id).subscribe(
+      res =>{
+        this.router.navigateByUrl('/dashboard/categoria/edit/'+id);
+
+      }
+    );
   }
 
 }

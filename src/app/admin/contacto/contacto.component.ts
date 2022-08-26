@@ -27,7 +27,7 @@ export class ContactoComponent implements OnInit {
     private _route :ActivatedRoute,
     private _contactoService :ContactoService
   ) {
-    this.identity = this._userService.usuario;
+    this.identity = this._userService.user;
     this.url = environment.baseUrl;
   }
 
@@ -35,7 +35,7 @@ export class ContactoComponent implements OnInit {
     this._contactoService.listar().subscribe(
       response=>{
         this.mensajes = response.data;
-        this.count_cat = this.mensajes.length;
+        // this.count_cat = this.mensajes.length;
         this.page = 1;
       },
       error=>{
@@ -45,7 +45,7 @@ export class ContactoComponent implements OnInit {
   }
 
   eliminarMensaje(contacto: Contacto){
-    // this._contactoService.borrarMessage(contacto._id);
+    // this._contactoService.borrarMessage(contacto.id);
 
   }
 

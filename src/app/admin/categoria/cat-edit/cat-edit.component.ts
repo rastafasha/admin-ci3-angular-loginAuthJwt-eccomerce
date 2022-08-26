@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
@@ -22,7 +22,7 @@ import { IconosService } from 'src/app/services/iconos.service';
 export class CatEditComponent implements OnInit {
 
 
-  public categoriaForm: FormGroup;
+  categoriaForm: FormGroup;
   public categoria: Categoria;
   public usuario: Usuario;
   public imagenSubir: File;
@@ -32,10 +32,17 @@ export class CatEditComponent implements OnInit {
   pageTitle: string;
   listIcons;
   state_banner:boolean;
-  id:string;
-  categoriaResp: Categoria;
+  id:number;
 
-  public categoriaSeleccionado: Categoria;
+
+  /**
+  * Propiedades iput que traen la informacion desde la grilla para editar
+  * */
+
+   @Input() category: Categoria;
+   @Input() categoryList: Categoria[] = [];
+   categoriaSeleccionado: Categoria;
+   categoriaId;
 
   constructor(
     private fb: FormBuilder,
@@ -47,167 +54,105 @@ export class CatEditComponent implements OnInit {
     private usuarioService: UsuarioService,
     private _iconoService: IconosService,
   ) {
-    this.usuario = usuarioService.usuario;
+    this.usuario = usuarioService.user;
     const base_url = environment.baseUrl;
+    this.categoriaId = categoriaService.category;
   }
 
   ngOnInit(): void {
     window.scrollTo(0,0);
-
-    this.activatedRoute.params.subscribe( ({id}) => this.cargarCategoria(id));
-    this.validacionesFormulario();
-
-
-    if(this.categoriaSeleccionado.id){
-      //actualizar
-      this.pageTitle = 'Edit Category';
-
-    }else{
-      //crear
-      this.pageTitle = 'Create Category';
-    }
-
+    this.activatedRoute.params.subscribe( ({id}) => this.iniciarFormulario(id));
 
   }
 
-    /**
+
+
+/**
+  * @method: Permite obtener el id  para editar
+  * @author: malcolm
+  * @since: 2022-08
+  */
+
+ catasignada:any;
+ mostrarCategoria:any;
+
+  iniciarFormulario(id:number){debugger
+
+
+    if (id !== null && id !== undefined) {
+      this.pageTitle = 'Editar Category';
+      this.categoriaService.getCategoriaById(+id).subscribe(
+        res => {
+          this.categoriaForm.patchValue({
+            id: res.id,
+            category_name: res.category_name,
+          });
+          this.mostrarCategoria = res;
+        }
+      );
+    } else {
+      this.pageTitle = 'Crear Category';
+    }
+
+    console.log(id);
+
+    this.validacionesFormulario();
+
+  }
+
+      /**
    * @method: Permite obtener los datos del form y sus validaciones
    * @author: malcolm
    * @since: 24/07/2022
    */
 
-     validacionesFormulario(){
-      this.categoriaForm = this.fb.group({
-        nombre: ['', Validators.required],
-        subcategorias: ['', Validators.required],
-        state_banner: ['', Validators.required],
-        img: ['']
-      });
-    }
-
-  cargarCategoria(_id: string){
-
-
-
-    if(_id === 'nuevo'){
-      return;
-    }
-
-    this.categoriaService.getCategoriaById(this.categoria.id)
-    .pipe().subscribe( categoria =>{
-
-      if(!categoria){
-        return this.router.navigateByUrl(`/dasboard/categoria`);
+       validacionesFormulario(){
+        this.categoriaForm = this.fb.group({
+          id: [''],
+          category_name: ['', Validators.required]
+        });
       }
 
-      this.categoriaService.getCategoriaById(this.categoria.id).subscribe(
-        res => {
-          this.categoriaForm.patchValue({
-            category_name: res.category_name,
-            subcategorias: res.subcategorias,
-            state_banner: res.state_banner,
-            img: this.categoriaSeleccionado.img
-          });
-          // this.img = this.categoriaSeleccionado.img;
-        }
-      );
-
-      // const { nombre, subcategorias, icono, state_banner } = categoria;
-      this.categoriaSeleccionado = categoria;
-      // this.categoriaForm.setValue({nombre, subcategorias, icono, state_banner});
-
-    });
-
-  }
+  get category_name() { return this.categoriaForm.get('category_name'); }
 
 
 
-  // iniciarFormulario(id:string){
-  //   // const id = this.route.snapshot.paramMap.get('id');
-
-  //   id = this.categoriaSeleccionado._id;
-
-  //   if (id !== null && id !== undefined) {
-  //     this.pageTitle = 'Editar Category';
-  //     this.categoriaService.list_one(id).subscribe(
-  //       res => {
-  //         this.categoriaForm.patchValue({
-  //           id: res._id,
-  //           nombre: res.nombre,
-  //           subcategorias: res.subcategorias,
-  //           state_banner: res.state_banner
-  //         });
-  //         this.imgTemp = this.categoriaSeleccionado.img;
-  //       }
-  //     );
-  //   } else {
-  //     this.pageTitle = 'Crear Category';
-  //   }
-
-  // }
+  updateCategoria(){debugger
 
 
 
+    this.category.id= this.categoriaForm.controls.id.value; //viene de la grilla
 
+    const {category_name} = this.categoriaForm.value;
 
+    const id = this.category.id;
 
-
-
-  updateCategoria(){
-
-    const {category_name, subcategorias,
-      state_banner } = this.categoriaForm.value;
-
-      if(this.categoriaSeleccionado){
+    if(id){
         //actualizar
         const data = {
-          ...this.categoriaForm.value,
-          _id: this.categoriaSeleccionado.id
+          ...this.categoriaForm.value
         }
-        this.categoriaService.actualizarCategoria(data).subscribe(
-          resp =>{
 
-            Swal.fire('Actualizado', `${category_name} ${subcategorias} actualizado correctamente`, 'success');
+
+        this.categoriaService.actualizarCategoria(data, this.categoria).subscribe(
+          (resp:any) =>{
+            this.categoria = resp;
+
+            Swal.fire('Actualizado', `${category_name}  actualizado correctamente`, 'success');
           });
 
       }else{
         //crear
         this.categoriaService.crearCategoria(this.categoriaForm.value)
         .subscribe( (resp: any) =>{
+          this.categoria = resp;
           Swal.fire('Creado', `${category_name} creado correctamente`, 'success');
-          // this.router.navigateByUrl(`/dashboard/marca/${resp.marca._id}`)
+          this.router.navigateByUrl(`/dashboard/categoria`)
         })
       }
 
   }
 
-
-  cambiarImagen(file: File){
-    this.imagenSubir = file;
-
-    if(!file){
-      return this.imgTemp = null;
-    }
-
-    const reader = new FileReader();
-    const url64 = reader.readAsDataURL(file);
-
-    reader.onloadend = () =>{
-      this.imgTemp = reader.result;
-    }
-  }
-
-  subirImagen(){
-    this.fileUploadService
-    .actualizarFoto(this.imagenSubir, 'categories', this.categoriaSeleccionado.id)
-    .then(img => { this.categoriaSeleccionado.img = img;
-      Swal.fire('Guardado', 'La imagen fue actualizada', 'success');
-
-    }).catch(err =>{
-      Swal.fire('Error', 'No se pudo subir la imagen', 'error');
-
-    })
-  }
 
   goBack() {
     this.location.back(); // <-- go back to previous location on cancel

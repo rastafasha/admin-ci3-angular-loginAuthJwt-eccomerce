@@ -19,8 +19,8 @@ declare var $:any;
 })
 export class ProdIndexComponent implements OnInit {
 
-  public productos: Producto[] =[];
-  public categorias: Categoria[] =[];
+  public productos: Producto;
+  public categorias: Categoria;
   public cargando: boolean = true;
 
   public totalProductos: number = 0;
@@ -59,21 +59,24 @@ export class ProdIndexComponent implements OnInit {
   loadProductos(){
     this.cargando = true;
     this.productoService.cargarProductos().subscribe(
-      productos => {
-        this.cargando = false;
-        this.productos = productos;
-        console.log(this.productos);
-      }
-    )
+      (data: Producto) => this.productos = data,
+      );
+      console.log(this.productos);
+      this.cargando = false;
+    // this.productoService.cargarProductos().subscribe(
+    //   productos => {
+    //     this.cargando = false;
+    //     this.productos = productos;
+    //     console.log(this.productos);
+    //   }
+    // )
 
   }
   loadCategorias(){
-    this.cargando = true;
     this.categoriaService.cargarCategorias().subscribe(
-      categorias => {
-        this.categorias = categorias;
-      }
-    )
+      (data: Categoria) => this.categorias = data,
+      );
+      console.log(this.categorias);
 
   }
 

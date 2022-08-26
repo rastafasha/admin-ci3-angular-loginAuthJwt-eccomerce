@@ -44,7 +44,7 @@ export class AccountSettingComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private location: Location,
   ) {
-    this.usuario = usuarioService.usuario;
+    this.usuario = usuarioService.user;
     const base_url = environment.baseUrl;
   }
 

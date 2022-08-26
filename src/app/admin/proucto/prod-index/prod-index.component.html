@@ -24,10 +24,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
-                        <h4 class="card-title">Productos: ({{ productos.length}})</h4>
+                        <!-- <h4 class="card-title">Productos: ({{ productos.length}})</h4> -->
                         <h6 class="card-subtitle">Productos registrados en la app</h6>
                     </div>
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="text-right">
                             <button class="btn btn-primary" [routerLink]="['/dashboard/producto/create/']">
                           <i class="fa fa-user-o"></i>
@@ -53,8 +53,6 @@
                             <tr>
                                 <th>img</th>
                                 <th>Titulo</th>
-                                <th>Categoría</th>
-                                <th>Subcategoría</th>
                                 <th>Status</th>
                                 <th>Precio</th>
                                 <th>Activar</th>
@@ -66,24 +64,22 @@
                             <tr *ngFor="let producto of productos">
                                 <td class="text-center">
                                     <!-- <img [src]="producto.img | imagenPipe: 'productos'" class="img-responsive avatar" alt="{{producto.titulo}}"> -->
-                                    <img [routerLink]="['/dashboard/producto/edit',producto._id]" [src]="producto.img | imagenPipe: 'productos'" class="avatar cursor" alt="{{producto.titulo}}">
+                                    <!-- <img [routerLink]="['/dashboard/producto/edit',producto.id]" [src]="producto.img" class="avatar cursor" alt="{{producto.titulo}}"> -->
+                                    <img [routerLink]="['/dashboard/producto/edit',producto.id]" [src]="producto.img " class="avatar cursor" alt="{{producto.titulo}}">
                                 </td>
                                 <td>{{producto.name}}</td>
-                                <td>{{producto.category.nombre}}</td>
-                                <td>{{producto.subcategoria}}</td>
                                 <td>
                                     <div class="font-size-sm mb-4">
                                         <span class="text-heading font-weight-medium mr-1">Estado:</span>
-                                        <span class="badge badge-accent badge-shadow" *ngIf="producto.status == 'Edición'">{{producto.status}}</span>
-                                        <span class="badge badge-success badge-shadow" *ngIf="producto.status == 'Activo'">{{producto.status}}</span>
-                                        <span class="badge badge-primary badge-shadow" *ngIf="producto.status == 'Desactivado'">{{producto.status}}</span>
+                                        <span class="badge badge-success badge-shadow" *ngIf="producto.is_active == '1'">Activo</span>
+                                        <span class="badge badge-primary badge-shadow" *ngIf="producto.is_active == '0'">Inactivo</span>
                                     </div>
                                 </td>
                                 <td>{{producto.price}}...</td>
                                 <td>
-                                    <button type="button" class="btn btn-accent" *ngIf="producto.status == 'Edición' || producto.status == 'Desactivado'" data-toggle="modal" [attr.data-target]="'#activar-'+producto._id"><span class="czi-check"></span> Activar</button>
+                                    <button type="button" class="btn btn-accent" *ngIf="producto.is_active == '0'" data-toggle="modal" [attr.data-target]="'#activar-'+producto.id"><span class="czi-check"></span> Activar</button>
 
-                                    <div class="modal fade" [attr.id]="'activar-'+producto._id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                    <div class="modal fade" [attr.id]="'activar-'+producto.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -95,14 +91,14 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-                                                    <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="activar(producto._id)">Aceptar</button>
+                                                    <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="activar(producto.id)">Aceptar</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <button type="button" class="btn btn-primary" *ngIf="producto.status == 'Activo'" data-toggle="modal" [attr.data-target]="'#desactivar-'+producto._id"><span class="czi-close"></span> Desactivar</button>
-                                    <div class="modal fade" [attr.id]="'desactivar-'+producto._id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                    <button type="button" class="btn btn-primary" *ngIf="producto.is_active == '1'" data-toggle="modal" [attr.data-target]="'#desactivar-'+producto.id"><span class="czi-close"></span> Desactivar</button>
+                                    <div class="modal fade" [attr.id]="'desactivar-'+producto.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -114,16 +110,16 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-                                                    <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="desactivar(producto._id)">Aceptar</button>
+                                                    <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="desactivar(producto.id)">Aceptar</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- <button type="button" class="btn btn-secondary" data-toggle="modal" [attr.data-target]="'#papelera-'+producto._id"><span class="czi-remove-folder
+                                    <!-- <button type="button" class="btn btn-secondary" data-toggle="modal" [attr.data-target]="'#papelera-'+producto.id"><span class="czi-remove-folder
                                     "></span> Papelera</button>
 
-                                    <div class="modal fade" [attr.id]="'papelera-'+producto._id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                    <div class="modal fade" [attr.id]="'papelera-'+producto.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -135,17 +131,17 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-                                                    <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="papelera(producto._id)">Aceptar</button>
+                                                    <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="papelera(producto.id)">Aceptar</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div> -->
 
-                                    <span class="text-muted" *ngIf="producto.status == 'Edición'" style="font-size: 13px;">Este producto aún se encuentra en edición.</span>
-                                    <span class="text-muted" *ngIf="producto.status == 'Desactivado'" style="font-size: 13px;">Este producto aún no está disponible en la tienda.</span>
+                                    <span class="text-muted" *ngIf="producto.is_active == '0'" style="font-size: 13px;">Este producto aún se encuentra en edición.</span>
+                                    <span class="text-muted" *ngIf="producto.is_active == '1'" style="font-size: 13px;">Este producto está disponible en la tienda.</span>
 
                                 </td>
-                                <td>{{ producto.createdAt | date:'MMM d, y, h:mm:ss a' }}</td>
+                                <td>{{ producto.created_at | date:'MMM d, y, h:mm:ss a' }}</td>
                                 <td class="text-nowrap text-center">
 
                                     <div class="btn-group" role="group">
@@ -153,7 +149,7 @@
                                       <span class="czi-settings"></span> Opciones
                                     </button>
                                         <div class="dropdown-menu">
-                                            <a [routerLink]="['/dashboard/producto/edit',producto._id]" class="dropdown-item"><span class="czi-edit-alt"></span> &nbsp;Editar</a>
+                                            <a [routerLink]="['/dashboard/producto/edit',producto.id]" class="dropdown-item"><span class="czi-edit-alt"></span> &nbsp;Editar</a>
                                             <a (click)="eliminarProducto(producto)" class="dropdown-item"><span class="czi-delete-document"></span> &nbsp;Eliminar</a>
                                         </div>
                                     </div>

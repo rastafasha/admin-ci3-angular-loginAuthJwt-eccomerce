@@ -7,6 +7,7 @@ import { BusquedasService } from '../../services/busquedas.service';
 import { Slider } from '../../models/slider.model';
 import { SliderService } from '../../services/slider.service';
 import { ModalImagenService } from '../../services/modal-imagen.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-slider',
@@ -15,7 +16,7 @@ import { ModalImagenService } from '../../services/modal-imagen.service';
 })
 export class SliderComponent implements OnInit {
 
-  public sliders: Slider[] =[];
+  public sliders: Slider;
   public cargando: boolean = true;
 
   public desde: number = 0;
@@ -30,6 +31,7 @@ export class SliderComponent implements OnInit {
     private sliderService: SliderService,
     private modalImagenService: ModalImagenService,
     private busquedaService: BusquedasService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -49,20 +51,24 @@ export class SliderComponent implements OnInit {
   loadSliders(){
     this.cargando = true;
     this.sliderService.cargarSliders().subscribe(
-      sliders => {
-        this.cargando = false;
-        this.sliders = sliders;
-        console.log(this.sliders);
-      }
-    )
+      (data: Slider) => this.sliders = data,
+      );
+          console.log(this.sliders);
+
+      this.cargando = false;
 
   }
 
-  guardarCambios(slider: Slider){
-    this.sliderService.actualizarSlider(slider)
-    .subscribe( resp => {
-      Swal.fire('Actualizado', slider.title,  'success')
-    })
+  guardarCambios(id: number){
+
+    id = this.slider.id;
+    if(id){
+      this.sliderService.actualizarSlider(this.slider.id, this.slider)
+      .subscribe( resp => {
+        Swal.fire('Actualizado', this.slider.title,  'success')
+      })
+
+    }
 
   }
 
@@ -88,6 +94,15 @@ export class SliderComponent implements OnInit {
     .subscribe( resultados => {
       resultados;
     })
+  }
+
+  editarId(id:number ) {
+    this.sliderService.getSliderById(id).subscribe(
+      res =>{
+        this.router.navigateByUrl('/dashboard/slider/edit/'+id);
+
+      }
+    );
   }
 
 }

@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit {
     private _route :ActivatedRoute,
   ) {
     this.url = environment.baseUrl;
-    this.identity = this._userService.usuario;
+    this.identity = this._userService.user;
   }
 
   ngOnInit(): void {

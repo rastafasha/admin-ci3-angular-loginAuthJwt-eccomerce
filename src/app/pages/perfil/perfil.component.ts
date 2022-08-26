@@ -17,6 +17,9 @@ export class PerfilComponent implements OnInit {
   public usuario: Usuario;
   public imagenSubir: File;
   public imgTemp: any = null;
+  roles;
+
+  listRoles;
 
   usuarioSeleccionado: Usuario;
 
@@ -25,15 +28,19 @@ export class PerfilComponent implements OnInit {
     private usuarioService: UsuarioService,
     private fileUploadService: FileUploadService
   ) {
-    this.usuario = usuarioService.usuario;
+    this.usuario = usuarioService.user;
   }
 
   ngOnInit(): void {
     this.perfilForm = this.fb.group({
       first_name: [ this.usuario.first_name, Validators.required ],
       last_name: [ this.usuario.last_name, Validators.required ],
+      email: [ this.usuario.email, Validators.required ],
       username: [ this.usuario.username ],
     });
+
+    this.obtenerRoles();
+    this.cargarRoles();
   }
 
   actualizarPerfil(){
@@ -49,6 +56,35 @@ export class PerfilComponent implements OnInit {
       Swal.fire('Error', err.error.msg, 'error');
 
     })
+  }
+
+  obtenerRoles(){
+    this.usuarioService.getRoles().subscribe(
+      resp=>{
+        resp
+        console.log(resp);
+      }
+    )
+  }
+
+  cargar_iconos(){
+    this.usuarioService.getRoles().subscribe(
+      resp =>{
+        this.listRoles = resp;
+        console.log(this.listRoles)
+
+      }
+    )
+  }
+
+  cargarRoles(){
+    this.usuarioService.getRoles().subscribe(
+      resp =>{
+        this.roles = resp;
+        console.log(this.roles)
+
+      }
+    )
   }
 
 

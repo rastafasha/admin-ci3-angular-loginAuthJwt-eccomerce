@@ -33,37 +33,37 @@ export class ProductoService {
 
   cargarProductos(){
 
-    const url = `${base_url}api_producto/adminProductos/`;
+    const url = `${base_url}api_producto/adminProductos`;
     return this.http.get(url, this.headers)
-      .pipe(
-        map((resp:{ok: boolean, productos: Producto[]}) => resp.productos)
-      )
+      // .pipe(
+      //   map((resp:{ok: boolean, productos: Producto[]}) => resp.productos)
+      // )
 
   }
 
 
-  getProductoById(_id: string){
-    const url = `${base_url}api_producto/adminProducto/${_id}`;
-    return this.http.get(url, this.headers)
-      .pipe(
-        map((resp:{ok: boolean, producto: Producto}) => resp.producto)
-        );
+  getProductoById(id: number): Observable<Producto>{
+    const url = `${base_url}api_producto/Producto/${id}`;
+    return this.http.get<Producto>(url, this.headers)
+      // .pipe(
+      //   map((resp:{ok: boolean, producto: Producto}) => resp.producto)
+      //   );
 
   }
 
 
   crearProducto(producto: Producto){
-    const url = `${base_url}api_producto/createProducto/`;
+    const url = `${base_url}api_producto/createProducto`;
     return this.http.post(url, producto, this.headers);
   }
 
-  actualizarProducto(_id:number, producto: Producto){
-    const url = `${base_url}api_producto/updateProducto/${producto.id}`;
+  actualizarProducto(id:number, producto: Producto){
+    const url = `${base_url}api_producto/updateProducto/${id}`;
     return this.http.put(url, producto, this.headers);
   }
 
-  borrarProducto(_id:number){
-    const url = `${base_url}api_producto/deleteProducto/${_id}`;
+  borrarProducto(id:number){
+    const url = `${base_url}api_producto/deleteProducto/${id}`;
     return this.http.delete(url, this.headers);
   }
 

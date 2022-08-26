@@ -51,8 +51,8 @@ export class GaleriaService {
     }
 
 
-  eliminar(_id):Observable<any>{
-    const url = `${base_url}api_gallery/deleteGallerys/${_id}`;
+  eliminar(id):Observable<any>{
+    const url = `${base_url}api_gallery/deleteGallerys/${id}`;
     return this.http.delete(url, this.headers);
   }
 }
