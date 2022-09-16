@@ -20,6 +20,8 @@ export class Configuracion{
     public youtube: string,
     public language: string,
     public twitter: string,
+    public logoUrl: string,
+    public faviconUrl: string,
     public logo?: string,
     public favicon?: string,
 
@@ -40,7 +42,7 @@ export class Configuracion{
 
   }
 
-  get faviconUrl(){
+  get faviconUrlimage(){
 
     if(!this.favicon){
       return `${base_url}/uploads/congenerals/no-image.jpg`;

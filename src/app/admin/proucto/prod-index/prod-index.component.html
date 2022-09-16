@@ -23,15 +23,15 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-8">
                         <!-- <h4 class="card-title">Productos: ({{ productos.length}})</h4> -->
                         <h6 class="card-subtitle">Productos registrados en la app</h6>
                     </div>
                     <div class="col-4">
                         <div class="text-right">
-                            <button class="btn btn-primary" [routerLink]="['/dashboard/producto/create/']">
-                          <i class="fa fa-user-o"></i>
-                          Crear Producto
+                            <button class="btn btn-themecolor" [routerLink]="['/dashboard/producto/create/']">
+                              <i class="fa fa-pencil-square-o"></i>
+                          Crear
                         </button>
                         </div>
                     </div>
@@ -60,8 +60,8 @@
                                 <th class="text-nowrap">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr *ngFor="let producto of productos">
+                        <tbody *ngFor="let producto of productos | keys | paginate: { itemsPerPage: count, currentPage: p }">
+                            <tr>
                                 <td class="text-center">
                                     <!-- <img [src]="producto.img | imagenPipe: 'productos'" class="img-responsive avatar" alt="{{producto.titulo}}"> -->
                                     <!-- <img [routerLink]="['/dashboard/producto/edit',producto.id]" [src]="producto.img" class="avatar cursor" alt="{{producto.titulo}}"> -->
@@ -75,7 +75,7 @@
                                         <span class="badge badge-primary badge-shadow" *ngIf="producto.is_active == '0'">Inactivo</span>
                                     </div>
                                 </td>
-                                <td>{{producto.price}}...</td>
+                                <td>${{producto.price}}</td>
                                 <td>
                                     <button type="button" class="btn btn-accent" *ngIf="producto.is_active == '0'" data-toggle="modal" [attr.data-target]="'#activar-'+producto.id"><span class="czi-check"></span> Activar</button>
 
@@ -142,7 +142,7 @@
 
                                 </td>
                                 <td>{{ producto.created_at | date:'MMM d, y, h:mm:ss a' }}</td>
-                                <td class="text-nowrap text-center">
+                                <!-- <td class="text-nowrap text-center">
 
                                     <div class="btn-group" role="group">
                                         <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -150,11 +150,38 @@
                                     </button>
                                         <div class="dropdown-menu">
                                             <a [routerLink]="['/dashboard/producto/edit',producto.id]" class="dropdown-item"><span class="czi-edit-alt"></span> &nbsp;Editar</a>
-                                            <a (click)="eliminarProducto(producto)" class="dropdown-item"><span class="czi-delete-document"></span> &nbsp;Eliminar</a>
+                                            <a (click)="eliminarProducto(producto.id)" class="dropdown-item"><span class="czi-delete-document"></span> &nbsp;Eliminar</a>
                                         </div>
                                     </div>
+                                </td> -->
+                                <td class="text-nowrap text-center">
+                                    <a [routerLink]="['/dashboard/producto/edit',producto.id]" class="nav-link-style text-danger">
+                                        <div class="czi-edit-alt"></div>
+                                    </a>
+                                    <a class="nav-link-style text-danger" data-toggle="modal" [attr.data-target]="'#'+producto.id" style="cursor:pointer">
+                                        <div class="czi-trash"></div>
+                                    </a>
                                 </td>
                             </tr>
+                            <!-- modal pregunta eliminar -->
+                            <div class="modal fade" [attr.id]="producto.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Confirmación</h4>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="font-size-sm">¿Desea eliminar definitivamente el regsitro?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                                            <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="eliminarProducto(producto.id)" data-dismiss="modal">Suprimir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- fin modal -->
 
                         </tbody>
                     </table>

@@ -22,6 +22,7 @@ export class MarcaIndexComponent implements OnInit {
 
   p: number = 1;
   count: number = 8;
+  error: string;
 
   public imgSubs: Subscription;
 
@@ -77,8 +78,8 @@ export class MarcaIndexComponent implements OnInit {
 
   }
 
-  guardarCambios(marca: Marca){
-    this.marcaService.actualizarMarca(marca)
+  guardarCambios(marca: Marca, id: number){
+    this.marcaService.actualizarMarca(marca, id)
     .subscribe( resp => {
       Swal.fire('Actualizado', marca.marca_name,  'success')
     })
@@ -86,12 +87,18 @@ export class MarcaIndexComponent implements OnInit {
   }
 
 
-  eliminarMarca(marca: Marca){
-    this.marcaService.borrarMarca(marca.id)
-    .subscribe( resp => {
-      this.loadMarcas();
-      Swal.fire('Borrado', marca.marca_name, 'success')
-    })
+  eliminarMarca(id: number){
+    if (confirm('Are you sure want to delete id = ' + id)) {
+      this.marcaService.borrarMarca(+id).subscribe(
+        res => {
+          console.log(res);
+          Swal.fire('Borrado', 'success')
+          this.ngOnInit();
+        },
+        error => this.error = error
+      );
+    }
+    this.ngOnInit();
 
   }
 

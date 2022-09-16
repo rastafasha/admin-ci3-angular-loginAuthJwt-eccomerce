@@ -29,9 +29,9 @@
                     </div>
                     <div class="col-4">
                         <div class="text-right">
-                            <button class="btn btn-primary" [routerLink]="['/dashboard/promocion/create/']">
-                            <i class="fa fa-user-o"></i>
-                            Crear Promocion
+                            <button class="btn btn-themecolor" [routerLink]="['/dashboard/promocion/create/']">
+                              <i class="fa fa-pencil-square-o"></i>
+                            Crear
                           </button>
                         </div>
                     </div>
@@ -51,10 +51,15 @@
                                 <th class="text-nowrap">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr *ngFor="let promocion of promocions | keys | paginate: { itemsPerPage: count, currentPage: p }">
+                        <tbody *ngFor="let promocion of promocions | keys | paginate: { itemsPerPage: count, currentPage: p }">
+                            <tr>
                                 <td class="text-center">
-                                    <img [routerLink]="['/dashboard/promocion/edit',promocion.id]" [src]="promocion.img " class="img-responsive avatar cursor" alt="{{promocion.producto_title}}">
+                                    <img *ngIf="promocion.img" [routerLink]="['/dashboard/promocion/edit',promocion.id]" [src]="promocion.img " class="img-responsive avatar cursor" alt="{{promocion.producto_title}}">
+                                    <!-- <img *ngIf="promocion.img && !promocion.imgUrl" [routerLink]="['/dashboard/promocion/edit',promocion.id]" [src]="promocion.img " class="img-responsive avatar cursor" alt="{{promocion.title}}"> -->
+                                    <!-- <img *ngIf="promocion.imgUrl && !promocion.img" [routerLink]="['/dashboard/promocion/edit',promocion.id]" [src]="promocion.imgUrl " class="img-responsive avatar cursor" alt="{{promocion.title}}"> -->
+                                    <!-- <img *ngIf="!promocion.img && !promocion.imgUrl  " [routerLink]="['/dashboard/promocion/edit',promocion.id]" src="./assets/images/no-image.jpg" class="img-responsive avatar cursor" alt="{{promocion.title}}"> -->
+                                    <!-- <img [routerLink]="['/dashboard/promocion/edit',promocion.id]" *ngIf="!promocion.img" [src]="imgTemp | imagenPipe: 'promocions'" class="img-responsive avatar cursor" alt="{{promocion.producto_title}}"> -->
+                                    <!-- <img [routerLink]="['/dashboard/promocion/edit',promocion.id]" *ngIf="promocion.img" [src]="promocion.img " class="img-responsive avatar cursor" alt="{{promocion.producto_title}}"> -->
                                     <!-- <img (click)="abrirModal(marca)" [src]="marca.imagenUrl | imagenPipe: 'marcas'" class="avatar cursor" alt="{{marca.nombre}}"> -->
                                 </td>
                                 <td>
@@ -66,12 +71,47 @@
                                 </td>
                                 <td>{{ promocion.created_at | date:'MMM d, y, h:mm:ss a' }}</td>
                                 <td>{{ promocion.updated_at | date:'MMM d, y, h:mm:ss a' }}</td>
+
+                                <!-- <td class="text-nowrap text-center">
+
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="czi-settings"></span> Opciones
+                                  </button>
+                                        <div class="dropdown-menu">
+                                            <a [routerLink]="['/dashboard/promocion/edit',promocion.id]" class="dropdown-item"><span class="czi-edit-alt"></span> &nbsp;Editar</a>
+                                            <a (click)="eliminarPromocion(promocion.id)" class="dropdown-item"><span class="czi-delete-document"></span> &nbsp;Eliminar</a>
+                                        </div>
+                                    </div>
+                                </td> -->
                                 <td class="text-nowrap text-center">
-                                    <!-- <a [routerLink]="['/dashboard/promocion/edit', promocion.id]" class="cursor" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a> -->
-                                    <a (click)="editarId(promocion.id)" class="cursor" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                                    <a (click)="eliminarPromocion(promocion)" class="cursor" data-toggle="tooltip" data-original-title="Borrar"> <i class="fa fa-close text-danger"></i> </a>
+                                    <a [routerLink]="['/dashboard/promocion/edit',promocion.id]" class="nav-link-style text-danger">
+                                        <div class="czi-edit-alt"></div>
+                                    </a>
+                                    <a class="nav-link-style text-danger" data-toggle="modal" [attr.data-target]="'#'+promocion.id" style="cursor:pointer">
+                                        <div class="czi-trash"></div>
+                                    </a>
                                 </td>
                             </tr>
+                            <!-- modal pregunta eliminar -->
+                            <div class="modal fade" [attr.id]="promocion.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Confirmación</h4>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="font-size-sm">¿Desea eliminar definitivamente el regsitro?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                                            <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="eliminarPromocion(promocion.id)" data-dismiss="modal">Suprimir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- fin modal -->
 
                         </tbody>
                     </table>

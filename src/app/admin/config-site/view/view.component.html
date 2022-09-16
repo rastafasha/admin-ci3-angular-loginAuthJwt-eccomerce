@@ -41,7 +41,7 @@
                         <tbody>
                             <tr *ngFor="let conf of confgs | keys | paginate: { itemsPerPage: count, currentPage: p }">
                                 <td class="text-center">
-                                    <img [src]="conf.logo | imagenPipe: 'configuracions'" class="img-responsive avatar" alt="{{conf.titulo}}">
+                                    <img [src]="conf.logo " class="img-responsive avatar" alt="{{conf.titulo}}">
                                     <!-- <img (click)="abrirModal(marca)" [src]="marca.imagenUrl | imagenPipe: 'marcas'" class="avatar cursor" alt="{{marca.nombre}}"> -->
                                 </td>
                                 <td>

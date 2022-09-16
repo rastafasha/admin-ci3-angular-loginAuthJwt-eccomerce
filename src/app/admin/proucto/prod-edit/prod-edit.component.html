@@ -8,21 +8,28 @@
                 <button class="btn btn-outline-danger" href="javascript:void(0)" (click)="goBack()">Volver</button>
                 <form class="form p-t-20" [formGroup]="productoForm" (submit)="updateProducto()">
                     <div class="form-group">
-                        <label for="exampleInputuname">Titulo</label>
+                        <label for="exampleInputuname">Titulo<span style="color:red">*</span></label>
                         <div class="input-group">
 
                             <input type="text" formControlName="name" class="form-control" id="exampleInputuname" placeholder="titulo">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>Codigo<span style="color:red">*</span></label>
+                        <div class="input-group">
+
+                            <input type="text" [value]="cod_prod" formControlName="cod_prod" class="form-control" placeholder="ejemplo: CurName01" required>
+                        </div>
+                    </div>
                     <div class="form-group row align-items-center">
-                        <label class=" col-form-label font-weight-medium" for="text-input">Video de youtube</label>
+                        <label class=" col-form-label font-weight-medium" for="text-input">Video de youtube<span style="color:red">*</span></label>
                         <div class="col-md-10">
                             <textarea class="form-control" type="text" placeholder="Codigo de insercion de vídeo." formControlName="video_review" required></textarea>
 
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label class=" col-form-label font-weight-medium" for="text-input">Descripción</label>
+                        <label class=" col-form-label font-weight-medium" for="text-input">Descripción<span style="color:red">*</span></label>
                         <div class="col-md-10">
                             <textarea class="form-control" id="textarea-input" rows="5" placeholder="Descripcion producto." formControlName="description" required></textarea>
 
@@ -30,21 +37,53 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class=" col-form-label font-weight-medium" for="textarea-input">Descripción corta</label>
+                        <label class=" col-form-label font-weight-medium" for="textarea-input">Descripción corta<span style="color:red">*</span></label>
                         <div class="col-md-10">
                             <textarea class="form-control" id="textarea-input" rows="5" placeholder="Detalle corto del producto." formControlName="info_short" required></textarea>
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label class=" col-form-label font-weight-medium" for="text-input">Detalles</label>
+                        <label class=" col-form-label font-weight-medium" for="text-input">Precio<span style="color:red">*</span></label>
                         <div class="col-md-10">
                             <div class="row">
                                 <div class="col-lg-4">
-                                    <input class="form-control" type="number" placeholder="Precio actual" formControlName="price" min="0">
+                                    <input class="form-control" type="text" placeholder="Precio actual" formControlName="price" value="price" required>
                                 </div>
                                 <!-- <div class="col-lg-4">
-                                    <input class="form-control" type="number" placeholder="Precio antes" formControlName="precio_antes" min="0" >
-                                </div> -->
+                                  <input class="form-control" type="number" placeholder="Precio antes" formControlName="precio_antes" min="0" >
+                              </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row align-items-center">
+                        <label class=" col-form-label font-weight-medium" for="text-input">status</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="select-input">Visible</label>
+                                        <select class="form-control custom-select" formControlName="is_active">
+                                      <option selected  value="">SELECCIONAR</option>
+                                      <option  [value]="1">Activo</option>
+                                      <option  [value]="0">Inactivo</option>
+
+                                  </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="select-input">Destacado</label>
+                                        <select class="form-control custom-select" formControlName="is_featured">
+                                            <option selected disabled value="">SELECCIONAR</option>
+                                            <option  [value]="1">Activo</option>
+                                            <option  [value]="0">Inactivo</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -57,70 +96,41 @@
                                     <div class="form-group">
                                         <label for="select-input">Categoría</label>
                                         <select class="form-control custom-select" formControlName="category_id" required>
-                                            <option selected  value="">SELECCIONAR</option>
-                                            <option *ngFor="let item of listCategorias" [value]="item.category_id">{{item.category_name}}</option>
+                                          <option selected  value="">SELECCIONAR</option>
+                                          <option *ngFor="let cat of listCategorias" [value]="cat.id">{{cat.category_name}}</option>
 
-                                        </select>
+                                      </select>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
                     </div>
+                    <div class="card-footer">
+                        <input type="hidden" formControlName="id">
+                        <button type="submit" [disabled]="productoForm.invalid" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                      <i class="fa fa-save"></i> Guardar cambios
+                    </button>
 
-                    <div class="form-group row align-items-center">
-                        <label class=" col-form-label font-weight-medium" for="text-input">status</label>
-                        <div class="col-md-10">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="select-input">Visible</label>
-                                        <select class="form-control custom-select" formControlName="is_active" required>
-                                      <option selected  value="">SELECCIONAR</option>
-                                      <option  [value]="0">Inactivo</option>
-                                      <option  [value]="1">Activo</option>
-
-                                  </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="select-input">Destacado</label>
-                                        <select class="form-control custom-select" formControlName="is_featured">
-                                            <option selected disabled value="">SELECCIONAR</option>
-                                            <option  [value]="0">Inactivo</option>
-                                      <option  [value]="1">Activo</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
                     </div>
-
-
-                    <button type="submit" [disabled]="productoForm.invalid" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
-                 <i class="fa fa-save"></i> Guardar cambios
-                </button>
                 </form>
             </div>
         </div>
     </div>
-    <div class="col-md-6 animated fadeIn fast" *ngIf="producto.img">
+    <div class="col-md-6 animated fadeIn fast" *ngIf="producto">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Image</h4>
                 <div class="text-center">
-                    <img *ngIf="!imgTemp" [src]="producto.img | imagenPipe: 'productos'  " class="img-responsive img-thumbnail" alt="">
+                    <img *ngIf="!imgTemp" [src]="producto.img  " class="img-responsive img-thumbnail" alt="">
                     <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
                 </div>
                 <input type="file" (change)="cambiarImagen($event.target.files[0])">
                 <br>
                 <br>
                 <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
-              <i class="fa fa-save"></i> Cambiar imagen
-             </button>
+            <i class="fa fa-save"></i> Cambiar imagen
+           </button>
             </div>
         </div>
     </div>

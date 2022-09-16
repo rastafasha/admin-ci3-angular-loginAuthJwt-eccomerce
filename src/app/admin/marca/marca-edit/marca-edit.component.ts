@@ -51,8 +51,6 @@ export class MarcaEditComponent implements OnInit {
 
     this.activatedRoute.params.subscribe( ({id}) => this.iniciarFormulario(id));
     this.validacionesFormulario();
-
-
   }
 
    /**
@@ -68,32 +66,7 @@ export class MarcaEditComponent implements OnInit {
       })
     }
 
-  // cargarMarca(id: number){
-
-  //   if(!id){
-  //     return;
-  //   }
-
-  //   this.marcaService.getMarcaById(this.marca.id)
-  //   .pipe(
-  //     // delay(100)
-  //     )
-  //     .subscribe( marca =>{
-
-  //     if(!marca){
-  //       return this.router.navigateByUrl(`/dasboard/marca`);
-  //     }
-
-  //       const { marca_name } = marca;
-  //       this.marcaSeleccionado = marca;
-  //       this.marcaForm.setValue({marca_name});
-
-  //     });
-
-  // }
-
-  iniciarFormulario(id:number){debugger
-    // const id = this.route.snapshot.paramMap.get('id');
+  iniciarFormulario(id:number){
 
 
     if (id !== null && id !== undefined) {
@@ -112,27 +85,31 @@ export class MarcaEditComponent implements OnInit {
 
   }
 
+  get marca_name() { return this.marcaForm.get('marca_name'); }
 
 
-
-  updateMarca(){debugger
+  updateMarca(){
 
     const {marca_name } = this.marcaForm.value;
 
-    if(this.marcaForm.value){
+    const formData = new FormData();
+    formData.append('marca_name', this.marcaForm.get('marca_name').value);
+    const id = this.marcaForm.get('id').value;
+
+    if(id){
       //actualizar
-      const data = {
-        ...this.marcaForm.value,
-        id: this.marcaSeleccionado.id
-      }
-      this.marcaService.actualizarMarca(this.marcaSeleccionado.id).subscribe(
+      // const data = {
+      //   ...this.marcaForm.value,
+      //   id: this.marcaSeleccionado.id
+      // }
+      this.marcaService.actualizarMarca(formData, +id).subscribe(
         resp =>{
           Swal.fire('Actualizado', `${marca_name}  actualizado correctamente`, 'success');
         });
 
     }else{
       //crear
-      this.marcaService.crearMarca(this.marcaForm.value)
+      this.marcaService.crearMarca(formData)
       .subscribe( (resp: any) =>{
         Swal.fire('Creado', `${marca_name} creado correctamente`, 'success');
         this.router.navigateByUrl(`/dashboard/marca`)

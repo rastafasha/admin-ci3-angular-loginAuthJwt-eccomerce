@@ -16,6 +16,7 @@ export class Slider {
     public updated_at: Date,
     public created_at: Date,
     public user_id: number,
+    public imgUrl: string,
     public id?: number,
   ){}
 

@@ -88,47 +88,41 @@
                         </div>
                     </div>
 
+
                     <div class="form-group row align-items-center">
-                        <label class="col-form-label font-weight-medium" for="text-input">Facebook</label>
+                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Logo Url(Opcional)</label>
+                        <div class="col-md-9">
+                            <input class="form-control" required type="text" placeholder="Url de la imagen(opcional)" formControlName="logoUrl">
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">favicon Url(Opcional)</label>
+                        <div class="col-md-9">
+                            <input class="form-control" required type="text" placeholder="Url de la imagen(opcional)" formControlName="faviconUrl">
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
                         <div class="input-group col-md-10 input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                            <i class="czi-facebook"></i>
-                          </span>
-                            </div>
+                            <div class="input-group-addon"><i class="czi-facebook"></i></div>
                             <input class="form-control" type="text" placeholder="Enlace de pagina en facebook" formControlName="facebook">
                         </div>
                     </div>
-                    <div class="form-group row align-items-center">
-                        <label class="col-form-label font-weight-medium" for="text-input">Instagram</label>
+                    <div class="form-group ">
                         <div class="col-md-10 input-group ">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                            <i class="czi-instagram"></i>
-                          </span>
-                            </div>
+                            <div class="input-group-addon"><i class="czi-instagram"></i></div>
                             <input class="form-control" type="text" placeholder="Enlace de pagina en instagram" formControlName="instagram">
                         </div>
                     </div>
-                    <div class="form-group row align-items-center">
-                        <label class="col-form-label font-weight-medium" for="text-input">Youtube</label>
+                    <div class="form-group ">
                         <div class="col-md-10 input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                            <i class="czi-youtube"></i>
-                          </span>
-                            </div>
+                            <div class="input-group-addon"><i class="czi-youtube"></i></div>
                             <input class="form-control" type="text" placeholder="Enlace de pagina en youtube" formControlName="youtube">
                         </div>
                     </div>
-                    <div class="form-group row align-items-center">
-                        <label class="col-form-label font-weight-medium" for="text-input">Twitter</label>
+                    <div class="form-group ">
                         <div class="col-md-10 input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                            <i class="czi-twitter"></i>
-                          </span>
-                            </div>
+                            <div class="input-group-addon"><i class="czi-twitter"></i></div>
                             <input class="form-control" type="text" placeholder="Enlace de pagina en twitter" formControlName="twitter">
                         </div>
                     </div>
@@ -141,39 +135,45 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6" *ngIf="congeneralSeleccionado.logo">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">imagen</h4>
-                <h6 class="card-subtitle">Logo</h6>
-                <div class="text-center">
-                    <img *ngIf="!imgTemp" [src]="configuracion.logo | imagenPipe: 'configuracions'  " class="img-responsive img-thumbnail" alt="">
-                    <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+    <div class="col-md-6" *ngIf="configuracion">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">imagen</h4>
+                        <h6 class="card-subtitle">Logo</h6>
+                        <div class="text-center">
+
+                            <img *ngIf="!configuracion.logo" [src]="imgTemp | imagenPipe: 'configuraciones'" class="img-avatar img-thumbnail">
+                            <img *ngIf="configuracion.logo" [src]="configuracion.logo " class="img-avatar img-thumbnail">
+                        </div>
+                        <input type="file" (change)="cambiarImagen($event.target.files[0])">
+                        <br>
+                        <br>
+                        <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                      <i class="fa fa-save"></i> Cambiar imagen
+                    </button>
+                    </div>
                 </div>
-                <input type="file" (change)="cambiarImagen($event.target.files[0])">
-                <br>
-                <br>
-                <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
-        <i class="fa fa-save"></i> Cambiar imagen
-       </button>
             </div>
-        </div>
-    </div>
-    <div class="col-md-6" *ngIf="congeneralSeleccionado.favicon">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Favicon</h4>
-                <h6 class="card-subtitle">Logo de navegador</h6>
-                <div class="text-center">
-                    <img *ngIf="!imgTemp1" [src]="configuracion.favicon | imagenPipe: 'configuracions'  " class="img-responsive img-thumbnail" alt="">
-                    <img *ngIf="imgTemp1" [src]="imgTemp1" class="img-avatar">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Favicon</h4>
+                        <h6 class="card-subtitle">Logo de navegador</h6>
+                        <div class="text-center">
+                            <img *ngIf="!configuracion.favicon" [src]="imgTemp | imagenPipe: 'configuraciones'" class="img-avatar img-thumbnail">
+                            <img *ngIf="configuracion.favicon" [src]="configuracion.favicon" class="img-avatar img-thumbnail">
+
+                        </div>
+                        <input type="file" (change)="cambiarImagen1($event.target.files[0])">
+                        <br>
+                        <br>
+                        <button type="button" [disabled]="!imagenSubir1" (click)="subirImagen1()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+          <i class="fa fa-save"></i> Cambiar imagen
+         </button>
+                    </div>
                 </div>
-                <input type="file" (change)="cambiarImagen1($event.target.files[0])">
-                <br>
-                <br>
-                <button type="button" [disabled]="!imagenSubir1" (click)="subirImagen1()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
-      <i class="fa fa-save"></i> Cambiar imagen
-     </button>
             </div>
         </div>
     </div>

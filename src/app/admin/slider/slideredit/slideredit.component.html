@@ -6,7 +6,7 @@
                 <h4 class="card-title">{{pageTitle}}</h4>
                 <h6 class="card-subtitle">Ajustes</h6>
                 <button class="btn btn-outline-danger" href="javascript:void(0)" (click)="goBack()">Volver</button>
-                <form [formGroup]="sliderForm" (ngSubmit)="onSubmit(sliderForm)">
+                <form [formGroup]="sliderForm" (ngSubmit)="updateSlideForm()">
                     <div class="card border-0 box-shadow">
 
                         <div class="card-body">
@@ -30,6 +30,18 @@
                                         <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Enlace</label>
                                         <div class="col-md-9">
                                             <input class="form-control" type="text" placeholder="enlace" formControlName="enlace">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Boton</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" type="text" placeholder="enlace" formControlName="boton">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Img Url(opcional)</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" type="text" placeholder="enlace" formControlName="imgUrl">
                                         </div>
                                     </div>
                                     <div class="form-group row align-items-center">
@@ -85,11 +97,36 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group row align-items-center">
+                                        <label class=" col-form-label font-weight-medium" for="text-input">status</label>
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <input type="file" (change)="onSelectedFile($event)" />
+                                                        <div [innerHTML]="uploadError" class="error"></div>
+                                                        <img *ngIf="!slider.img" [src]="imgTemp" class="img-avatar">
+                                                        <div *ngIf="imagePath">
+                                                            <br />
+                                                            <img [src]="slider.img" width="50%" value="photo" class="shadow">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-primary mb-2 mr-1" type="submit">Actualizar campos</button>
+                            <input type="hidden" formControlName="id">
+                            <button type="submit" [disabled]="sliderForm.invalid" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                          <i class="fa fa-save"></i> Guardar cambios
+                        </button>
+
                         </div>
                     </div>
                 </form>
@@ -103,15 +140,15 @@
                     <h4 class="card-title">Image</h4>
                     <h6 class="card-subtitle">Logo de marca</h6>
                     <div class="text-center">
-                        <img *ngIf="!imgTemp" [src]="slider.img | imagenPipe: 'sliders'  " class="img-responsive img-thumbnail" alt="">
-                        <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+                        <img *ngIf="!slider.img" [src]="imgTemp" class="img-responsive img-thumbnail" alt="">
+                        <img *ngIf="slider.img" [src]="slider.img" class="img-responsive img-thumbnail">
                     </div>
-                    <input type="file" (change)="cambiarImagen($event.target.files[0])">
+                    <!-- <input type="file" (change)="cambiarImagen($event.target.files[0])">
                     <br>
                     <br>
                     <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
           <i class="fa fa-save"></i> Cambiar imagen
-         </button>
+         </button> -->
                 </div>
             </div>
         </div>

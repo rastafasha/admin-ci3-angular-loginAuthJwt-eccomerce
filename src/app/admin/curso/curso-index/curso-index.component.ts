@@ -28,6 +28,7 @@ export class CursoIndexComponent implements OnInit {
 
   p: number = 1;
   count: number = 8;
+  error: string;
 
   public imgSubs: Subscription;
   listIcons;
@@ -61,16 +62,9 @@ export class CursoIndexComponent implements OnInit {
     this.cursoService.cargarCursos().subscribe(
       (res: Curso) => this.cursos = res,
       );
-      console.log(this.cursos);
+      // console.log(this.cursos);
       this.cargando = false;
 
-    // this.cursoService.cargarCursos().subscribe(
-    //   cursos => {
-    //     this.cargando = false;
-    //     this.cursos = cursos;
-    //     console.log(this.cursos);
-    //   }
-    // )
 
   }
 
@@ -91,12 +85,18 @@ export class CursoIndexComponent implements OnInit {
 
 
 
-  eliminarCurso(curso: Curso){
-    this.cursoService.borrarCurso(curso.id)
-    .subscribe( resp => {
-      this.loadCursos();
-      Swal.fire('Borrado', curso.name, 'success')
-    })
+  eliminarCurso(id: number){
+    this.cursoService.borrarCurso(+id).subscribe(
+      response =>{
+        this.loadCursos();
+        $('#delete-'+id).modal('hide');
+        $('.modal-backdrop').removeClass('show');
+        $('.fix-header').removeClass('modal-open');
+      },
+      error=>{
+        this.msm_error = 'No se pudo eliminar el curso, vuelva a intentar.'
+      }
+    );
 
   }
 
@@ -110,6 +110,7 @@ export class CursoIndexComponent implements OnInit {
     .subscribe( resultados => {
       resultados;
     })
+    this.ngOnInit();
   }
 
 
@@ -144,19 +145,6 @@ export class CursoIndexComponent implements OnInit {
     )
   }
 
-  // papelera(id){
-  //   this.cursoService.papelera(id).subscribe(
-  //     response=>{
-  //       $('#papelera-'+id).modal('hide');
-  //       $('.modal-backdrop').removeClass('show');
-  //       this.loadCursos();
-
-  //     },
-  //     error=>{
-  //       this.msm_error = 'No se pudo mover a papelera el curso, vuelva a intenter.'
-  //     }
-  //   )
-  // }
 
 
 

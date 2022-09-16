@@ -52,7 +52,7 @@ export class ViewComponent implements OnInit {
     this.congeneralService.cargarCongenerals().subscribe(
       confgs => {
         this.cargando = false;
-        this.confgs = confgs;
+        // this.confgs = confgs;
         console.log(this.confgs);
       }
     )
@@ -73,10 +73,10 @@ export class ViewComponent implements OnInit {
   }
 
   guardarCambios(confg: Configuracion){
-    this.congeneralService.actualizarCongeneral(confg)
-    .subscribe( resp => {
-      Swal.fire('Actualizado', confg.titulo,  'success')
-    })
+    // this.congeneralService.actualizarCongeneral(confg)
+    // .subscribe( resp => {
+    //   Swal.fire('Actualizado', confg.titulo,  'success')
+    // })
 
   }
 

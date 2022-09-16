@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Curso } from '../models/curso.model';
-import { Observable } from "rxjs";
+import { Observable, throwError } from "rxjs";
 
 const base_url = environment.baseUrl;
 
@@ -11,6 +11,10 @@ const base_url = environment.baseUrl;
   providedIn: 'root'
 })
 export class CursoService {
+
+  serverUrl = environment.baseUrl;
+  public curso: Curso;
+
 
 
   constructor(
@@ -41,10 +45,19 @@ export class CursoService {
 
   }
 
+  getCurso(id: number) {
+    return this.http.get<Curso>(this.serverUrl + 'api_curso/adminCurso/' + id).pipe(
+      catchError(this.handleError)
+    );
+  }
+
 
   getCursoById(id: number): Observable<Curso>{
     const url = `${base_url}api_curso/adminCurso/${id}`;
     return this.http.get<Curso>(url, this.headers)
+    .pipe(
+      catchError(this.handleError)
+    );
       // .pipe(
       //   map((resp:{ok: boolean, curso: Curso}) => resp.curso)
       //   );
@@ -52,19 +65,36 @@ export class CursoService {
   }
 
 
-  crearCurso(curso: Curso){
-    const url = `${base_url}api_curso/createCurso`;
-    return this.http.post(url, curso, this.headers);
+  crearCurso(curso){
+    return this.http.post<any>(this.serverUrl + 'api_curso/createCurso', curso)
+    .pipe(
+      catchError(this.handleError)
+    );
+    // const url = `${base_url}api_curso/createCurso`;
+    // return this.http.post(url, curso, this.headers)
+
   }
 
-  actualizarCurso(id:number){
-    const url = `${base_url}api_curso/updateCurso/${id}`;
-    return this.http.put(url, id, this.headers);
+  actualizarCurso(curso, id: number) {
+    return this.http.post<any>(this.serverUrl + 'api_curso/updateCurso/' + id, curso)
+    .pipe(
+      catchError(this.handleError)
+    );
+    // const url = `${base_url}api_curso/updateCurso/`;
+    // return this.http.post<Curso>(url,id, this.headers)
+
   }
+
 
   borrarCurso(id:number){
-    const url = `${base_url}api_curso/deleteCurso/${id}`;
-    return this.http.delete(url, this.headers);
+    return this.http.delete(this.serverUrl + 'api_curso/deleteCurso/' + id).pipe(
+      catchError(this.handleError)
+    );
+    // const url = `${base_url}api_curso/deleteCurso/${id}`;
+    // return this.http.delete(url, this.headers)
+    // .pipe(
+    //   catchError(this.handleError)
+    // );
   }
 
 
@@ -91,6 +121,18 @@ export class CursoService {
     return this.http.get(url,  this.headers);
   }
 
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
+    }
+    // return an observable with a user-facing error message
+    return throwError('Something bad happened. Please try again later.');
+  }
 
 
 

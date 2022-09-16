@@ -16,7 +16,7 @@ import { CongeneralService } from 'src/app/services/congeneral.service';
 export class HeaderComponent implements OnInit {
 
   public usuario: Usuario;
-  public congenerals: Configuracion[];
+  public congenerals: Configuracion;
   public mensajes : Array<any> = [];
   public page;
   public pageSize = 15;
@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.flag = true;
 
-    this.cargarConfiguraciones();
+    // this.cargarConfiguraciones();
 
   }
 

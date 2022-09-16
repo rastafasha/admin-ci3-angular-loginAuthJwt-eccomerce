@@ -11,43 +11,12 @@
                         <label for="exampleInputuname">Titulo Categoria</label>
                         <div class="input-group">
 
-                            <input type="text" formControlName="category_name" class="form-control" id="exampleInputuname" placeholder="nombre">
+                            <input type="text" formControlName="category_name" class="form-control" placeholder="nombre">
                         </div>
                     </div>
-                    <!-- <div class="form-group form-row">
-                        <label class="col-md-3">Mostrar en slide</label>
-                        <div class="col-sm-4">
-                            <div class="form-check">
-                                <label class="custom-control custom-radio">
-                                  <input id="radio1" formControlName="state_banner" type="radio" value="true" class="custom-control-input">
-                                  <span class="custom-control-indicator"></span>
-                                  <span class="custom-control-description">Activo</span>
-                              </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="custom-control custom-radio">
-                                  <input id="radio2" formControlName="state_banner" type="radio" value="false" class="custom-control-input">
-                                  <span class="custom-control-indicator"></span>
-                                  <span class="custom-control-description">Desactivado</span>
-                              </label>
-                            </div>
-                        </div>
-                    </div> -->
 
 
-                    <!-- <div class="form-group">
-                        <label for="icono">Icono</label>
-                        <div class="input-group">
-
-                            <select formControlName="icono" class="form-control">
-                            <option *ngFor="let ic of listIcons.iconos" value="{{ic.icono}}">
-                              {{ic.name}} <i class="{{ic.icono}}"></i>
-                            </option>
-                          </select>
-
-                        </div>
-                    </div> -->
-
+                    <input type="hidden" formControlName="id">
                     <button type="submit" [disabled]="categoriaForm.invalid" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
                  <i class="fa fa-save"></i> Guardar cambios
                 </button>

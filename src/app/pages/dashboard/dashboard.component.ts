@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
   public num_comentarios = 0;
 
   public totalUsuarios: number = 0;
-  public usuarios: Usuario[] = [];
+  public usuarios: Usuario;
   public usuariosTemp: Usuario[] = [];
 
   public desde: number = 0;
@@ -140,20 +140,22 @@ export class DashboardComponent implements OnInit {
   loadUsuarios(){
     this._userService.get_users()
     .subscribe(
-      ({total, usuarios})=>{
-        this.totalUsuarios = total;
-        this.usuarios = usuarios;
-        this.usuariosTemp = usuarios;
+      res =>{
+        this.usuarios = res;
       }
+      // ({total, usuarios})=>{
+      //   this.totalUsuarios = total;
+      //   this.usuarios = usuarios;
+      //   this.usuariosTemp = usuarios;
+      // }
     )
   }
 
   cargarUsuario(){
-    this._userService.get_user(this.usuario)
+    this._userService.get_user(this.usuario.id)
     .subscribe(
-      ({usuario})=>{
-        this.usuario = usuario;
-        console.log(this.usuario);
+      res=>{
+        this.usuario = res;
       }
     )
   }

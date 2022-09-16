@@ -9,6 +9,9 @@ import { SliderService } from '../../services/slider.service';
 import { ModalImagenService } from '../../services/modal-imagen.service';
 import { Router } from '@angular/router';
 
+declare var jQuery:any;
+declare var $:any;
+
 @Component({
   selector: 'app-slider',
   templateUrl: './slider.component.html',
@@ -26,6 +29,8 @@ export class SliderComponent implements OnInit {
   count: number = 8;
 
   public imgSubs: Subscription;
+
+  public msm_error;
 
   constructor(
     private sliderService: SliderService,
@@ -53,8 +58,6 @@ export class SliderComponent implements OnInit {
     this.sliderService.cargarSliders().subscribe(
       (data: Slider) => this.sliders = data,
       );
-          console.log(this.sliders);
-
       this.cargando = false;
 
   }
@@ -63,7 +66,7 @@ export class SliderComponent implements OnInit {
 
     id = this.slider.id;
     if(id){
-      this.sliderService.actualizarSlider(this.slider.id, this.slider)
+      this.sliderService.actualizarSlider(this.slider, this.slider.id )
       .subscribe( resp => {
         Swal.fire('Actualizado', this.slider.title,  'success')
       })
@@ -74,11 +77,19 @@ export class SliderComponent implements OnInit {
 
 
   eliminarSlider(id: number){
-    this.sliderService.borrarSlider(id)
-    .subscribe( resp => {
-      this.loadSliders();
-      Swal.fire('Borrado', this.slider.title, 'success')
-    })
+    this.sliderService.borrarSlider(+id).subscribe(
+      response =>{
+        this.loadSliders();
+        $('#delete-'+id).modal('hide');
+        $('.modal-backdrop').removeClass('show');
+        $('.fix-header').removeClass('modal-open');
+      },
+      error=>{
+        this.msm_error = 'No se pudo eliminar el curso, vuelva a intentar.'
+      }
+    );
+
+    this.ngOnInit();
 
   }
 

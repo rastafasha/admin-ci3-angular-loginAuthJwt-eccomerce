@@ -8,6 +8,9 @@ import { Promocion } from '../../models/promocion.model';
 import { PromocionService } from '../../services/promocion.service';
 import { ModalImagenService } from '../../services/modal-imagen.service';
 import { Router } from '@angular/router';
+
+declare var jQuery:any;
+declare var $:any;
 @Component({
   selector: 'app-promocion',
   templateUrl: './promocion.component.html',
@@ -23,8 +26,11 @@ export class PromocionComponent implements OnInit {
 
   p: number = 1;
   count: number = 8;
+  error: string;
+  public msm_error;
 
   public imgSubs: Subscription;
+  public imgTemp: any = null;
 
   constructor(
     private promocionService: PromocionService,
@@ -61,7 +67,7 @@ export class PromocionComponent implements OnInit {
   guardarCambios(id: number){
     id = this.promocion.id;
     if(id){
-      this.promocionService.actualizarPromocion(this.promocion.id, this.promocion)
+      this.promocionService.actualizarPromocion(this.promocion, this.promocion.id)
       .subscribe( resp => {
         Swal.fire('Actualizado', this.promocion.producto_title,  'success')
       })
@@ -71,12 +77,19 @@ export class PromocionComponent implements OnInit {
   }
 
 
-  eliminarPromocion(promocion: Promocion){
-    this.promocionService.borrarPromocion(promocion.id)
-    .subscribe( resp => {
-      this.loadPromocions();
-      Swal.fire('Borrado', promocion.producto_title, 'success')
-    })
+  eliminarPromocion(id: number){
+    this.promocionService.borrarPromocion(+id).subscribe(
+      response =>{
+        this.loadPromocions();
+        $('#delete-'+id).modal('hide');
+        $('.modal-backdrop').removeClass('show');
+        $('.fix-header').removeClass('modal-open');
+      },
+      error=>{
+        this.msm_error = 'No se pudo eliminar el curso, vuelva a intentar.'
+      }
+    );
+    this.ngOnInit();
 
   }
 

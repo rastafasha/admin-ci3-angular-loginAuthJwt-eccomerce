@@ -28,18 +28,20 @@ import { UsuarioService } from '../services/usuario.service';
 import { CategoriaService } from '../services/categoria.service';
 import { ProductoService } from '../services/producto.service';
 import { CursoService } from '../services/curso.service';
+import { GalleryService } from '../services/galeria.service';
+import { VideocursoService } from '../services/videocurso.service';
 
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    ProgressComponent,
-    Grafica1Component,
+    // ProgressComponent,
+    // Grafica1Component,
+    // RxjsComponent,
+    // PromesasComponent,
     PagesComponent,
     AccountSettingComponent,
-    PromesasComponent,
-    RxjsComponent,
     PerfilComponent,
     UsuariosComponent,
     BusquedaComponent,
@@ -49,12 +51,14 @@ import { CursoService } from '../services/curso.service';
   ],
   exports: [
     DashboardComponent,
-    ProgressComponent,
-    Grafica1Component,
+    // ProgressComponent,
+    // Grafica1Component,
+    // PromesasComponent,
+    // RxjsComponent,
     PagesComponent,
     AccountSettingComponent,
-    PromesasComponent,
-    RxjsComponent,
+    PerfilComponent,
+    UsuariosComponent,
   ],
   imports: [
     FormsModule,
@@ -72,7 +76,9 @@ import { CursoService } from '../services/curso.service';
     UsuarioService,
     CategoriaService,
     ProductoService,
-    CursoService
+    CursoService,
+    GalleryService,
+    VideocursoService
   ]
 })
 export class PagesModule { }

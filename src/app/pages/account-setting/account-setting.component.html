@@ -28,12 +28,46 @@
     </div>
     <div class="col-6 card" *ngFor="let conf of congenerals">
 
-        <a [routerLink]="['/dashboard/configuracion/edit', conf.id]" class="cursor" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> Edit</a>
-        <p>titulo: {{conf.titulo}},<br> cr: {{conf.cr}},<br> telefono_uno: {{conf.telefono_uno}},<br> telefono_dos: {{conf.telefono_dos}},<br> email_uno: {{conf.email_uno}},<br> email_dos: {{conf.email_dos}},<br> direccion: {{conf.direccion}},<br> horarios:
-            {{conf.horarios}},
-            <br> iframe_mapa: {{conf.iframe_mapa}},<br> facebook: {{conf.facebook}},<br> instagram: {{conf.instagram}},<br> youtube: {{conf.youtube}},<br> twitter: {{conf.twitter}}
 
-            <br> logo: {{conf.logo}}<br> favicon: {{conf.favicon}}</p>
+        <div class="infoTienda">
+            <a [routerLink]="['/dashboard/configuracion/edit', conf.id]" class="cursor">
+                <button class="btn btn-themecolor">
+            <i class="fa fa-pencil text-inverse m-r-10"></i> Edit
+          </button>
+            </a>
+            <div class="info">
+                <h4>titulo: {{conf.titulo}}</h4>
+                <h5>cr: {{conf.cr}}</h5>
+                <p>telefono_uno: {{conf.telefono_uno}}</p>
+                <p>telefono_dos: {{conf.telefono_dos}}</p>
+                <p>email_uno: {{conf.email_uno}}</p>
+                <p>email_dos: {{conf.email_dos}}</p>
+                <p>direccion: {{conf.direccion}}</p>
+                <p>horarios: {{conf.horarios}}</p>
+            </div>
+            <div class="iframe">
+                <img *ngIf="!conf.iframe_mapa" src="./assets/images/background/error-bg.jpg">
+                <iframe *ngIf="conf.iframe_mapa" src="{{conf.iframe_mapa}}" frameborder="0"></iframe>
+            </div>
+            <div class="iconos">
+                <a *ngIf="conf.facebook" href="{{conf.facebook}}" target="_blank">
+                    <i class=" fa fa-facebook"></i> {{conf.facebook}}
+                </a>
+                <a *ngIf="conf.instagram" href="{{conf.instagram}}" target="_blank">
+                    <i class=" fa fa-instagram"></i> {{conf.instagram}}
+                </a>
+                <a *ngIf="conf.youtube" href="{{conf.youtube}}" target="_blank">
+                    <i class=" fa fa-youtube"></i> {{conf.youtube}}
+                </a>
+                <a *ngIf="conf.twitter" href="{{conf.youtube}}" target="_blank">
+                    <i class=" fa fa-youtube"></i> {{conf.youtube}}
+                </a>
+            </div>
+            <div class="images">
+                <img [src]="conf.logo" class="imagen-responsive">
+                <img [src]="conf.favicon" class="imagen-responsive">
+            </div>
+        </div>
     </div>
 
 

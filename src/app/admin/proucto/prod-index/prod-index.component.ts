@@ -15,7 +15,10 @@ declare var $:any;
 @Component({
   selector: 'app-prod-index',
   templateUrl: './prod-index.component.html',
-  styleUrls: ['./prod-index.component.css']
+  styleUrls: ['./prod-index.component.css'],
+  providers:[
+    CategoriaService
+  ]
 })
 export class ProdIndexComponent implements OnInit {
 
@@ -30,9 +33,11 @@ export class ProdIndexComponent implements OnInit {
   count: number = 8;
 
   public imgSubs: Subscription;
-  listIcons;
+  listCategorias;
 
   public msm_error;
+  public error;
+
 
   constructor(
     private productoService: ProductoService,
@@ -61,22 +66,18 @@ export class ProdIndexComponent implements OnInit {
     this.productoService.cargarProductos().subscribe(
       (data: Producto) => this.productos = data,
       );
-      console.log(this.productos);
+      // console.log(this.productos);
       this.cargando = false;
-    // this.productoService.cargarProductos().subscribe(
-    //   productos => {
-    //     this.cargando = false;
-    //     this.productos = productos;
-    //     console.log(this.productos);
-    //   }
-    // )
 
   }
   loadCategorias(){
     this.categoriaService.cargarCategorias().subscribe(
-      (data: Categoria) => this.categorias = data,
-      );
-      console.log(this.categorias);
+      resp =>{
+        this.listCategorias = resp;
+        console.log(this.listCategorias)
+
+      }
+    )
 
   }
 
@@ -97,13 +98,19 @@ export class ProdIndexComponent implements OnInit {
 
 
 
-  eliminarProducto(producto: Producto){
-    this.productoService.borrarProducto(producto.id)
-    .subscribe( resp => {
-      this.loadCategorias();
-      Swal.fire('Borrado', producto.name, 'success')
-    })
-
+  eliminarProducto(id: number){
+    this.productoService.borrarProducto(+id).subscribe(
+      response =>{
+        this.loadProductos();
+        $('#delete-'+id).modal('hide');
+        $('.modal-backdrop').removeClass('show');
+        $('.fix-header').removeClass('modal-open');
+      },
+      error=>{
+        this.msm_error = 'No se pudo eliminar el curso, vuelva a intentar.'
+      }
+    );
+    this.ngOnInit();
   }
 
   buscar(termino: string){

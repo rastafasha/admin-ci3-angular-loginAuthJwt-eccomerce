@@ -4,25 +4,40 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">{{pageTitle}}</h4>
+                <h4 class="card-title">{{pageSubTitle}}</h4>
                 <h6 class="card-subtitle">Ajustes</h6>
                 <button class="btn btn-outline-danger" href="javascript:void(0)" (click)="goBack()">Volver</button>
                 <form class="form p-t-20" [formGroup]="cursoForm" (submit)="updateCurso()">
                     <div class="form-group">
-                        <label for="exampleInputuname">Titulo</label>
+                        <label for="exampleInputuname">Titulo<span style="color:red">*</span></label>
                         <div class="input-group">
 
                             <input type="text" formControlName="name" class="form-control" id="exampleInputuname" placeholder="titulo">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>Codigo<span style="color:red">*</span></label>
+                        <div class="input-group">
+
+                            <input type="text" formControlName="cod_prod" class="form-control" placeholder="ejemplo: CurName01" required>
+                        </div>
+                    </div>
                     <div class="form-group row align-items-center">
-                        <label class=" col-form-label font-weight-medium" for="text-input">Video de youtube</label>
+                        <label class=" col-form-label font-weight-medium" for="text-input">Video de youtube<span style="color:red">*</span></label>
                         <div class="col-md-10">
                             <textarea class="form-control" type="text" placeholder="Codigo de insercion de vídeo." formControlName="video_review" required></textarea>
 
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label class=" col-form-label font-weight-medium" for="text-input">Descripción</label>
+                        <label class=" col-form-label font-weight-medium" for="text-input">Img Url (Opcional)</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" type="text" formControlName="imgUrl"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label class=" col-form-label font-weight-medium" for="text-input">Descripción<span style="color:red">*</span></label>
                         <div class="col-md-10">
                             <textarea class="form-control" id="textarea-input" rows="5" placeholder="Descripcion producto." formControlName="description" required></textarea>
 
@@ -30,17 +45,17 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class=" col-form-label font-weight-medium" for="textarea-input">Descripción corta</label>
+                        <label class=" col-form-label font-weight-medium" for="textarea-input">Descripción corta<span style="color:red">*</span></label>
                         <div class="col-md-10">
                             <textarea class="form-control" id="textarea-input" rows="5" placeholder="Detalle corto del producto." formControlName="info_short" required></textarea>
                         </div>
                     </div>
                     <div class="form-group row align-items-center">
-                        <label class=" col-form-label font-weight-medium" for="text-input">precio</label>
+                        <label class=" col-form-label font-weight-medium" for="text-input">Precio<span style="color:red">*</span></label>
                         <div class="col-md-10">
                             <div class="row">
                                 <div class="col-lg-4">
-                                    <input class="form-control" type="text" placeholder="Precio actual" formControlName="price">
+                                    <input class="form-control" type="text" placeholder="Precio actual" formControlName="price" value="price" required>
                                 </div>
                                 <!-- <div class="col-lg-4">
                                     <input class="form-control" type="number" placeholder="Precio antes" formControlName="precio_antes" min="0" >
@@ -57,10 +72,10 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="select-input">Visible</label>
-                                        <select class="form-control custom-select" formControlName="is_active" required>
+                                        <select class="form-control custom-select" formControlName="is_active">
                                         <option selected  value="">SELECCIONAR</option>
-                                        <option  [value]="0">Inactivo</option>
                                         <option  [value]="1">Activo</option>
+                                        <option  [value]="0">Inactivo</option>
 
                                     </select>
                                     </div>
@@ -70,8 +85,8 @@
                                         <label for="select-input">Destacado</label>
                                         <select class="form-control custom-select" formControlName="is_featured">
                                               <option selected disabled value="">SELECCIONAR</option>
+                                              <option  [value]="1">Activo</option>
                                               <option  [value]="0">Inactivo</option>
-                                        <option  [value]="1">Activo</option>
 
                                           </select>
                                     </div>
@@ -90,7 +105,7 @@
                                         <label for="select-input">Categoría</label>
                                         <select class="form-control custom-select" formControlName="category_id" required>
                                             <option selected  value="">SELECCIONAR</option>
-                                            <option *ngFor="let item of listCategorias" [value]="item.category_id">{{item.category_name}}</option>
+                                            <option *ngFor="let cat of listCategorias" [value]="cat.id">{{cat.category_name}}</option>
 
                                         </select>
                                     </div>
@@ -100,24 +115,34 @@
                         </div>
                     </div>
 
-                    <!-- <div class="form-group row align-items-center">
-                        <label class="col-md-2 col-form-label font-weight-medium" for="text-input">Tipo</label>
+                    <div class="form-group row align-items-center">
+                        <label class=" col-form-label font-weight-medium" for="text-input">status</label>
                         <div class="col-md-10">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <input class="form-control" type="text" placeholder="Nombre del selector" formControlName="nombre_selector" min="0" required>
+                                    <div class="form-group">
+                                        <input type="file" (change)="onSelectedFile($event)" />
+                                        <div [innerHTML]="uploadError" class="error"></div>
+                                        <img *ngIf="!curso.img" [src]="imgTemp" class="img-avatar">
+                                        <div *ngIf="imagePath">
+                                            <br />
+                                            <img [src]="curso.img" width="50%" value="photo" class="shadow">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <span class="text-muted">Por ejemplo: Para calzados el selector es <b>TALLAS</b></span>
-                                </div>
+
 
                             </div>
                         </div>
-                    </div> -->
+                    </div>
 
-                    <button type="submit" [disabled]="cursoForm.invalid" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
-                 <i class="fa fa-save"></i> Guardar cambios
-                </button>
+                    <div class="card-footer">
+                        <input type="hidden" formControlName="id">
+                        <button type="submit" [disabled]="cursoForm.invalid" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                        <i class="fa fa-save"></i> Guardar cambios
+                      </button>
+
+                    </div>
                 </form>
             </div>
         </div>
@@ -127,16 +152,18 @@
             <div class="card-body">
                 <h4 class="card-title">Image</h4>
                 <div class="text-center">
-                    <img *ngIf="!imgTemp" [src]="curso.img | imagenPipe: 'cursos'  " class="img-responsive img-thumbnail" alt="">
-                    <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+                    <img *ngIf="!imgTemp" [src]="curso.img" class="img-responsive img-thumbnail">
+                    <img *ngIf="imgTemp" [src]="imgTemp " class="img-responsive img-thumbnail">
                 </div>
-                <input type="file" (change)="cambiarImagen($event.target.files[0])">
+                <!-- <input type="file" (change)="cambiarImagen($event.target.files[0])">
                 <br>
-                <br>
-                <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                <br> -->
+                <!-- <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
               <i class="fa fa-save"></i> Cambiar imagen
-             </button>
+             </button> -->
             </div>
         </div>
+        <app-curso-videos></app-curso-videos>
+
     </div>
 </div>

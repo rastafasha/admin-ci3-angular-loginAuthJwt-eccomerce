@@ -1,0 +1,66 @@
+.infoTienda {
+    display: flex;
+    flex-direction: column;
+}
+
+.infoTienda button {
+    display: flex;
+    flex-direction: row;
+    float: right;
+    margin: 10px 0px;
+    color: #fff;
+}
+
+.infoTienda .info {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: repeat(1, 20%);
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.infoTienda .iframe iframe,
+.infoTienda .iframe img {
+    display: flex;
+    width: 100%;
+    height: 200px;
+}
+
+.iframe {
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.iconos {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: repeat(1, 60%);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.iconos a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.images {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    /* grid-template-rows: repeat(1, 60%); */
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.images img {
+    width: fit-content;
+    height: 200px;
+}

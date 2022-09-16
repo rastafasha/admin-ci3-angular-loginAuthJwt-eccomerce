@@ -6,8 +6,10 @@ export class Curso{
   constructor(
 
         public name: string,
-        public price: string,
+        public cod_prod: string,
+        public price: number,
         public video_review: string,
+        public imgUrl: string,
         public info_short: string,
         public description: string,
         public category_id: number,
@@ -15,8 +17,8 @@ export class Curso{
         public is_active: boolean,
         public updated_at: Date,
         public created_at: Date,
-        public id: number,
         public user_id: number,
+        public id: number,
         public img?: string,
 
   ){}
@@ -34,4 +36,20 @@ export class Curso{
     }
 
   }
+}
+
+
+
+export class VideoCurso{
+  constructor(
+
+    public user_id: number,
+    public curso_id: number,
+    public id: number,
+    public url: string,
+    public estado: string,
+    public updated_at: Date,
+    public created_at: Date,
+
+  ){}
 }

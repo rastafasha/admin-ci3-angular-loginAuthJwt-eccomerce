@@ -8,12 +8,15 @@ export class Producto{
   constructor(
 
         public name: string,
-        public price: string,
+        public cod_prod: string,
+        public price: number,
         public video_review: string,
         public info_short: string,
         public description: string,
         public category_id: number,
         public is_featured: boolean,
+        public is_active: boolean,
+        public imgUrl: string,
         public img?: string,
         public id?: number
 

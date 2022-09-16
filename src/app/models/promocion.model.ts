@@ -15,6 +15,7 @@ export class Promocion {
     public is_activeBot: string,
     public updated_at: Date,
     public created_at: Date,
+    public imgUrl: string,
     public img?: string,
     public id?: number
   ){}

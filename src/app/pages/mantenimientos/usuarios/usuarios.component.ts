@@ -3,10 +3,12 @@ import Swal from 'sweetalert2';
 import { delay } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
-import { Usuario } from '../../../models/usuario.model';
+import { Role, Usuario } from '../../../models/usuario.model';
 import { BusquedasService } from '../../../services/busquedas.service';
 import { ModalImagenService } from '../../../services/modal-imagen.service';
 import { UsuarioService } from '../../../services/usuario.service';
+import { Router } from '@angular/router';
+import { RoleService } from 'src/app/services/role.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -27,14 +29,20 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   public imgSubs: Subscription;
 
+  listRoles;
+  rol: Role;
+
   constructor(
     private usuarioService: UsuarioService,
     private busquedaService: BusquedasService,
-    private modalImagenService: ModalImagenService
+    private modalImagenService: ModalImagenService,
+    private roleService: RoleService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.loadUsuarios();
+    this.obtenerRoles();
     this.imgSubs = this.modalImagenService.nuevaImagen
     .pipe(
       delay(100)
@@ -49,12 +57,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   loadUsuarios(){
     this.cargando = true;
-    // this.usuarioService.get_users().subscribe(
-    //   (resp:any)=>{
-    //     this.usuarios = resp;
-    //     console.log(this.usuarios);
-    //   }
-    // )
 
     this.usuarioService.get_users().subscribe(
       (data: Usuario) => this.usuarios = data,
@@ -76,6 +78,16 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.loadUsuarios();
 
 
+  }
+
+  obtenerRoles(){
+    this.roleService.cargarRoles().subscribe(
+      resp =>{
+        this.listRoles = resp;
+        console.log(this.listRoles)
+
+      }
+    )
   }
 
   buscar(termino: string){
@@ -119,8 +131,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
 
-  cambiarRole(usuario: Usuario){
-    this.usuarioService.guardarUsuario(usuario).subscribe(
+  cambiarRole(usuario: Usuario, id){
+    this.usuarioService.guardarUsuario(usuario, +id).subscribe(
       resp =>{ console.log(resp);}
     )
   }
@@ -129,6 +141,15 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   abrirModal(usuario: Usuario){
     // this.modalImagenService.abrirModal('users', this.usuario.id, usuario.img);
 
+  }
+
+  editarId(id:number ) {
+    this.usuarioService.get_user(id).subscribe(
+      res =>{
+        this.router.navigateByUrl('/dashboard/perfil/edit/'+id);
+
+      }
+    );
   }
 
 }

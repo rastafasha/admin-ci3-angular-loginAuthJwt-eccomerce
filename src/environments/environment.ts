@@ -5,6 +5,8 @@
 export const environment = {
   production: true,
   // baseUrl: 'https://svcbmf.net/server/',
+
+  //backend codeigniter3
   baseUrl: 'http://localhost:8888/proyectos/CI3Server/ursi/server/',
   mediaUrl: 'http://localhost:8888/proyectos/CI3Server/ursi/server/media/',
   client_idGoogle: '291137676127-svvuuca518djs47q2v78se9q6iggi4nq.apps.googleusercontent.com',

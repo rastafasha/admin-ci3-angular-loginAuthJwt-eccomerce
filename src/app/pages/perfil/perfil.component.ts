@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Usuario } from 'src/app/models/usuario.model';
+import { ActivatedRoute } from '@angular/router';
+import { Role, Usuario } from 'src/app/models/usuario.model';
 import { FileUploadService } from 'src/app/services/file-upload.service';
+import { RoleService } from 'src/app/services/role.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 
@@ -19,56 +21,34 @@ export class PerfilComponent implements OnInit {
   public imgTemp: any = null;
   roles;
 
-  listRoles;
+  pageTitle: string;
+  pageSubTitle: string;
 
   usuarioSeleccionado: Usuario;
+
+  listRoles;
+  rol: Role;
+  id: number;
 
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
-    private fileUploadService: FileUploadService
+    private roleService: RoleService,
+    private fileUploadService: FileUploadService,
+    private activatedRoute: ActivatedRoute,
   ) {
     this.usuario = usuarioService.user;
   }
 
   ngOnInit(): void {
-    this.perfilForm = this.fb.group({
-      first_name: [ this.usuario.first_name, Validators.required ],
-      last_name: [ this.usuario.last_name, Validators.required ],
-      email: [ this.usuario.email, Validators.required ],
-      username: [ this.usuario.username ],
-    });
 
     this.obtenerRoles();
-    this.cargarRoles();
-  }
+    this.activatedRoute.params.subscribe( ({id}) => this.iniciarFormulario(id));
 
-  actualizarPerfil(){
-
-    this.usuarioService.actualizarPerfil(this.perfilForm.value)
-    .subscribe(resp => {
-      const {first_name, last_name, username} = this.perfilForm.value;
-      this.usuario.first_name = first_name;
-      this.usuario.last_name = last_name;
-      this.usuario.username = username;
-      Swal.fire('Guardado', 'Los cambios fueron actualizados', 'success');
-    }, (err)=>{
-      Swal.fire('Error', err.error.msg, 'error');
-
-    })
   }
 
   obtenerRoles(){
-    this.usuarioService.getRoles().subscribe(
-      resp=>{
-        resp
-        console.log(resp);
-      }
-    )
-  }
-
-  cargar_iconos(){
-    this.usuarioService.getRoles().subscribe(
+    this.roleService.cargarRoles().subscribe(
       resp =>{
         this.listRoles = resp;
         console.log(this.listRoles)
@@ -77,15 +57,91 @@ export class PerfilComponent implements OnInit {
     )
   }
 
-  cargarRoles(){
-    this.usuarioService.getRoles().subscribe(
-      resp =>{
-        this.roles = resp;
-        console.log(this.roles)
 
-      }
-    )
+  iniciarFormulario(id:number){debugger
+    if (id !== null && id !== undefined) {
+      this.pageSubTitle = 'Editing';
+      this.usuarioService.get_user(+id).subscribe(
+        res => {
+          this.perfilForm.patchValue({
+            id: res.id,
+            first_name: res.first_name,
+            last_name: res.last_name,
+            email: res.email,
+            role_id: res.role_id,
+            username: res.username,
+            google: res.google,
+            img: res.img,
+          });
+          this.usuario = res;
+        }
+      );
+    } else {
+      this.pageSubTitle = 'Creating';
+    }
+    this.validacionesFormulario();
   }
+
+
+  validacionesFormulario(){
+    this.perfilForm = this.fb.group({
+      id: [ this.usuario.id ],
+      first_name: [ this.usuario.first_name, Validators.required ],
+      last_name: [ this.usuario.last_name, Validators.required ],
+      email: [ this.usuario.email ],
+      role_id: [ this.usuario.role_id ],
+      username: [ this.usuario.username ],
+      google: [ ''],
+      img: [ ''],
+    });
+  }
+
+  actualizarPerfil(){debugger
+
+    const {
+      first_name,
+      last_name,
+      username,
+      role_id,
+     } = this.perfilForm.value;
+
+
+    const formData = new FormData();
+    formData.append('first_name', this.perfilForm.get('first_name').value);
+    formData.append('last_name', this.perfilForm.get('last_name').value);
+    formData.append('username', this.perfilForm.get('username').value);
+    formData.append('role_id', this.perfilForm.get('role_id').value);
+    formData.append('id', this.perfilForm.value.id);
+    // formData.append('img', this.perfilForm.get('img').value);
+
+    const id = this.perfilForm.get('id').value;
+
+    if(id){
+
+      // const data = {
+      //   ...this.perfilForm.value,
+      // }
+      this.usuarioService.actualizarPerfil(formData, +id)
+    .subscribe(resp => {
+
+      this.usuario = resp;
+      Swal.fire('Guardado', 'Los cambios fueron actualizados', 'success');
+    }, (err)=>{
+      Swal.fire('Error', err.error.msg, 'error');
+
+    })
+    }else{
+      this.usuarioService.crearUsuario(formData)
+      .subscribe( (resp:any) =>{
+        Swal.fire('Creado', `creado correctamente`, 'success');
+        // this.router.navigateByUrl(`/dashboard/curso`)
+      })
+    }
+
+
+  }
+
+
 
 
 
@@ -105,13 +161,13 @@ export class PerfilComponent implements OnInit {
   }
 
   subirImagen(){
-    // this.fileUploadService
-    // .actualizarFoto(this.imagenSubir, 'users', this.usuario.id)
-    // .then(img => { this.usuario.img = img;
-    //   Swal.fire('Guardado', 'La imagen fue actualizada', 'success');
-    // }).catch(err =>{
-    //   Swal.fire('Error', 'No se pudo subir la imagen', 'error');
-    // })
+    this.fileUploadService
+    .actualizarFoto(this.imagenSubir, 'users', this.usuario.id)
+    .then(img => { this.usuario.img = img;
+      Swal.fire('Guardado', 'La imagen fue actualizada', 'success');
+    }).catch(err =>{
+      Swal.fire('Error', 'No se pudo subir la imagen', 'error');
+    })
   }
 
 }

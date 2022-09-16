@@ -29,10 +29,10 @@
                     </div>
                     <div class="col-4">
                         <div class="text-right">
-                            <button class="btn btn-primary" [routerLink]="['/dashboard/slider/create/']">
-                            <i class="fa fa-user-o"></i>
-                            Crear Slider
-                          </button>
+                            <button class="btn btn-themecolor" [routerLink]="['/dashboard/slider/create/']">
+                          <i class="fa fa-pencil-square-o"></i>
+                          Crear
+                        </button>
                         </div>
                     </div>
                 </div>
@@ -51,10 +51,13 @@
                                 <th class="text-nowrap">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr *ngFor="let slider of sliders | keys | paginate: { itemsPerPage: count, currentPage: p }">
+                        <tbody *ngFor="let slider of sliders | keys | paginate: { itemsPerPage: count, currentPage: p }">
+                            <tr>
                                 <td class="text-center">
-                                    <img [routerLink]="['/dashboard/slider/edit',slider.id]" [src]="slider.img " class="img-responsive avatar cursor" alt="{{slider.title}}">
+                                    <img *ngIf="slider.img && !slider.imgUrl" [routerLink]="['/dashboard/slider/edit',slider.id]" [src]="slider.img " class="img-responsive avatar cursor" alt="{{slider.title}}">
+                                    <img *ngIf="slider.imgUrl && !slider.img" [routerLink]="['/dashboard/slider/edit',slider.id]" [src]="slider.imgUrl " class="img-responsive avatar cursor" alt="{{slider.title}}">
+                                    <img *ngIf="!slider.img && !slider.imgUrl  " [routerLink]="['/dashboard/slider/edit',slider.id]" src="./assets/images/no-image.jpg" class="img-responsive avatar cursor" alt="{{slider.title}}">
+                                    <!-- <img [routerLink]="['/dashboard/slider/edit',slider.id]" [src]="slider.img " class="img-responsive avatar cursor" alt="{{slider.title}}"> -->
                                     <!-- <img (click)="abrirModal(marca)" [src]="marca.imagenUrl | imagenPipe: 'marcas'" class="avatar cursor" alt="{{marca.nombre}}"> -->
                                 </td>
                                 <td>
@@ -66,11 +69,35 @@
                                 </td>
                                 <td>{{ slider.created_at | date:'MMM d, y, h:mm:ss a' }}</td>
                                 <td>{{ slider.updated_at | date:'MMM d, y, h:mm:ss a' }}</td>
+
                                 <td class="text-nowrap text-center">
-                                    <a [routerLink]="['/dashboard/slider/edit', slider.id]" class="cursor" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                                    <a (click)="eliminarSlider(slider)" class="cursor" data-toggle="tooltip" data-original-title="Borrar"> <i class="fa fa-close text-danger"></i> </a>
+                                    <a [routerLink]="['/dashboard/slider/edit',slider.id]" class="nav-link-style text-danger">
+                                        <div class="czi-edit-alt"></div>
+                                    </a>
+                                    <a class="nav-link-style text-danger" data-toggle="modal" [attr.data-target]="'#'+slider.id" style="cursor:pointer">
+                                        <div class="czi-trash"></div>
+                                    </a>
                                 </td>
                             </tr>
+                            <!-- modal pregunta eliminar -->
+                            <div class="modal fade" [attr.id]="slider.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Confirmación</h4>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="font-size-sm">¿Desea eliminar definitivamente el regsitro?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                                            <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="eliminarSlider(slider.id)" data-dismiss="modal">Suprimir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- fin modal -->
 
                         </tbody>
                     </table>

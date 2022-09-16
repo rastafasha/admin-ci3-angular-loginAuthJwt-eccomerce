@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
     password: ['', Validators.required],
     password2: ['', Validators.required],
     username: ['', Validators.required],
-    roleid: [2],
+    role_id: [2],
     // terminos: [false, Validators.required],
 
   }, {
@@ -41,15 +41,35 @@ export class RegisterComponent implements OnInit {
   }
 
   crearUsuario(){
+
+    const {
+      first_name,
+      last_name,
+      email,
+      password,
+      password2,
+      username,
+      role_id,
+     } = this.registerForm.value;
+
     this.formSumitted = true;
-    console.log(this.registerForm.value);
+    // console.log(this.registerForm.value);
+
+    const formData = new FormData();
+    formData.append('first_name', this.registerForm.get('first_name').value);
+    formData.append('last_name', this.registerForm.get('last_name').value);
+    formData.append('email', this.registerForm.get('email').value);
+    formData.append('password', this.registerForm.get('password').value);
+    formData.append('password2', this.registerForm.get('password2').value);
+    formData.append('username', this.registerForm.get('username').value);
+    formData.append('role_id', this.registerForm.get('role_id').value);
 
     if(this.registerForm.invalid){
       return;
     }
 
     //realizar el posteo del usuario
-    this.usuarioService.crearUsuario(this.registerForm.value).subscribe(
+    this.usuarioService.crearUsuario(formData).subscribe(
       resp =>{
         console.log(resp);
         this.router.navigateByUrl('/login');

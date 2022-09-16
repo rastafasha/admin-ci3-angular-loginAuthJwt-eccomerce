@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {environment} from '../../environments/environment';
 
 import { RegisterForm } from '../auth/interfaces/register-form.interface';
@@ -7,7 +7,7 @@ import { LoginForm } from '../auth/interfaces/login-form.interface';
 import { CargarUsuario } from '../auth/interfaces/cargar-usuarios.interface';
 
 import {tap, map, catchError} from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { Role, Usuario } from '../models/usuario.model';
 import { Location } from '@angular/common';
@@ -20,6 +20,8 @@ declare const gapi: any;
   providedIn: 'root'
 })
 export class UsuarioService {
+  serverUrl = environment.baseUrl;
+  private usuarioRegistrado: RegisterForm;
 
   public auth2: any;
   public user: Usuario;
@@ -59,6 +61,7 @@ export class UsuarioService {
     token: string,
     user: string
     ){
+
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
   }
@@ -72,9 +75,10 @@ export class UsuarioService {
       tap((resp: any) => {
         this.guardarLocalStorage(
           resp.token,
-          resp.user = this.usuariologin
+          resp.user
+          // resp.user = this.usuariologin
           );
-          this.usuariologin = this.validarToken();
+          // this.usuariologin = this.validarToken();
       }),
       )
 
@@ -83,8 +87,8 @@ export class UsuarioService {
 
 
 
-  crearUsuario(formData: RegisterForm){
-    return this.http.post(`${base_url}signup`, formData)
+  crearUsuario(user){
+    return this.http.post(`${base_url}signup`, user)
     .pipe(
       tap((resp: any) => {
         this.guardarLocalStorage(
@@ -96,7 +100,7 @@ export class UsuarioService {
   }
 
 
-  validarToken(): Observable<boolean>{
+  validarToken(): Observable<boolean>{debugger
 
     return this.http.get(`${base_url}renew`, {
       headers: {
@@ -104,28 +108,57 @@ export class UsuarioService {
       }
     }).pipe(
       map((resp: any) => {
-        const { email, google, first_name, last_name, username, role_id, img='', user_id} = resp.user;
+        const {
 
-        this.user = new Usuario(email, google, first_name, last_name, username, role_id, img, user_id);
+          first_name,
+          last_name,
+          email,
+          role_id,
+          username,
+          google,
+          img,
+          imgUrl,
+        } = resp.user;
 
-        this.guardarLocalStorage(
-          resp.token,
-          resp.user
-          );;
+        this.user = new Usuario(
+
+          first_name,
+          last_name,
+          email,
+          role_id,
+          username,
+          google,
+          img,
+          imgUrl,
+        );
+
+        this.guardarLocalStorage(resp.token,resp.user);
           return true;
         }),
         catchError(error => of(false))
         );
   }
 
-  actualizarPerfil(data: {email: string, first_name: string, role_id: number}){
+  // actualizarPerfil(data: {email: string, first_name: string, role_id: number}){
 
-    data = {
-      ...data,
+  //   data = {
+  //     ...data,
+  //     role_id: this.user.role_id
+  //   }
+
+  //   return this.http.put(`${base_url}api/updateUser/${this.user.id}`, data, this.headers);
+  // }
+
+  actualizarPerfil(user, id: number){
+
+    user = {
+      ...user,
       role_id: this.user.role_id
     }
-
-    return this.http.put(`${base_url}api/updateUser/${this.user.id}`, data, this.headers);
+    return this.http.post<any>(this.serverUrl + 'api/updateUser/' + id, user)
+    .pipe(
+      catchError(this.handleError)
+    );
   }
 
 
@@ -133,12 +166,15 @@ export class UsuarioService {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
 
-
-    this.auth2.signOut().then(()=>{
-      this.ngZone.run(()=>{
-        this.router.navigateByUrl('/login');
+    if(this.user.google){
+      this.auth2.signOut().then(()=>{
+        this.ngZone.run(()=>{
+          this.router.navigateByUrl('/login');
+        })
       })
-    })
+
+    }
+
     location.reload();
   }
 
@@ -181,17 +217,31 @@ export class UsuarioService {
 
 
 
-  get_user(usuario):Observable<any>{
-    const url = `${base_url}user/${usuario.id}`;
-    return this.http.get(url, this.headers)
+  // get_user(usuario):Observable<any>{
+  //   const url = `${base_url}api/user/${usuario.id}`;
+  //   return this.http.get(url, this.headers)
+  // }
+
+  get_user(id: number) {
+    return this.http.get<Usuario>(this.serverUrl + 'api/user/' + id).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  get_users():Observable<any>{
-    const url = `${base_url}api/users`;
-    return this.http.get(url)
-      // .pipe(
-      //   map((resp:{ok: boolean, users: Usuario[]}) => resp.users)
-      // )
+
+
+  // get_users():Observable<any>{
+  //   const url = `${base_url}api/users`;
+  //   return this.http.get(url)
+  //     // .pipe(
+  //     //   map((resp:{ok: boolean, users: Usuario[]}) => resp.users)
+  //     // )
+  // }
+
+  get_users() {
+    return this.http.get<Usuario>(this.serverUrl + 'api/users').pipe(
+      catchError(this.handleError)
+    );
   }
 
   cargarUsuarios(desde: number = 0){
@@ -202,14 +252,16 @@ export class UsuarioService {
         map( resp =>{
           const usuarios = resp.usuarios.map(
             user => new Usuario(
+              user.id,
               user.first_name,
               user.last_name,
-              user.username,
               user.email,
-              // user.google,
-              // user.img,
               user.role_id,
-              user.id,
+              user.username,
+              user.imgUrl,
+              user.google,
+              user.img,
+              // user.terminos,
               ));
 
           return {
@@ -222,8 +274,8 @@ export class UsuarioService {
   }
 
 
-    guardarUsuario(usuario: Usuario){
-      return this.http.put(`${base_url}api/updateUser/${usuario.id}`, usuario, this.headers);
+    guardarUsuario(usuario, id: number){
+      return this.http.post(`${base_url}api/updateUser/${id}`, usuario);
     }
 
 
@@ -247,6 +299,19 @@ export class UsuarioService {
 
     }
 
+
+    private handleError(error: HttpErrorResponse) {
+      if (error.error instanceof ErrorEvent) {
+        // A client-side or network error occurred. Handle it accordingly.
+        console.error('An error occurred:', error.error.message);
+      } else {
+        // The backend returned an unsuccessful response code.
+        // The response body may contain clues as to what went wrong,
+        console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
+      }
+      // return an observable with a user-facing error message
+      return throwError('Something bad happened. Please try again later.');
+    }
 
 
 

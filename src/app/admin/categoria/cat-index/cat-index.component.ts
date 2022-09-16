@@ -10,6 +10,9 @@ import { ModalImagenService } from '../../../services/modal-imagen.service';
 import { IconosService } from 'src/app/services/iconos.service';
 import { Router } from '@angular/router';
 
+declare var jQuery:any;
+declare var $:any;
+
 @Component({
   selector: 'app-cat-index',
   templateUrl: './cat-index.component.html',
@@ -30,6 +33,8 @@ export class CatIndexComponent implements OnInit {
 
   categorias: Categoria;
   category: Categoria;
+  error;
+  public msm_error;
 
   public imgSubs: Subscription;
   listIcons;
@@ -43,7 +48,7 @@ export class CatIndexComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.cargar_iconos();
+    // this.cargar_iconos();
 
     this.loadCategorias();
     this.imgSubs = this.modalImagenService.nuevaImagen
@@ -63,7 +68,7 @@ export class CatIndexComponent implements OnInit {
     this.categoriaService.cargarCategorias().subscribe(
       (data: Categoria) => this.categorias = data,
       );
-      console.log(this.categorias);
+      // console.log(this.categorias);
       this.cargando = false;
   }
 
@@ -71,7 +76,7 @@ export class CatIndexComponent implements OnInit {
     this._iconoService.getIcons().subscribe(
       resp =>{
         this.listIcons = resp;
-        console.log(this.listIcons.iconos)
+        // console.log(this.listIcons.iconos)
 
       }
     )
@@ -93,7 +98,7 @@ export class CatIndexComponent implements OnInit {
   guardarCambios(id: number){
     id = this.categoria.id;
     if(id){
-      this.categoriaService.actualizarCategoria(this.categoria.id, this.categoria)
+      this.categoriaService.actualizarCategoria(this.categoria, this.categoria.id, )
       .subscribe( resp => {
         Swal.fire('Actualizado', this.categoria.category_name,  'success')
       })
@@ -103,17 +108,19 @@ export class CatIndexComponent implements OnInit {
   }
 
 
-  eliminarCategoria(id: number){debugger
-    id = this.categoria.id;
-    if(id){
-      this.categoriaService.borrarCategoria(id)
-      .subscribe( resp => {
+  eliminarCategoria(id: number){
+    this.categoriaService.borrarCategoria(+id).subscribe(
+      response =>{
         this.loadCategorias();
-        Swal.fire('Borrado', this.categoria.category_name, 'success')
-      })
-
-    }
-
+        $('#delete-'+id).modal('hide');
+        $('.modal-backdrop').removeClass('show');
+        $('.fix-header').removeClass('modal-open');
+      },
+      error=>{
+        this.msm_error = 'No se pudo eliminar el curso, vuelva a intentar.'
+      }
+    );
+    this.ngOnInit();
   }
 
 

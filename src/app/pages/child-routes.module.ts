@@ -38,6 +38,16 @@ import { ViewComponent } from '../admin/config-site/view/view.component';
 // import { AdminTicketComponent } from '../admin/ticket/admin-ticket/admin-ticket.component';
 // import { AdminDetalleventasComponent } from '../admin/ventas/admin-detalleventas/admin-detalleventas.component';
 // import { InvoiceComponent } from '../admin/ventas/invoice/invoice.component';
+import { BlogIndexComponent } from '../admin/blog/blog-index/blog-index.component';
+import { BlogEditComponent } from '../admin/blog/blog-edit/blog-edit.component';
+import { MarcaIndexComponent } from '../admin/marca/marca-index/marca-index.component';
+import { MarcaEditComponent } from '../admin/marca/marca-edit/marca-edit.component';
+import { GalleryIndexComponent } from '../admin/gallery/gallery-index/gallery-index.component';
+import { GalleryEditComponent } from '../admin/gallery/gallery-edit/gallery-edit.component';
+import { CursoVideosComponent } from '../admin/curso/curso-videos/curso-videos.component';
+import { CursoVideoviewComponent } from '../admin/curso/curso-videoview/curso-videoview.component';
+import { PageIndexComponent } from '../admin/page/page-index/page-index.component';
+import { PageEditComponent } from '../admin/page/page-edit/page-edit.component';
 
 
 
@@ -47,15 +57,32 @@ const childRoutes: Routes = [
             { path: 'buscar/:termino', component: BusquedaComponent, data:{tituloPage:'Busquedas'} },
             // { path: 'grafica1', component: Grafica1Component, data:{tituloPage:'Grafica 1'} },
             { path: 'perfil', component: PerfilComponent, data:{tituloPage:'Perfil'} },
+            { path: 'perfil/edit/:id', component: PerfilComponent, data:{tituloPage:'Perfil'} },
             // { path: 'progress', component: ProgressComponent, data:{tituloPage:'Progress Bar'} },
             // { path: 'promesas', component: PromesasComponent, data:{tituloPage:'Promesas'} },
             // { path: 'rxjs', component: RxjsComponent, data:{tituloPage:'Rxjs'} },
 
             //tienda
 
+            { path: 'blog', component: BlogIndexComponent, data:{tituloPage:'Blogs '} },
+            { path: 'blog/edit/:id', component: BlogEditComponent, data:{tituloPage:'Blog Edit '} },
+            { path: 'blog/create', component: BlogEditComponent, data:{tituloPage:'Blog Create '} },
+
+            { path: 'page', component: PageIndexComponent, data:{tituloPage:'Pages '} },
+            { path: 'page/edit/:id', component: PageEditComponent, data:{tituloPage:'Page Edit '} },
+            { path: 'page/create', component: PageEditComponent, data:{tituloPage:'Page Create '} },
+
             { path: 'categoria', component: CatIndexComponent, data:{tituloPage:'Categorias '} },
             { path: 'categoria/edit/:id', component: CatEditComponent, data:{tituloPage:'Categoría Edit '} },
             { path: 'categoria/create', component: CatEditComponent, data:{tituloPage:'Categoría Create '} },
+
+            { path: 'gallery', component: GalleryIndexComponent, data:{tituloPage:'Gallery '} },
+            { path: 'gallery/edit/:id', component: GalleryEditComponent, data:{tituloPage:'Gallery Edit '} },
+            { path: 'gallery/create', component: GalleryEditComponent, data:{tituloPage:'Gallery Create '} },
+
+            // { path: 'marca', component: MarcaIndexComponent, data:{tituloPage:'Marcas '} },
+            // { path: 'marca/edit/:id', component: MarcaEditComponent, data:{tituloPage:'Marca Edit '} },
+            // { path: 'marca/create', component: MarcaEditComponent, data:{tituloPage:'Marca Create '} },
 
             { path: 'configuracion', component: ViewComponent, data:{tituloPage:'Configuracion '} },
             { path: 'configuracion/edit/:id', component: ConfigSiteComponent, data:{tituloPage:'Configuracion '} },
@@ -63,18 +90,18 @@ const childRoutes: Routes = [
             { path: 'producto', component: ProdIndexComponent, data:{tituloPage:'Producto '} },
             { path: 'producto/edit/:id', component: ProdEditComponent, data:{tituloPage:'Producto Edit'} },
             { path: 'producto/create', component: ProdEditComponent, data:{tituloPage:'Producto Create'} },
+            // { path: 'producto/galeria/:id', component: GaleriaProductoComponent, data:{tituloPage:'Galeria '} },
 
             { path: 'curso', component: CursoIndexComponent, data:{tituloPage:'Curso '} },
             { path: 'curso/edit/:id',  component: CursoEditComponent, data:{tituloPage:'Curso Edit'} },
             { path: 'curso/create',  component: CursoEditComponent, data:{tituloPage:'Curso Create'} },
+            { path: 'curso/videos/view',  component: CursoVideoviewComponent, data:{tituloPage:'Curso Video Edit'} },
+            { path: 'curso/videos/view/:id',  component: CursoVideosComponent, data:{tituloPage:'Curso Video Edit'} },
+            { path: 'curso/videos/:curso_id',  component: CursoVideosComponent, data:{tituloPage:'Curso Video Edit'} },
 
-            // { path: 'producto/color/:id', component: ColorComponent, data:{tituloPage:'Color '} },
-            // { path: 'producto/selector/:id', component: SelectorComponent, data:{tituloPage:'Selector '} },
-            // { path: 'producto/papelera/:id', component: PapeleraComponent, data:{tituloPage:'Selector '} },
-            // { path: 'producto/galeria/:id', component: GaleriaProductoComponent, data:{tituloPage:'Galeria '} },
-            // { path: 'producto/papelera', component: PapeleraComponent, data:{tituloPage:'Selector '} },
 
             // { path: 'cupon', component: CuponComponent, data:{tituloPage:'Cupon'} },
+
 
             { path: 'promocion', component: PromocionComponent, data:{tituloPage:'Promocion '} },
             { path: 'promocion/create',  component: PromoeditComponent, data:{tituloPage:'Promocion '} },

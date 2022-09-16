@@ -68,6 +68,7 @@
                                             <a class="nav-link-style text-danger" data-toggle="modal" [attr.data-target]="'#delete-'+item.id" style="cursor:pointer">
                                                 <div class="czi-trash"></div>
                                             </a>
+                                            <!-- modal pregunta eliminar -->
                                             <div class="modal fade" [attr.id]="'delete-'+item.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
@@ -80,11 +81,12 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
-                                                            <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="eliminar(item.id)">Suprimir</button>
+                                                            <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="eliminar(item.id)" data-dismiss="modal">Suprimir</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- fin modal -->
                                         </td>
                                     </tr>
                                 </tbody>

@@ -8,7 +8,10 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
                 <li class="user-profile">
-                    <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><img [src]="usuario.imagenUrl" alt="user" /><span class="hide-menu">{{usuario.first_name}}</span></a>
+                    <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
+                        <img [src]="usuario.imagenUrl" alt="user" />
+                        <span class="hide-menu">{{usuario.first_name}}</span>
+                    </a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a routerLink="./perfil" routerLinkActive="active">My Profile </a></li>
                         <li><a routerLink="account-settings">Account Setting</a></li>
@@ -25,14 +28,17 @@
                         </span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a routerLink="marca" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Marcas </a></li>
-                        <li><a routerLink="categoria" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Categorías </a></li>
-                        <li><a routerLink="producto" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Productos </a></li>
-                        <li><a routerLink="curso" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Cursos </a></li>
-                        <li><a routerLink="postal" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Envio Postal </a></li>
                         <li><a routerLink="slider" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Slider Home </a></li>
+                        <li><a routerLink="categoria" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Categorías </a></li>
+                        <li><a routerLink="gallery" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Gallery </a></li>
+                        <li><a routerLink="page" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Pages </a></li>
+                        <li><a routerLink="blog" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Blog </a></li>
+                        <li><a routerLink="curso" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Cursos </a></li>
+                        <li><a routerLink="curso/videos/view" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Video Cursos </a></li>
+                        <li><a routerLink="producto" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Productos </a></li>
+                        <li><a routerLink="postal" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Envio Postal </a></li>
                         <li><a routerLink="promocion" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Promoción </a></li>
-                        <li><a routerLink="contacto" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Contacto </a></li>
+                        <li><a routerLink="contacto" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Mensajes </a></li>
                         <li><a routerLink="usuarios" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Usuarios </a></li>
                         <!-- <li><a routerLink="ventas/modulo" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Ventas </a></li>
                         <li><a routerLink="ingresos" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">ingresos </a></li>

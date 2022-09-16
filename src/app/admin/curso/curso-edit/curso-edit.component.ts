@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
+import { FileUploadService } from 'src/app/services/file-upload.service';
+import { environment } from 'src/environments/environment';
+import { ModalImagenService } from 'src/app/services/modal-imagen.service';
+
 
 import { Usuario } from 'src/app/models/usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { FileUploadService } from 'src/app/services/file-upload.service';
-import { environment } from 'src/environments/environment';
 
+import { Categoria } from '../../../models/categoria.model';
 import { CategoriaService } from 'src/app/services/categoria.service';
-import { ModalImagenService } from 'src/app/services/modal-imagen.service';
+
 import { Curso } from 'src/app/models/curso.model';
 import { CursoService } from 'src/app/services/curso.service';
 
@@ -33,19 +36,34 @@ declare var $:any;
 export class CursoEditComponent implements OnInit {
 
 
+  @Input() curso: Curso;
+
   public cursoForm: FormGroup;
-  public curso: Curso;
+  public category: Categoria;
   public usuario: Usuario;
+
   public imagenSubir: File;
   public imgTemp: any = null;
   public file :File;
   public imgSelect : String | ArrayBuffer;
+
+
+  public error: string;
+  public uploadError: string;
+  public imagePath: string;
+
   public listCategorias;
 
   banner: string;
   pageTitle: string;
+  pageSubTitle: string;
+  cursoActualizado: Curso;
+  cursoSeleccionado:Curso;
+  id:number;
 
-  public cursoSeleccionado: Curso;
+
+
+
 
   constructor(
     private fb: FormBuilder,
@@ -59,41 +77,18 @@ export class CursoEditComponent implements OnInit {
     private location: Location
   ) {
     this.usuario = usuarioService.user;
+    this.category = categoriaService.category;
+    this.curso = cursoService.curso;
     const base_url = environment.baseUrl;
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe( ({id}) => this.iniciarFormulario(id));
 
     window.scrollTo(0,0);
     this.getCategorias();
-
-
-    this.cursoForm = this.fb.group({
-      name: ['',Validators.required],
-      price: ['',Validators.required],
-      info_short: ['',Validators.required],
-      description: ['',Validators.required],
-      category_id: ['',Validators.required],
-      video_review: [''],
-      is_featured: [''],
-      is_active: [''],
-      user_id: [this.usuario.id, Validators.required],
-    })
-
-    if(this.cursoSeleccionado){
-      //actualizar
-      this.pageTitle = 'Edit Curso';
-
-    }else{
-      //crear
-      this.pageTitle = 'Create Curso';
-    }
-
-
+    this.activatedRoute.params.subscribe( ({id}) => this.iniciarFormulario(id));
 
   }
-
 
   getCategorias(){
     this.categoriaService.cargarCategorias().subscribe(
@@ -110,67 +105,122 @@ export class CursoEditComponent implements OnInit {
 
 
     if (id !== null && id !== undefined) {
-      this.pageTitle = 'Editar Curso';
-      this.cursoService.getCursoById(id).subscribe(
+      this.pageSubTitle = 'Editing';
+      this.cursoService.getCursoById(+id).subscribe(
         res => {
           this.cursoForm.patchValue({
             id: res.id,
             user_id: this.usuario.id,
             name: res.name,
             price: res.price,
+            cod_prod: res.cod_prod,
             info_short: res.info_short,
             video_review: res.video_review,
             description: res.description,
             category_id: res.category_id,
             is_active: res.is_active,
             is_featured: res.is_featured,
+            img: res.img,
+            imgUrl: res.imgUrl,
           });
+
+          this.curso = res;
         }
       );
     } else {
-      this.pageTitle = 'Crear Curso';
+      this.pageSubTitle = 'Creating';
     }
+
+
+    this.validacionesFormulario();
 
   }
 
+  validacionesFormulario(){
+    this.cursoForm = this.fb.group({
+      id: [''],
+      name: ['',Validators.required],
+      price: ['',Validators.required],
+      info_short: ['',Validators.required],
+      description: ['',Validators.required],
+      category_id: ['',Validators.required],
+      cod_prod: ['',Validators.required],
+      video_review: ['',Validators.required],
+      is_active: [''],
+      is_featured: [''],
+      imgUrl: [''],
+      user_id: [this.usuario.id, Validators.required],
+      img: [this.imagenSubir],
+    })
 
+  }
 
+onSelectedFile(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.cursoForm.get('img').setValue(file);
+    }
+  }
 
-
-  updateCurso(){debugger
+  updateCurso(){
 
     const {
       name,
-          price,
-          user_id,
-          video_review,
+      category_id,
+      cod_prod,
+      user_id,
+      price,
+      video_review,
           info_short,
           description,
-          category_id,
           is_featured,
           is_active,
      } = this.cursoForm.value;
 
-    if(this.cursoSeleccionado){
+
+     const formData = new FormData();
+    formData.append('name', this.cursoForm.get('name').value);
+    formData.append('cod_prod', this.cursoForm.get('cod_prod').value);
+    formData.append('video_review', this.cursoForm.get('video_review').value);
+    formData.append('price', this.cursoForm.get('price').value);
+    formData.append('info_short', this.cursoForm.get('info_short').value);
+    formData.append('video_review', this.cursoForm.get('video_review').value);
+    formData.append('description', this.cursoForm.get('description').value);
+    formData.append('category_id', this.cursoForm.get('category_id').value);
+    formData.append('user_id', this.cursoForm.get('user_id').value);
+    formData.append('is_featured', this.cursoForm.get('is_featured').value);
+    formData.append('is_active', this.cursoForm.get('is_active').value);
+    formData.append('img', this.cursoForm.get('img').value);
+
+     const id = this.cursoForm.get('id').value;
+
+    if(id){
       //actualizar
-      const data = {
-        ...this.cursoForm.value,
-        user_id: this.usuario.id,
-        id: this.cursoSeleccionado.id
-      }
-      this.cursoService.actualizarCurso(this.curso.id).subscribe(
+      // const data = {
+      //   ...this.cursoForm.value,
+      //   user_id: this.usuario.id,
+      //   // id: this.curso.id
+      // }
+      this.cursoService.actualizarCurso(formData, +id).subscribe(
+
         resp =>{
-          Swal.fire('Actualizado', `${name}  actualizado correctamente`, 'success');
+          Swal.fire('Actualizado', `actualizado correctamente`, 'success');
+          this.cursoActualizado = resp;
+          this.ngOnInit();
         });
 
     }else{
       //crear
-      this.cursoService.crearCurso(this.cursoForm.value)
+      this.cursoService.crearCurso(formData)
       .subscribe( (resp: any) =>{
-        Swal.fire('Creado', `${name} creado correctamente`, 'success');
-        // this.router.navigateByUrl(`/dashboard/marca/${resp.marca.id}`)
+        Swal.fire('Creado', `creado correctamente`, 'success');
+        this.router.navigateByUrl(`/dashboard/curso`)
+        resp = this.cursoActualizado;
+          console.log(resp);
       })
     }
+
+    // console.log(this.cursoForm.value);
 
   }
 
@@ -192,8 +242,8 @@ export class CursoEditComponent implements OnInit {
 
   subirImagen(){
     this.fileUploadService
-    .actualizarFoto(this.imagenSubir, 'cursos', this.cursoSeleccionado.id)
-    .then(img => { this.cursoSeleccionado.img = img;
+    .actualizarFoto(this.imagenSubir, 'cursos', this.curso.id)
+    .then(img => { this.curso.img = img;
       Swal.fire('Guardado', 'La imagen fue actualizada', 'success');
 
     }).catch(err =>{
@@ -205,6 +255,7 @@ export class CursoEditComponent implements OnInit {
   goBack() {
     this.location.back(); // <-- go back to previous location on cancel
   }
+
 
 
 }

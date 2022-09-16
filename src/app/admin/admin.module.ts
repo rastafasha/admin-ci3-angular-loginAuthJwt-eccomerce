@@ -45,6 +45,19 @@ import { ViewComponent } from './config-site/view/view.component';
 import { CursoService } from '../services/curso.service';
 import { ProductoService } from '../services/producto.service';
 import { UsuarioService } from '../services/usuario.service';
+import { BlogEditComponent } from './blog/blog-edit/blog-edit.component';
+import { BlogIndexComponent } from './blog/blog-index/blog-index.component';
+import { DireccionIndexComponent } from './direccion/direccion-index/direccion-index.component';
+import { DireccionEditComponent } from './direccion/direccion-edit/direccion-edit.component';
+import { MarcaEditComponent } from './marca/marca-edit/marca-edit.component';
+import { MarcaIndexComponent } from './marca/marca-index/marca-index.component';
+import { GalleryIndexComponent } from './gallery/gallery-index/gallery-index.component';
+import { GalleryEditComponent } from './gallery/gallery-edit/gallery-edit.component';
+import { CursoVideosComponent } from './curso/curso-videos/curso-videos.component';
+import { CursoVideoviewComponent } from './curso/curso-videoview/curso-videoview.component';
+import { PageIndexComponent } from './page/page-index/page-index.component';
+import { PageEditComponent } from './page/page-edit/page-edit.component';
+import { PageService } from '../services/page.service';
 
 
 @NgModule({
@@ -63,6 +76,18 @@ import { UsuarioService } from '../services/usuario.service';
     SlidereditComponent,
     SliderComponent,
     ViewComponent,
+    BlogEditComponent,
+    BlogIndexComponent,
+    DireccionIndexComponent,
+    DireccionEditComponent,
+    MarcaEditComponent,
+    MarcaIndexComponent,
+    GalleryIndexComponent,
+    GalleryEditComponent,
+    CursoVideosComponent,
+    CursoVideoviewComponent,
+    PageIndexComponent,
+    PageEditComponent,
     // CuponComponent,
     // ColorComponent,
     // SelectorComponent,
@@ -94,6 +119,16 @@ import { UsuarioService } from '../services/usuario.service';
     SlidereditComponent,
     SliderComponent,
     ViewComponent,
+    BlogEditComponent,
+    BlogIndexComponent,
+    MarcaEditComponent,
+    MarcaIndexComponent,
+    GalleryIndexComponent,
+    GalleryEditComponent,
+    CursoVideosComponent,
+    CursoVideoviewComponent,
+    PageIndexComponent,
+    PageEditComponent,
     // ColorComponent,
     // SelectorComponent,
     // PapeleraComponent,
@@ -129,7 +164,8 @@ import { UsuarioService } from '../services/usuario.service';
     UsuarioService,
     CategoriaService,
     ProductoService,
-    CursoService
+    CursoService,
+    PageService
   ]
 })
 export class AdminModule { }

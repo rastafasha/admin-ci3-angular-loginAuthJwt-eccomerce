@@ -7,31 +7,28 @@ import Swal from 'sweetalert2';
 
 import { Usuario } from 'src/app/models/usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { FileUploadService } from 'src/app/services/file-upload.service';
 
 import { CategoriaService } from 'src/app/services/categoria.service';
 import { Categoria } from 'src/app/models/categoria.model';
-import { IconosService } from 'src/app/services/iconos.service';
+// import { IconosService } from 'src/app/services/iconos.service';
 
 @Component({
   selector: 'app-cat-edit',
   templateUrl: './cat-edit.component.html',
   styleUrls: ['./cat-edit.component.css'],
-  providers: [IconosService]
+  providers: [
+    // IconosService
+  ]
 })
 export class CatEditComponent implements OnInit {
 
 
-  categoriaForm: FormGroup;
+  public categoriaForm: FormGroup;
   public categoria: Categoria;
   public usuario: Usuario;
-  public imagenSubir: File;
-  public imgTemp: any = null;
 
-  banner: string;
   pageTitle: string;
-  listIcons;
-  state_banner:boolean;
+  // listIcons;
   id:number;
 
 
@@ -39,24 +36,24 @@ export class CatEditComponent implements OnInit {
   * Propiedades iput que traen la informacion desde la grilla para editar
   * */
 
-   @Input() category: Categoria;
-   @Input() categoryList: Categoria[] = [];
-   categoriaSeleccionado: Categoria;
-   categoriaId;
+  //  @Input() category: Categoria;
+  //  @Input() categoryList: Categoria[] = [];
+  //  categoriaSeleccionado: Categoria;
+  //  categoriaId;
 
   constructor(
     private fb: FormBuilder,
     private categoriaService: CategoriaService,
-    private fileUploadService: FileUploadService,
+    // private fileUploadService: FileUploadService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private location: Location,
     private usuarioService: UsuarioService,
-    private _iconoService: IconosService,
+    // private _iconoService: IconosService,
   ) {
     this.usuario = usuarioService.user;
     const base_url = environment.baseUrl;
-    this.categoriaId = categoriaService.category;
+    // this.categoriaId = categoriaService.category;
   }
 
   ngOnInit(): void {
@@ -76,7 +73,7 @@ export class CatEditComponent implements OnInit {
  catasignada:any;
  mostrarCategoria:any;
 
-  iniciarFormulario(id:number){debugger
+  iniciarFormulario(id:number){
 
 
     if (id !== null && id !== undefined) {
@@ -94,7 +91,6 @@ export class CatEditComponent implements OnInit {
       this.pageTitle = 'Crear Category';
     }
 
-    console.log(id);
 
     this.validacionesFormulario();
 
@@ -106,35 +102,30 @@ export class CatEditComponent implements OnInit {
    * @since: 24/07/2022
    */
 
-       validacionesFormulario(){
-        this.categoriaForm = this.fb.group({
-          id: [''],
-          category_name: ['', Validators.required]
-        });
-      }
+  validacionesFormulario(){
+    this.categoriaForm = this.fb.group({
+      id: [''],
+      category_name: ['', Validators.required]
+    });
+  }
 
   get category_name() { return this.categoriaForm.get('category_name'); }
 
-
-
-  updateCategoria(){debugger
-
-
-
-    this.category.id= this.categoriaForm.controls.id.value; //viene de la grilla
+  updateCategoria(){
 
     const {category_name} = this.categoriaForm.value;
 
-    const id = this.category.id;
+    const formData = new FormData();
+    formData.append('category_name', this.categoriaForm.get('category_name').value);
+
+    const id = this.categoriaForm.get('id').value;
 
     if(id){
         //actualizar
-        const data = {
-          ...this.categoriaForm.value
-        }
-
-
-        this.categoriaService.actualizarCategoria(data, this.categoria).subscribe(
+        // const data = {
+        //   ...this.categoriaForm.value
+        // }
+        this.categoriaService.actualizarCategoria(formData, +id).subscribe(
           (resp:any) =>{
             this.categoria = resp;
 
@@ -143,7 +134,7 @@ export class CatEditComponent implements OnInit {
 
       }else{
         //crear
-        this.categoriaService.crearCategoria(this.categoriaForm.value)
+        this.categoriaService.crearCategoria(formData)
         .subscribe( (resp: any) =>{
           this.categoria = resp;
           Swal.fire('Creado', `${category_name} creado correctamente`, 'success');

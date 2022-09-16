@@ -24,17 +24,17 @@ export class VentaService {
 
   registro(data):Observable<any>{
     let headers = new HttpHeaders().set('Content-Type','application/json');
-    return this._http.post(this.url+'/ventas',data,{headers:headers});
+    return this._http.post(this.url+'api_venta/createVenta',data,{headers:headers});
   }
 
   listar(id):Observable<any>{
     let headers = new HttpHeaders().set('Content-Type','application/json');
-    return this._http.get(this.url+'/ventas/venta/data/'+id,{headers:headers});
+    return this._http.get(this.url+'api_venta/adminVenta'+id,{headers:headers});
   }
 
   detalle(id):Observable<any>{
     let headers = new HttpHeaders().set('Content-Type','application/json');
-    return this._http.get(this.url+'/ventas/venta_track/detalle/'+id,{headers:headers});
+    return this._http.get(this.url+'api_venta/adminVenta/'+id,{headers:headers});
   }
 
   finalizar(id):Observable<any>{
@@ -44,12 +44,13 @@ export class VentaService {
 
   update_envio(id):Observable<any>{
     let headers = new HttpHeaders().set('Content-Type','application/json');
-    return this._http.get(this.url+'/ventas/venta_enviado/update/'+id,{headers:headers});
+    return this._http.get(this.url+'api_venta/updateVenta/'+id,{headers:headers});
+    // return this._http.get(this.url+'api_venta/ventas/venta_enviado/updateVenta/'+id,{headers:headers});
   }
 
   evaluar_cancelacion(id):Observable<any>{
     let headers = new HttpHeaders().set('Content-Type','application/json');
-    return this._http.get(this.url+'/ventas/cancelacion_evaluar/venta/'+id,{headers:headers});
+    return this._http.get(this.url+'api_venta/ventas/cancelacion_evaluar/venta/'+id,{headers:headers});
   }
 
   reembolsar(id,idticket):Observable<any>{
@@ -128,12 +129,14 @@ export class VentaService {
 
   get_data_dashboard():Observable<any>{
     let headers = new HttpHeaders().set('Content-Type','application/json');
-    return this._http.get(this.url+'/ventas/venta_data/dashboard',{headers:headers});
+    return this._http.get(this.url+'api_venta/adminVentas',{headers:headers});
+    // return this._http.get(this.url+'api_venta//ventas/venta_data/dashboard',{headers:headers});
   }
 
   get_detalle_hoy():Observable<any>{
     let headers = new HttpHeaders().set('Content-Type','application/json');
-    return this._http.get(this.url+'/ventas/venta_data/detalles/hoy',{headers:headers});
+    return this._http.get(this.url+'api_venta/adminVentas',{headers:headers});
+    // return this._http.get(this.url+'/ventas/venta_data/detalles/hoy',{headers:headers});
   }
 
   init_data_admin():Observable<any>{

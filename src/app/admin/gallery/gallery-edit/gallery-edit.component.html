@@ -1,0 +1,104 @@
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{pageTitle}}</h4>
+                <h6 class="card-subtitle">Ajustes</h6>
+                <button class="btn btn-outline-danger" href="javascript:void(0)" (click)="goBack()">Volver</button>
+                <form [formGroup]="galleryForm" (ngSubmit)="updateGalForm()">
+                    <div class="card border-0 box-shadow">
+
+                        <div class="card-body">
+                            <div class="tab-content" style="margin-top: 20px;">
+                                <div class="tab-pane fade active show">
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Titulo</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" type="text" formControlName="titulo">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">img Url (opcional)</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" type="text" formControlName="imgUrl">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row align-items-center">
+                                        <label class=" col-form-label font-weight-medium" for="text-input">Categorías</label>
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="select-input">Categoría</label>
+                                                        <select class="form-control custom-select" formControlName="category_id" required>
+                                                      <option selected  value="">SELECCIONAR</option>
+                                                      <option *ngFor="let cat of listCategorias" [value]="cat.id">{{cat.category_name}}</option>
+
+                                                  </select>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row align-items-center">
+                                        <label class=" col-form-label font-weight-medium" for="text-input">status</label>
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <input type="file" (change)="onSelectedFile($event)" />
+                                                        <div [innerHTML]="uploadError" class="error"></div>
+                                                        <img *ngIf="!gallery.img" [src]="imgTemp" class="img-avatar">
+                                                        <div *ngIf="imagePath">
+                                                            <br />
+                                                            <img [src]="gallery.img" width="50%" value="photo" class="shadow">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <input type="hidden" formControlName="id">
+                            <button type="submit" [disabled]="galleryForm.invalid" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                        <i class="fa fa-save"></i> Guardar cambios
+                      </button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6 animated fadeIn fast" *ngIf="gallery">
+        <div class="card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Image</h4>
+                    <div class="text-center">
+                        <img *ngIf="!gallery.img" [src]="imgTemp | imagenPipe: 'gallerys'" class="img-responsive img-thumbnail">
+                        <img *ngIf="gallery.img" [src]="gallery.img " class="img-responsive img-thumbnail">
+                    </div>
+                    <input type="file" (change)="cambiarImagen($event.target.files[0])">
+                    <br>
+                    <br>
+                    <button type="button" [disabled]="!imagenSubir" (click)="subirImagen(gallery.id)" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                      <i class="fa fa-save"></i> Cambiar imagen
+       </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

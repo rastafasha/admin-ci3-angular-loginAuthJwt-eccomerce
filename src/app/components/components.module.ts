@@ -10,8 +10,8 @@ import { ModalImagenComponent } from './modal-imagen/modal-imagen.component';
 
 @NgModule({
   declarations: [
-    IncrementadorComponent,
-    DonasComponent,
+    // IncrementadorComponent,
+    // DonasComponent,
     ModalImagenComponent
   ],
   imports: [
@@ -20,8 +20,8 @@ import { ModalImagenComponent } from './modal-imagen/modal-imagen.component';
     ChartsModule
   ],
   exports:[
-    DonasComponent,
-    IncrementadorComponent,
+    // DonasComponent,
+    // IncrementadorComponent,
     ModalImagenComponent
   ]
 })

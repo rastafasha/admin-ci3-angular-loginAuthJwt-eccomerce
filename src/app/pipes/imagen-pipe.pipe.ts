@@ -8,8 +8,7 @@ const base_url = environment.mediaUrl
 })
 export class ImagenPipePipe implements PipeTransform {
 
-  transform(img: string, tipo: 'users'|'sliders'|'categorias'|'marcas'|'productos'|'configuracions'
-  |'promocions'|'gallerys'|'cursos'): string {
+  transform(img: string, tipo: 'users'|'marcas'|'gallerys' |'productos' |'cursos' | 'sliders' | 'promocions'| 'blogs'|'pages' |'configuraciones'): string {
 
     if(!img){
       return `${base_url}uploads/categorias/no-image.jpg`;

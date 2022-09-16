@@ -23,15 +23,15 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-8">
                         <!-- <h4 class="card-title">Cursos: ({{ cursos.length}})</h4> -->
                         <h6 class="card-subtitle">Cursos registrados en la app</h6>
                     </div>
                     <div class="col-4">
                         <div class="text-right">
-                            <button class="btn btn-primary" [routerLink]="['/dashboard/curso/create/']">
-                          <i class="fa fa-user-o"></i>
-                          Crear Curso
+                            <button class="btn btn-themecolor" [routerLink]="['/dashboard/curso/create/']">
+                              <i class="fa fa-pencil-square-o"></i>
+                          Crear
                         </button>
                         </div>
                     </div>
@@ -54,32 +54,49 @@
                                 <th>img</th>
                                 <th>Titulo</th>
                                 <th>Categoría</th>
-                                <th>Subcategoría</th>
+                                <th>Featured</th>
                                 <th>Status</th>
                                 <th>Precio</th>
-                                <th>Activar</th>
-                                <th>Fecha de creación</th>
+                                <!-- <th>Activar</th> -->
+                                <th>Creado </th>
+                                <th>Actualizado</th>
                                 <th class="text-nowrap">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr *ngFor="let curso of cursos">
+                        <tbody *ngFor="let curso of cursos | keys | paginate: { itemsPerPage: count, currentPage: p }">
+                            <tr>
                                 <td class="text-center">
+                                    <img *ngIf="curso.img" [routerLink]="['/dashboard/curso/edit',curso.id]" [src]="curso.img " class="img-responsive avatar cursor" alt="{{curso.title}}">
+                                    <!-- <img *ngIf="curso.imgUrl && !curso.img" [routerLink]="['/dashboard/curso/edit',curso.id]" [src]="curso.imgUrl " class="img-responsive avatar cursor" alt="{{curso.title}}"> -->
+                                    <!-- <img *ngIf="!curso.img && !curso.imgUrl  " [routerLink]="['/dashboard/curso/edit',curso.id]" src="./assets/images/no-image.jpg" class="img-responsive avatar cursor" alt="{{curso.title}}"> -->
                                     <!-- <img [src]="producto.img | imagenPipe: 'productos'" class="img-responsive avatar" alt="{{producto.titulo}}"> -->
-                                    <img [routerLink]="['/dashboard/curso/edit',curso.id]" [src]="curso.img" class="avatar cursor" alt="{{curso.name}}">
+                                    <!-- <img [routerLink]="['/dashboard/curso/edit',curso.id]" [src]="curso.img" class="avatar cursor" alt="{{curso.name}}"> -->
                                 </td>
-                                <td>{{curso.name}}</td>
-                                <td>{{curso.categoryid}}</td>
-                                <td>{{curso.subcategory}}</td>
+                                <td>
+                                    <p>{{curso.name}}</p>
+                                </td>
+                                <!-- <td>{{curso.category_id}}</td> -->
+                                <td>
+                                    <p class="badge badge-light badge-shadow" *ngIf="curso.category_id == '1'">Productos</p>
+                                    <p class="badge badge-light badge-shadow" *ngIf="curso.category_id == '2'">Cursos</p>
+                                    <p class="badge badge-light badge-shadow" *ngIf="curso.category_id == '3'">Nosotros</p>
+                                </td>
                                 <td>
                                     <div class="font-size-sm mb-4">
-                                        <span class="text-heading font-weight-medium mr-1">Estado:</span>
-                                        <span class="badge badge-success badge-shadow" *ngIf="curso.is_active == '1'">Activo</span>
-                                        <span class="badge badge-primary badge-shadow" *ngIf="curso.is_active == '0'">Inactivo</span>
+                                        <p class="badge badge-success badge-shadow" *ngIf="curso.is_featured == '1'">Activo</p>
+                                        <p class="badge badge-primary badge-shadow" *ngIf="curso.is_featured == '0'">Inactivo</p>
                                     </div>
                                 </td>
-                                <td>{{curso.price}}...</td>
                                 <td>
+                                    <div class="font-size-sm mb-4">
+                                        <p class="badge badge-success badge-shadow" *ngIf="curso.is_active == '1'">Activo</p>
+                                        <p class="badge badge-primary badge-shadow" *ngIf="curso.is_active == '0'">Inactivo</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p>${{curso.price}}</p>
+                                </td>
+                                <!-- <td>
                                     <button type="button" class="btn btn-accent" *ngIf="curso.is_active == '0' || curso.is_active == 'Inactivo'" data-toggle="modal" [attr.data-target]="'#activar-'+curso.id"><span class="czi-check"></span> Activar</button>
 
                                     <div class="modal fade" [attr.id]="'activar-'+curso.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
@@ -123,9 +140,14 @@
                                     <span class="text-muted" *ngIf="curso.is_active == '0'" style="font-size: 13px;">Este curso aún se encuentra en edición.</span>
                                     <span class="text-muted" *ngIf="curso.is_active == '1'" style="font-size: 13px;">Este curso está disponible en la tienda.</span>
 
+                                </td> -->
+                                <td>
+                                    <p>{{ curso.created_at | date:'MMM d, y, h:mm:ss a' }}</p>
                                 </td>
-                                <td>{{ curso.created_at | date:'MMM d, y, h:mm:ss a' }}</td>
-                                <td class="text-nowrap text-center">
+                                <td>
+                                    <p>{{ curso.updated_at | date:'MMM d, y, h:mm:ss a' }}</p>
+                                </td>
+                                <!-- <td class="text-nowrap text-center">
 
                                     <div class="btn-group" role="group">
                                         <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -133,11 +155,38 @@
                                     </button>
                                         <div class="dropdown-menu">
                                             <a [routerLink]="['/dashboard/curso/edit',curso.id]" class="dropdown-item"><span class="czi-edit-alt"></span> &nbsp;Editar</a>
-                                            <a (click)="eliminarCurso(curso)" class="dropdown-item"><span class="czi-delete-document"></span> &nbsp;Eliminar</a>
+                                            <a (click)="eliminarCurso(curso.id)" class="dropdown-item"><span class="czi-delete-document"></span> &nbsp;Eliminar</a>
                                         </div>
                                     </div>
+                                </td> -->
+                                <td class="text-nowrap text-center">
+                                    <a [routerLink]="['/dashboard/curso/edit',curso.id]" class="nav-link-style text-danger">
+                                        <div class="czi-edit-alt"></div>
+                                    </a>
+                                    <a class="nav-link-style text-danger" data-toggle="modal" [attr.data-target]="'#'+curso.id" style="cursor:pointer">
+                                        <div class="czi-trash"></div>
+                                    </a>
                                 </td>
                             </tr>
+                            <!-- modal pregunta eliminar -->
+                            <div class="modal fade" [attr.id]="curso.id" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Confirmación</h4>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="font-size-sm">¿Desea eliminar definitivamente el regsitro?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                                            <button class="btn btn-primary btn-shadow btn-sm" type="button" (click)="eliminarCurso(curso.id)" data-dismiss="modal">Suprimir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- fin modal -->
 
                         </tbody>
                     </table>

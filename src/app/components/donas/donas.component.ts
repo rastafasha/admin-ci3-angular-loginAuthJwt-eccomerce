@@ -13,12 +13,12 @@ export class DonasComponent {
 
 
    // Doughnut
-   @Input('labels') doughnutChartLabels: Label[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
-   @Input('data') public doughnutChartData: MultiDataSet = [
-     [350, 450, 100],
-     [50, 150, 120],
-   ];
-   public doughnutChartType: ChartType = 'doughnut';
+  //  @Input('labels') doughnutChartLabels: Label[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+  //  @Input('data') public doughnutChartData: MultiDataSet = [
+  //    [350, 450, 100],
+  //    [50, 150, 120],
+  //  ];
+  //  public doughnutChartType: ChartType = 'doughnut';
 
   constructor() { }
 

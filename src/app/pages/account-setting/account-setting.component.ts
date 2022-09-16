@@ -22,8 +22,7 @@ declare var $:any;
 @Component({
   selector: 'app-account-setting',
   templateUrl: './account-setting.component.html',
-  styles: [
-  ]
+  styleUrls: ['./account-setting.component.css']
 })
 export class AccountSettingComponent implements OnInit {
 
@@ -32,7 +31,7 @@ export class AccountSettingComponent implements OnInit {
 
   public usuario: Usuario;
 
-  public congenerals: Configuracion[] =[];
+  public congenerals: Configuracion;
 
   constructor(
     private fb: FormBuilder,

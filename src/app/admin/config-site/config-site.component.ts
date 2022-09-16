@@ -65,7 +65,7 @@ export class ConfigSiteComponent implements OnInit {
     // const id = this.route.snapshot.paramMap.get('id');
     if (id !== null && id !== undefined) {
       this.pageTitle = 'Editar Configuracion';
-      this.congeneralService.getCongeneralById(id).subscribe(
+      this.congeneralService.getCongeneralById(+id).subscribe(
         res => {
           this.confGeneralForm.patchValue({
             id: res.id,
@@ -81,9 +81,17 @@ export class ConfigSiteComponent implements OnInit {
             facebook: res.facebook,
             instagram: res.instagram,
             twitter: res.twitter,
+            youtube: res.youtube,
             language: res.language,
+            logoUrl: res.logoUrl,
+            faviconUrl: res.faviconUrl,
+            user_id: this.usuario.id,
+            // logo: this.logo,
           });
           // this.imagenSubir = res.logo;
+
+          this.configuracion = res;
+          console.log(this.configuracion);
         }
       );
     } else {
@@ -91,9 +99,9 @@ export class ConfigSiteComponent implements OnInit {
     }
 
 
-
-
   }
+
+
 
   validacionesFormulario(){
     this.confGeneralForm = this.fb.group({
@@ -111,10 +119,13 @@ export class ConfigSiteComponent implements OnInit {
       youtube: [''],
       twitter: [''],
       id: [''],
+      logoUrl: [''],
+      faviconUrl: [''],
       language: ['', Validators.required],
       user_id: [this.usuario.id, Validators.required],
     });
   }
+
 
 
 
@@ -129,7 +140,30 @@ export class ConfigSiteComponent implements OnInit {
       instagram, youtube, twitter, language
     } = this.confGeneralForm.value;
 
-      this.congeneralService.actualizarCongeneral(this.confGeneralForm.value)
+
+    const formData = new FormData();
+    formData.append('titulo', this.confGeneralForm.get('titulo').value);
+    formData.append('cr', this.confGeneralForm.get('cr').value);
+    formData.append('user_id', this.confGeneralForm.get('user_id').value);
+    formData.append('telefono_uno', this.confGeneralForm.get('telefono_uno').value);
+    formData.append('telefono_dos', this.confGeneralForm.get('telefono_dos').value);
+    formData.append('email_uno', this.confGeneralForm.get('email_uno').value);
+    formData.append('email_dos', this.confGeneralForm.get('email_dos').value);
+    formData.append('direccion', this.confGeneralForm.get('direccion').value);
+    formData.append('horarios', this.confGeneralForm.get('horarios').value);
+    formData.append('iframe_mapa', this.confGeneralForm.get('iframe_mapa').value);
+    formData.append('facebook', this.confGeneralForm.get('facebook').value);
+    formData.append('instagram', this.confGeneralForm.get('instagram').value);
+    formData.append('youtube', this.confGeneralForm.get('youtube').value);
+    formData.append('twitter', this.confGeneralForm.get('twitter').value);
+    formData.append('language', this.confGeneralForm.get('language').value);
+    formData.append('logoUrl', this.confGeneralForm.get('logoUrl').value);
+    formData.append('faviconUrl', this.confGeneralForm.get('faviconUrl').value);
+
+    const id = this.confGeneralForm.get('id').value;
+
+
+      this.congeneralService.actualizarCongeneral(formData, +id)
             .subscribe(resp => {
 
               this.configuracion.id = this.configuracion.id;
@@ -159,49 +193,6 @@ export class ConfigSiteComponent implements OnInit {
 
 
 
-
-  // updateConfiguracion(){debugger
-
-  //   const {titulo, cr, telefono_uno,telefono_dos, email_uno,
-  //           email_dos, direccion, horarios, iframe_mapa, facebook,
-  //           instagram, youtube, twitter, language} = this.confGeneralForm.value;
-
-  //   if (this.congeneralSeleccionado) {
-
-  //     const data = {
-  //       ...this.confGeneralForm.value,
-  //       id: this.congeneralSeleccionado.id
-  //     }
-
-  //     this.congeneralService.actualizarCongeneral(this.congeneralSeleccionado.id).subscribe(
-  //       (res:any) => {
-  //         if (Errerror) {
-  //           // this.uploadError = res.message;
-  //           Swal.fire('Error', err.error.msg, 'error');
-  //         } else {
-  //           // this.router.navigate(['/directorio']);
-
-  //           Swal.fire('Guardado', 'Los cambios fueron actualizados', 'success');
-  //         }
-  //       },
-  //       error => this.error = error
-  //     );
-  //   } else {
-  //     this.congeneralService.crearCongeneral(this.congeneral).subscribe(
-  //       res => {
-  //         if (res === 'error') {
-  //           // this.uploadError = res.message;
-  //           Swal.fire('Error', err.error.msg, 'error');
-  //         } else {
-  //           // this.infoDirectorio = res;
-  //           Swal.fire('Guardado', 'Los cambios fueron creados', 'success');
-  //           // this.router.navigate(['/directorio']);
-  //         }
-  //       },
-  //       error => this.error = error
-  //     );
-  //   }
-  // }
 
 
   cambiarImagen(file: File){

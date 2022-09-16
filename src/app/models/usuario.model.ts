@@ -3,16 +3,18 @@ import { environment } from "src/environments/environment";
 const mediaUrl = environment.mediaUrl;
 export class Usuario {
   constructor(
+    public id: number,
     public first_name: string,
     public last_name: string,
-    public username: string,
     public email: string,
     public role_id: number,
-    public id: number,
-    // public uid?: string,
-    public password?: string,
-    public img?: string,
+    public username: string,
+    public imgUrl: string,
     public google?: boolean,
+    public uid?: string,
+    public password?: string,
+    public terminos?: boolean,
+    public img?: string,
   ){}
 
   get imagenUrl(){

@@ -39,16 +39,29 @@
                         <tbody>
                             <tr *ngFor="let usuario of usuarios">
                                 <td class="text-center">
-                                    <img src="{{usuario.imagenUrl}}" (click)="abrirModal(usuario)" class="img-thumbnail avatar cursor" alt="">
+                                    <a [routerLink]="['/dashboard/perfil/edit',usuario.id]">
+                                        <div *ngIf="usuario">
+                                            <img [src]="usuario.img" alt="user" class="img-thumbnail avatar  cursor">
+                                        </div>
+                                        <div *ngIf="!usuario">
+                                            <img src="./assets/images/user.png" alt="user" class="img-thumbnail avatar cursor">
+                                        </div>
+                                        <!-- <img src="{{usuario.img}}" (click)="editarId(usuario.id)" class="img-thumbnail avatar cursor" alt=""> -->
+                                    </a>
                                 </td>
                                 <td>{{usuario.email}}</td>
-                                <td>{{usuario.nombre}}</td>
+                                <td>{{usuario.first_name}} {{usuario.last_name}}</td>
                                 <td>
-                                    <select class="form-control" [(ngModel)]="usuario.role" (change)="cambiarRole(usuario)">
-                                    <option value="ADMIN">Admin</option>
-                                    <option value="USER">User</option>
-                                    <option value="VENTAS">Ventas</option>
-                                  </select>
+
+                                    <select class="form-control custom-select" [(ngModel)]="usuario.role_id" (change)="cambiarRole(usuario, usuario.id)">
+                                    <option *ngFor="let rol of listRoles" [value]="rol.id">{{rol.role_name}}</option>
+
+                                </select>
+                                    <!-- <select class="form-control" [(ngModel)]="usuario.role_id" (change)="cambiarRole(usuario, usuario.id)">
+                                    <option value="1">Admin</option>
+                                    <option value="2">User</option>
+                                    <option value="3">Ventas</option>
+                                  </select> -->
                                 </td>
                                 <td>
                                     <span *ngIf="usuario.google" class="label label-danger">Google</span>
